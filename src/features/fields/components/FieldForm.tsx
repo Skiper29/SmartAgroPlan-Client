@@ -13,8 +13,8 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import FieldTypeSelect from './FieldTypeSelect';
+import CropSelect from './CropSelect';
 import { FieldType } from '@/models/field/field.model';
-import { CropType, CropTypeLabels } from '@/models/crop/crop.model';
 import { SoilType, SoilTypeLabels } from '@/models/field/soil.model';
 
 // Form validation schema
@@ -25,7 +25,7 @@ const fieldFormSchema = z.object({
   name: z.string().min(1, "Назва поля обов'язкова").max(100, '...'),
   location: z.string().optional(),
   fieldType: z.enum(valuesAsTuple(FieldType), "Тип поля обов'язковий"),
-  currentCrop: z.enum(valuesAsTuple(CropType), "Поточна культура обов'язкова"),
+  currentCropId: z.number().min(1, "Поточна культура обов'язкова"),
   soil: z.enum(valuesAsTuple(SoilType), "Тип ґрунту обов'язковий"),
   boundaryGeoJson: z.string().min(1, "Межі поля обов'язкові"),
 });
@@ -49,6 +49,7 @@ const FieldForm: React.FC<FieldFormProps> = ({
     handleSubmit,
     setValue,
     watch,
+    clearErrors,
     formState: { errors },
   } = useForm<FieldFormData>({
     resolver: zodResolver(fieldFormSchema),
@@ -57,10 +58,12 @@ const FieldForm: React.FC<FieldFormProps> = ({
       location: '',
       boundaryGeoJson: '',
     },
+    mode: 'onSubmit',
+    reValidateMode: 'onSubmit',
   });
 
   const watchedFieldType = watch('fieldType');
-  const watchedCurrentCrop = watch('currentCrop');
+  const watchedCurrentCropId = watch('currentCropId');
   const watchedSoil = watch('soil');
 
   // Update boundary in form when it changes from map
@@ -115,7 +118,13 @@ const FieldForm: React.FC<FieldFormProps> = ({
         </Label>
         <FieldTypeSelect
           value={watchedFieldType}
-          onValueChange={(value) => setValue('fieldType', value)}
+          onValueChange={(value) => {
+            setValue('fieldType', value, {
+              shouldDirty: true,
+              shouldValidate: false,
+            });
+            clearErrors('fieldType');
+          }}
         />
         {errors.fieldType && (
           <p className="text-sm text-red-500">{errors.fieldType.message}</p>
@@ -127,23 +136,19 @@ const FieldForm: React.FC<FieldFormProps> = ({
         <Label className="text-sm font-medium text-gray-700 dark:text-gray-200">
           Поточна культура *
         </Label>
-        <Select
-          value={watchedCurrentCrop}
-          onValueChange={(value) => setValue('currentCrop', value as CropType)}
-        >
-          <SelectTrigger className={errors.currentCrop ? 'border-red-500' : ''}>
-            <SelectValue placeholder="Оберіть культуру" />
-          </SelectTrigger>
-          <SelectContent>
-            {Object.entries(CropTypeLabels).map(([key, label]) => (
-              <SelectItem key={key} value={key}>
-                {label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        {errors.currentCrop && (
-          <p className="text-sm text-red-500">{errors.currentCrop.message}</p>
+        <CropSelect
+          value={watchedCurrentCropId}
+          onValueChange={(cropId) => {
+            setValue('currentCropId', cropId, {
+              shouldDirty: true,
+              shouldValidate: false,
+            });
+            clearErrors('currentCropId');
+          }}
+          error={errors.currentCropId?.message}
+        />
+        {errors.currentCropId && (
+          <p className="text-sm text-red-500">{errors.currentCropId.message}</p>
         )}
       </div>
 
@@ -154,7 +159,13 @@ const FieldForm: React.FC<FieldFormProps> = ({
         </Label>
         <Select
           value={watchedSoil}
-          onValueChange={(value) => setValue('soil', value as SoilType)}
+          onValueChange={(value) => {
+            setValue('soil', value as SoilType, {
+              shouldDirty: true,
+              shouldValidate: false,
+            });
+            clearErrors('soil');
+          }}
         >
           <SelectTrigger className={errors.soil ? 'border-red-500' : ''}>
             <SelectValue placeholder="Оберіть тип ґрунту" />
