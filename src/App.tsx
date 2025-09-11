@@ -4,6 +4,7 @@ import AppProvider from './app/providers/AppProvider';
 import Dashboard from './features/dashboard/pages/Dashboard';
 import Landing from './features/landing/pages/Landing';
 import FieldListPage from '@/features/fields/pages/FieldListPage';
+import AddFieldPage from '@/features/fields/pages/AddFieldPage.tsx';
 
 function App() {
   return (
@@ -24,6 +25,14 @@ function App() {
             element={
               <Layout>
                 <FieldListPage />
+              </Layout>
+            }
+          />
+          <Route
+            path="/fields/new"
+            element={
+              <Layout>
+                <AddFieldPage />
               </Layout>
             }
           />

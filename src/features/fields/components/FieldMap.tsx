@@ -200,6 +200,7 @@ const FieldMap: React.FC<FieldMapProps> = ({ fields, className }) => {
           url={baseCfg.url}
           attribution={baseCfg.attribution}
           subdomains={baseCfg.subdomains}
+          detectRetina={true}
         />
 
         {/* Optional Labels Overlay for Satellite */}
@@ -208,6 +209,7 @@ const FieldMap: React.FC<FieldMapProps> = ({ fields, className }) => {
             key={`${baseCfg.id}-labels`}
             url={baseCfg.labelsUrl}
             attribution={baseCfg.attribution}
+            detectRetina={true}
           />
         ) : null}
         {/* Explicit Zoom Control */}

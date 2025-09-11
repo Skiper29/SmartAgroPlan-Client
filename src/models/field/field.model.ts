@@ -18,7 +18,7 @@ export const FieldTypeLabels: Record<FieldType, string> = {
   [FieldType.Orchard]: 'Сад',
   [FieldType.Vineyard]: 'Виноградник',
   [FieldType.Greenhouse]: 'Теплиця',
-  [FieldType.Fallow]: 'Пара',
+  [FieldType.Fallow]: 'Поле під паром',
 };
 
 export default interface Field {

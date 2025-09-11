@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button.tsx';
 import FieldCard from '../components/FieldCard';
 import FieldMap from '../components/FieldMap';
 import { mockFields } from '@/testing/data/field-data';
+import { Link } from 'react-router-dom';
 
 const FieldListPage = () => {
   return (
@@ -12,29 +13,31 @@ const FieldListPage = () => {
           <h1 className="text-3xl font-extrabold text-green-700 dark:text-green-200 tracking-tight">
             Поля
           </h1>
-          <Button
-            size="lg"
-            variant="default"
-            className={
-              'flex items-center gap-2 px-7 py-3 rounded-full font-bold text-lg shadow-xl transition-all duration-200 bg-gradient-to-r from-green-500 to-green-700 hover:from-green-600 hover:to-green-800 text-white dark:bg-gradient-to-r dark:from-green-700 dark:to-green-900 dark:hover:from-green-800 dark:hover:to-green-950 dark:text-green-100 dark:shadow-2xl hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2'
-            }
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
+          <Link to={'/fields/new'}>
+            <Button
+              size="lg"
+              variant="default"
+              className={
+                'flex items-center gap-2 px-7 py-3 rounded-full font-bold text-lg shadow-xl transition-all duration-200 bg-gradient-to-r from-green-500 to-green-700 hover:from-green-600 hover:to-green-800 text-white dark:bg-gradient-to-r dark:from-green-700 dark:to-green-900 dark:hover:from-green-800 dark:hover:to-green-950 dark:text-green-100 dark:shadow-2xl hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2'
+              }
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M12 4v16m8-8H4"
-              />
-            </svg>
-            Додати поле
-          </Button>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 4v16m8-8H4"
+                />
+              </svg>
+              Додати поле
+            </Button>
+          </Link>
         </header>
 
         {/* Map Section */}
