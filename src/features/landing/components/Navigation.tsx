@@ -3,6 +3,7 @@ import { Menu, X, User, LogIn } from 'lucide-react';
 import { Button } from '@/components/ui/button.tsx';
 import { useTheme } from '@/app/providers/ThemeContext.tsx';
 import { Link } from 'react-router-dom';
+import Logo from '@/assets/farming.svg?react';
 
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -22,14 +23,14 @@ export default function Navigation() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <div className="flex items-center">
-            <div className="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center mr-3">
-              <span className="text-white font-bold">🌱</span>
+          <Link to={'/'}>
+            <div className="flex items-center space-x-2">
+              <Logo className="w-9 h-9 text-white" />
+              <span className="text-xl font-bold text-gray-900 dark:text-white">
+                SmartAgroPlan
+              </span>
             </div>
-            <span className="text-xl font-bold text-gray-900 dark:text-white">
-              SmartAgroPlan
-            </span>
-          </div>
+          </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
