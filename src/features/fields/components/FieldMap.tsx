@@ -166,13 +166,40 @@ const FieldMap: React.FC<FieldMapProps> = ({ fields, className }) => {
   const [selectedBasemap, setSelectedBasemap] = useState<BasemapId>('osm');
   const [showLabels, setShowLabels] = useState<boolean>(true);
 
-  // Parse GeoJSON strings once
+  // Parse GeoJSON strings once - handle both Feature and Polygon geometry
   const features = useMemo<GeoJsonObject[]>(() => {
     return (fields ?? [])
       .map((f) => {
         try {
-          return JSON.parse(f.boundary) as GeoJsonObject;
-        } catch {
+          // Handle different property names for boundary data
+          const boundaryData = f.boundary || (f as any).boundaryGeoJson;
+          if (!boundaryData) {
+            console.warn('No boundary data found for field:', f);
+            return null;
+          }
+
+          const parsed = JSON.parse(boundaryData);
+
+          // If it's already a Feature, return as is
+          if (parsed.type === 'Feature') {
+            return parsed as GeoJsonObject;
+          }
+
+          // If it's a Polygon geometry, wrap it in a Feature
+          if (parsed.type === 'Polygon') {
+            return {
+              type: 'Feature',
+              geometry: parsed,
+              properties: {
+                id: f.id,
+                name: f.name,
+                fieldType: f.fieldType,
+              },
+            } as GeoJsonObject;
+          }
+          return null;
+        } catch (error) {
+          console.error('Error parsing field boundary:', error, f);
           return null;
         }
       })
@@ -230,11 +257,40 @@ const FieldMap: React.FC<FieldMapProps> = ({ fields, className }) => {
         {fields?.map((field) => {
           const geo: GeoJsonObject | null = (() => {
             try {
-              return JSON.parse(field.boundary) as GeoJsonObject;
-            } catch {
+              // Handle different property names for boundary data
+              const boundaryData =
+                field.boundary || (field as any).boundaryGeoJson;
+              if (!boundaryData) {
+                console.warn('No boundary data found for field:', field);
+                return null;
+              }
+
+              const parsed = JSON.parse(boundaryData);
+
+              // If it's already a Feature, return as is
+              if (parsed.type === 'Feature') {
+                return parsed as GeoJsonObject;
+              }
+
+              // If it's a Polygon geometry, wrap it in a Feature
+              if (parsed.type === 'Polygon') {
+                return {
+                  type: 'Feature',
+                  geometry: parsed,
+                  properties: {
+                    id: field.id,
+                    name: field.name,
+                    fieldType: field.fieldType,
+                  },
+                } as GeoJsonObject;
+              }
+              return null;
+            } catch (error) {
+              console.error('Error parsing field boundary:', error, field);
               return null;
             }
           })();
+
           if (!geo) return null;
 
           return (
