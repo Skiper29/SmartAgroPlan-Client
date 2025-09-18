@@ -5,28 +5,24 @@ import * as z from 'zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import FieldTypeSelect from './FieldTypeSelect';
 import CropSelect from './CropSelect';
+import SoilSelect from './SoilSelect';
 import { FieldType } from '@/models/field/field.model';
-import { SoilType, SoilTypeLabels } from '@/models/field/soil.model';
 
 // Form validation schema
 const valuesAsTuple = <T extends string>(obj: Record<string, T>) =>
   Object.values(obj) as [T, ...T[]];
 
 const fieldFormSchema = z.object({
-  name: z.string().min(1, "Назва поля обов'язкова").max(100, '...'),
+  name: z
+    .string()
+    .min(1, "Назва поля обов'язкова")
+    .max(100, 'Назва занадто довга'),
   location: z.string().optional(),
   fieldType: z.enum(valuesAsTuple(FieldType), "Тип поля обов'язковий"),
-  currentCropId: z.number().min(1, "Поточна культура обов'язкова"),
-  soil: z.enum(valuesAsTuple(SoilType), "Тип ґрунту обов'язковий"),
+  currentCrop: z.string().min(1, "Поточна культура обов'язкова"),
+  soil: z.string().min(1, "Тип ґрунту обов'язковий"),
   boundaryGeoJson: z.string().min(1, "Межі поля обов'язкові"),
 });
 
@@ -63,7 +59,7 @@ const FieldForm: React.FC<FieldFormProps> = ({
   });
 
   const watchedFieldType = watch('fieldType');
-  const watchedCurrentCropId = watch('currentCropId');
+  const watchedCurrentCrop = watch('currentCrop');
   const watchedSoil = watch('soil');
 
   // Update boundary in form when it changes from map
@@ -137,18 +133,18 @@ const FieldForm: React.FC<FieldFormProps> = ({
           Поточна культура *
         </Label>
         <CropSelect
-          value={watchedCurrentCropId}
+          value={watchedCurrentCrop ? parseInt(watchedCurrentCrop) : undefined}
           onValueChange={(cropId) => {
-            setValue('currentCropId', cropId, {
+            setValue('currentCrop', cropId.toString(), {
               shouldDirty: true,
               shouldValidate: false,
             });
-            clearErrors('currentCropId');
+            clearErrors('currentCrop');
           }}
-          error={errors.currentCropId?.message}
+          error={errors.currentCrop?.message}
         />
-        {errors.currentCropId && (
-          <p className="text-sm text-red-500">{errors.currentCropId.message}</p>
+        {errors.currentCrop && (
+          <p className="text-sm text-red-500">{errors.currentCrop.message}</p>
         )}
       </div>
 
@@ -157,27 +153,17 @@ const FieldForm: React.FC<FieldFormProps> = ({
         <Label className="text-sm font-medium text-gray-700 dark:text-gray-200">
           Тип ґрунту *
         </Label>
-        <Select
+        <SoilSelect
           value={watchedSoil}
           onValueChange={(value) => {
-            setValue('soil', value as SoilType, {
+            setValue('soil', value, {
               shouldDirty: true,
               shouldValidate: false,
             });
             clearErrors('soil');
           }}
-        >
-          <SelectTrigger className={errors.soil ? 'border-red-500' : ''}>
-            <SelectValue placeholder="Оберіть тип ґрунту" />
-          </SelectTrigger>
-          <SelectContent>
-            {Object.entries(SoilTypeLabels).map(([key, label]) => (
-              <SelectItem key={key} value={key}>
-                {label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+          error={errors.soil?.message}
+        />
         {errors.soil && (
           <p className="text-sm text-red-500">{errors.soil.message}</p>
         )}

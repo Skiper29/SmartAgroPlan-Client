@@ -10,8 +10,9 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { type Crop, CropType, CropTypeLabels } from '@/models/crop/crop.model';
-import { mockCrops } from '@/testing/data/field-data';
+import type { Crop } from '@/models/crop/crop.model';
+import { CropType, CropTypeLabels } from '@/models/crop/crop.model';
+import { useCrops } from '@/features/crops/hooks/crop.hooks';
 
 interface CropSelectProps {
   value?: number;
@@ -30,9 +31,22 @@ const CropSelect: React.FC<CropSelectProps> = ({
     'all',
   );
 
+  const { data: crops = [], isLoading, isError, error: apiError } = useCrops();
+
+  // Convert integer enum values from backend to string enum values
+  const processedCrops = useMemo(() => {
+    return crops.map((crop) => ({
+      ...crop,
+      cropType:
+        typeof crop.cropType === 'number'
+          ? (Object.values(CropType)[crop.cropType] as CropType)
+          : crop.cropType,
+    }));
+  }, [crops]);
+
   // Filter crops based on search term and crop type
   const filteredCrops = useMemo(() => {
-    return mockCrops.filter((crop) => {
+    return processedCrops.filter((crop) => {
       const matchesSearch = crop.name
         .toLowerCase()
         .includes(searchTerm.toLowerCase());
@@ -40,9 +54,9 @@ const CropSelect: React.FC<CropSelectProps> = ({
         selectedCropType === 'all' || crop.cropType === selectedCropType;
       return matchesSearch && matchesType;
     });
-  }, [searchTerm, selectedCropType]);
+  }, [processedCrops, searchTerm, selectedCropType]);
 
-  const selectedCrop = mockCrops.find((crop) => crop.id === value);
+  const selectedCrop = processedCrops.find((crop) => crop.id === value);
 
   const handleSelect = (crop: Crop) => {
     onValueChange(crop.id);
@@ -54,6 +68,51 @@ const CropSelect: React.FC<CropSelectProps> = ({
     setSearchTerm('');
     setSelectedCropType('all');
   };
+
+  if (isLoading) {
+    return (
+      <Button
+        type="button"
+        variant="outline"
+        disabled
+        className="w-full justify-between"
+      >
+        <span className="text-muted-foreground">Завантаження культур...</span>
+        <div className="ml-2 h-4 w-4 animate-spin rounded-full border-2 border-muted-foreground border-t-transparent" />
+      </Button>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="space-y-2">
+        <Button
+          type="button"
+          variant="outline"
+          disabled
+          className="w-full justify-between border-red-500"
+        >
+          <span className="text-red-500">Помилка завантаження культур</span>
+          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+        </Button>
+        {apiError && <p className="text-sm text-red-500">{apiError.message}</p>}
+      </div>
+    );
+  }
+
+  if (filteredCrops.length === 0 && !searchTerm && selectedCropType === 'all') {
+    return (
+      <Button
+        type="button"
+        variant="outline"
+        disabled
+        className="w-full justify-between border-yellow-500"
+      >
+        <span className="text-yellow-600">Немає доступних культур</span>
+        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+      </Button>
+    );
+  }
 
   return (
     <div className="relative">

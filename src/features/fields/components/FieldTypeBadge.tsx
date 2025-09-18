@@ -3,7 +3,7 @@ import { FieldType, FieldTypeLabels } from '@/models/field/field.model';
 import { Badge } from '@/components/ui/badge';
 
 interface FieldTypeBadgeProps {
-  fieldType: FieldType;
+  fieldType: FieldType | number;
   className?: string;
 }
 
@@ -20,8 +20,15 @@ export const FieldTypeBadge: React.FC<FieldTypeBadgeProps> = ({
   fieldType,
   className,
 }) => {
-  const label = FieldTypeLabels[fieldType] ?? fieldType;
-  const colorClass = fieldTypeColors[fieldType] ?? 'bg-gray-100 text-gray-800';
+  // Handle integer enum values from backend
+  const processedFieldType =
+    typeof fieldType === 'number'
+      ? (Object.values(FieldType)[fieldType] as FieldType)
+      : fieldType;
+
+  const label = FieldTypeLabels[processedFieldType] ?? processedFieldType;
+  const colorClass =
+    fieldTypeColors[processedFieldType] ?? 'bg-gray-100 text-gray-800';
 
   return (
     <Badge

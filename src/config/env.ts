@@ -1,7 +1,7 @@
 // Environment configuration
 export const env = {
   NODE_ENV: import.meta.env.MODE,
-  API_URL: import.meta.env.VITE_API_URL || 'http://localhost:3000/api',
+  API_URL: import.meta.env.VITE_API_BASE_URL || 'https://localhost:7168/api',
   APP_NAME: 'SmartAgroPlan',
   APP_VERSION: '1.0.0',
 } as const;

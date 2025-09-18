@@ -53,7 +53,9 @@ const DrawControls: React.FC<DrawControlsProps> = ({
     const handleDrawCreated = (e: L.DrawEvents.Created) => {
       drawnItems.clearLayers();
       drawnItems.addLayer(e.layer);
-      onBoundaryChange(JSON.stringify(e.layer.toGeoJSON()));
+      const feature = e.layer.toGeoJSON();
+      const geometry = feature.geometry;
+      onBoundaryChange(JSON.stringify(geometry));
     };
 
     map.on(L.Draw.Event.CREATED, handleDrawCreated as L.LeafletEventHandlerFn);

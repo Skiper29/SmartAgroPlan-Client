@@ -53,8 +53,7 @@ export interface Crop {
   fieldCropHistories?: FieldCropHistory[];
 }
 
-export interface CropVarietyCreateUpdate {
-  id: number | null;
+export interface CropCreate {
   name?: string;
   cropType: CropType;
   waterRequirement: number;
@@ -69,4 +68,6 @@ export interface CropVarietyCreateUpdate {
   optimalSoilId: number;
 }
 
-
+export interface CropUpdate {
+  id: number | null;
+}

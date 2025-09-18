@@ -33,13 +33,17 @@ export default interface Field {
   updatedDate: Date;
 }
 
-export interface FieldCreateUpdate {
+export interface FieldCreate {
   name?: string;
   location?: string;
   boundaryGeoJson?: string;
   fieldType: FieldType;
   currentCropId: number;
   soilId: number;
+}
+
+export interface FieldUpdate extends FieldCreate {
+  id: number;
 }
 
 export interface FieldCropHistory {

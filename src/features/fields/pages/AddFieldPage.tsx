@@ -2,60 +2,45 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import FieldForm, { type FieldFormData } from '../components/FieldForm';
 import FieldMapEditor from '../components/FieldMapEditor';
+import { useCreateField } from '../hooks/fields.hooks';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import type { FieldCreate } from '@/models/field/field.model';
 
 const AddFieldPage: React.FC = () => {
   const [boundaryGeoJson, setBoundaryGeoJson] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate = useNavigate();
+
+  const createFieldMutation = useCreateField();
 
   const handleBoundaryChange = (geoJson: string) => {
     setBoundaryGeoJson(geoJson);
   };
 
   const handleFormSubmit = async (data: FieldFormData) => {
-    setIsSubmitting(true);
-
     try {
-      // Mock API call - replace with actual backend integration later
-      console.log('Submitting field data:', data);
-
-      // Simulate API delay
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // Mock success response
-      const newField = {
-        id: Date.now(),
+      // Prepare field data for creation
+      const fieldData: FieldCreate = {
         name: data.name,
         location: data.location || '',
-        boundary: data.boundaryGeoJson,
+        boundaryGeoJson: data.boundaryGeoJson || boundaryGeoJson,
         fieldType: data.fieldType,
-        currentCrop: {
-          id: 1,
-          name: data.currentCrop,
-          cropType: data.currentCrop,
-        },
-        soil: {
-          id: 1,
-          type: data.soil,
-        },
-        createdDate: new Date(),
-        updatedDate: new Date(),
+        currentCropId: parseInt(data.currentCrop), // Assuming currentCrop contains the ID
+        soilId: parseInt(data.soil), // Assuming soil contains the ID
       };
 
-      console.log('Field created successfully:', newField);
+      await createFieldMutation.mutateAsync(fieldData);
 
-      // Show success message (you can replace this with a toast notification)
-      alert('Поле успішно додано!');
+      toast.success('Поле успішно додано!');
 
       // Reset form and map
       setBoundaryGeoJson('');
 
-      // Optionally redirect to field list
-      // navigate('/fields');
+      // Navigate to field list
+      navigate('/fields');
     } catch (error) {
       console.error('Error creating field:', error);
-      alert('Помилка при створенні поля. Спробуйте ще раз.');
-    } finally {
-      setIsSubmitting(false);
+      toast.error('Помилка при створенні поля. Спробуйте ще раз.');
     }
   };
 
@@ -70,7 +55,7 @@ const AddFieldPage: React.FC = () => {
           <Button
             variant="outline"
             size="lg"
-            onClick={() => window.history.back()}
+            onClick={() => navigate('/fields')}
             className="flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-lg transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2"
           >
             <svg
@@ -109,7 +94,7 @@ const AddFieldPage: React.FC = () => {
                 onSubmit={handleFormSubmit}
                 onBoundaryChange={handleBoundaryChange}
                 boundaryGeoJson={boundaryGeoJson}
-                isSubmitting={isSubmitting}
+                isSubmitting={createFieldMutation.isPending}
               />
             </div>
           </section>
