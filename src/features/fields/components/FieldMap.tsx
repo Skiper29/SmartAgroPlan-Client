@@ -172,7 +172,7 @@ const FieldMap: React.FC<FieldMapProps> = ({ fields, className }) => {
       .map((f) => {
         try {
           // Handle different property names for boundary data
-          const boundaryData = f.boundary || (f as any).boundaryGeoJson;
+          const boundaryData = f.boundaryGeoJson;
           if (!boundaryData) {
             console.warn('No boundary data found for field:', f);
             return null;
@@ -258,8 +258,7 @@ const FieldMap: React.FC<FieldMapProps> = ({ fields, className }) => {
           const geo: GeoJsonObject | null = (() => {
             try {
               // Handle different property names for boundary data
-              const boundaryData =
-                field.boundary || (field as any).boundaryGeoJson;
+              const boundaryData = field.boundaryGeoJson;
               if (!boundaryData) {
                 console.warn('No boundary data found for field:', field);
                 return null;

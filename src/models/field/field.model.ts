@@ -25,7 +25,7 @@ export default interface Field {
   id: number;
   name: string;
   location?: string;
-  boundary: string;
+  boundaryGeoJson: string;
   fieldType: FieldType;
   currentCrop: Crop;
   soil: Soil;
