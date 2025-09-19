@@ -2,6 +2,8 @@ import { Routes, Route } from 'react-router-dom';
 import { LandingPage } from '../../features/landing/pages/Landing';
 import { DashboardPage } from '../../features/dashboard/pages/Dashboard';
 import FieldListPage from '@/features/fields/pages/FieldListPage';
+import AddFieldPage from '@/features/fields/pages/AddFieldPage';
+import EditFieldPage from '@/features/fields/pages/EditFieldPage';
 import Layout from '../../components/layout/Layout';
 
 export function AppRoutes() {
@@ -21,6 +23,22 @@ export function AppRoutes() {
         element={
           <Layout>
             <FieldListPage />
+          </Layout>
+        }
+      />
+      <Route
+        path="/fields/new"
+        element={
+          <Layout>
+            <AddFieldPage />
+          </Layout>
+        }
+      />
+      <Route
+        path="/fields/edit/:id"
+        element={
+          <Layout>
+            <EditFieldPage />
           </Layout>
         }
       />

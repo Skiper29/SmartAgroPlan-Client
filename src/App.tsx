@@ -1,42 +1,13 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Layout from './components/layout/Layout';
+import { BrowserRouter as Router } from 'react-router-dom';
 import AppProvider from './app/providers/AppProvider';
-import Dashboard from './features/dashboard/pages/Dashboard';
-import Landing from './features/landing/pages/Landing';
-import FieldListPage from '@/features/fields/pages/FieldListPage';
-import AddFieldPage from '@/features/fields/pages/AddFieldPage.tsx';
+
+import AppRoutes from '@/app/routes/AppRoutes.tsx';
 
 function App() {
   return (
     <AppProvider>
       <Router>
-        <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route
-            path="/dashboard"
-            element={
-              <Layout>
-                <Dashboard />
-              </Layout>
-            }
-          />
-          <Route
-            path="/fields"
-            element={
-              <Layout>
-                <FieldListPage />
-              </Layout>
-            }
-          />
-          <Route
-            path="/fields/new"
-            element={
-              <Layout>
-                <AddFieldPage />
-              </Layout>
-            }
-          />
-        </Routes>
+        <AppRoutes />
       </Router>
     </AppProvider>
   );

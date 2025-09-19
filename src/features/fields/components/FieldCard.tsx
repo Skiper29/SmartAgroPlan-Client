@@ -8,11 +8,11 @@ import {
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import FieldTypeBadge from './FieldTypeBadge';
-import EditFieldModal from './EditFieldModal';
 import DeleteFieldModal from './DeleteFieldModal';
 import { SoilType, SoilTypeLabels } from '@/models/field/soil.model';
 import { CropType, CropTypeLabels } from '@/models/crop/crop.model';
 import { useFieldMap } from '../contexts/FieldMapContext';
+import { useNavigate } from 'react-router-dom';
 
 interface FieldCardProps {
   field: Field;
@@ -21,7 +21,7 @@ interface FieldCardProps {
 
 export const FieldCard: React.FC<FieldCardProps> = ({ field, className }) => {
   const { navigateToField } = useFieldMap();
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const navigate = useNavigate();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   // Process soil type from backend (handle integer enum values)
@@ -67,9 +67,8 @@ export const FieldCard: React.FC<FieldCardProps> = ({ field, className }) => {
     }
   };
 
-  const handleEditSuccess = () => {
-    // The field list will be automatically refreshed by React Query
-    setIsEditModalOpen(false);
+  const handleEditField = () => {
+    navigate(`/fields/edit/${field.id}`);
   };
 
   const handleDeleteSuccess = () => {
@@ -115,7 +114,7 @@ export const FieldCard: React.FC<FieldCardProps> = ({ field, className }) => {
             <Button
               variant="outline"
               size="sm"
-              onClick={() => setIsEditModalOpen(true)}
+              onClick={handleEditField}
               className="flex items-center gap-1 text-xs text-blue-600 hover:text-blue-700 hover:bg-blue-50"
               title="Редагувати поле"
             >
@@ -189,14 +188,6 @@ export const FieldCard: React.FC<FieldCardProps> = ({ field, className }) => {
           </CardDescription>
         </div>
       </Card>
-
-      {/* Edit Modal */}
-      <EditFieldModal
-        field={field}
-        isOpen={isEditModalOpen}
-        onClose={() => setIsEditModalOpen(false)}
-        onSuccess={handleEditSuccess}
-      />
 
       {/* Delete Modal */}
       <DeleteFieldModal
