@@ -68,17 +68,18 @@ const BASEMAP_CONFIGS: Record<BasemapId, BasemapConfig> = {
 
 const BASEMAP_SWITCHER_ITEMS: BasemapDef[] = [
   {
-    id: 'osm',
-    name: 'OSM Standard',
-    previewUrl: 'https://tile.openstreetmap.org/5/17/10.png',
-  },
-  {
     id: 'esri_sat',
     name: 'Esri Satellite',
     previewUrl:
       'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/5/10/17',
     hasLabels: true,
   },
+  {
+    id: 'osm',
+    name: 'OSM Standard',
+    previewUrl: 'https://tile.openstreetmap.org/5/17/10.png',
+  },
+
   {
     id: 'carto_dark',
     name: 'CARTO Dark',
@@ -215,7 +216,7 @@ const NavigateToField: React.FC = () => {
 
 const FieldMap: React.FC<FieldMapProps> = ({ fields, className }) => {
   const [fitDone, setFitDone] = useState(false);
-  const [selectedBasemap, setSelectedBasemap] = useState<BasemapId>('osm');
+  const [selectedBasemap, setSelectedBasemap] = useState<BasemapId>('esri_sat');
   const [showLabels, setShowLabels] = useState<boolean>(true);
 
   // Parse GeoJSON strings once - handle both Feature and Polygon geometry

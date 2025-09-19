@@ -6,8 +6,10 @@ const Sidebar = () => {
   const { theme, toggleTheme } = useTheme();
 
   return (
-    <aside className="w-64 min-h-screen bg-gradient-to-b from-green-50 via-white to-green-100 border-r border-green-200 shadow-lg p-6 flex flex-col
-      dark:bg-gradient-to-b dark:from-green-950 dark:via-green-900 dark:to-green-800 dark:border-green-800 dark:shadow-xl">
+    <aside
+      className="w-64 min-h-screen bg-gradient-to-b from-green-50 via-white to-green-100 border-r border-green-200 shadow-lg p-6 flex flex-col
+      dark:bg-gradient-to-b dark:from-green-950 dark:via-green-900 dark:to-green-800 dark:border-green-800 dark:shadow-xl"
+    >
       <Link
         to={'/'}
         className="text-2xl font-extrabold mb-10 bg-gradient-to-r text-green-700 bg-clip-text
@@ -21,21 +23,21 @@ const Sidebar = () => {
           className="flex items-center gap-3 px-3 py-2 rounded-lg text-green-900 hover:bg-green-100 hover:text-green-700 transition duration-150 font-medium
             dark:text-green-100 dark:hover:bg-green-800 dark:hover:text-green-300"
         >
-          <Home size={22} /> Dashboard
+          <Home size={22} /> Панель керування
         </Link>
         <Link
           to="/fields"
           className="flex items-center gap-3 px-3 py-2 rounded-lg text-green-900 hover:bg-green-100 hover:text-green-700 transition duration-150 font-medium
             dark:text-green-100 dark:hover:bg-green-800 dark:hover:text-green-300"
         >
-          <Leaf size={22} /> Fields
+          <Leaf size={22} /> Поля
         </Link>
         <Link
           to="/settings"
           className="flex items-center gap-3 px-3 py-2 rounded-lg text-green-900 hover:bg-green-100 hover:text-green-700 transition duration-150 font-medium
             dark:text-green-100 dark:hover:bg-green-800 dark:hover:text-green-300"
         >
-          <Settings size={22} /> Settings
+          <Settings size={22} /> Налаштування
         </Link>
       </nav>
       {/* Theme toggle button */}
@@ -46,7 +48,7 @@ const Sidebar = () => {
         aria-label="Toggle theme"
       >
         {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
-        {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+        {theme === 'dark' ? 'Світлий режим' : 'Темний режим'}
       </button>
     </aside>
   );

@@ -4,6 +4,7 @@ import { DashboardPage } from '../../features/dashboard/pages/Dashboard';
 import FieldListPage from '@/features/fields/pages/FieldListPage';
 import AddFieldPage from '@/features/fields/pages/AddFieldPage';
 import EditFieldPage from '@/features/fields/pages/EditFieldPage';
+import FieldViewPage from '@/features/fields/pages/FieldViewPage';
 import Layout from '../../components/layout/Layout';
 
 export function AppRoutes() {
@@ -31,6 +32,14 @@ export function AppRoutes() {
         element={
           <Layout>
             <AddFieldPage />
+          </Layout>
+        }
+      />
+      <Route
+        path="/fields/view/:id"
+        element={
+          <Layout>
+            <FieldViewPage />
           </Layout>
         }
       />
