@@ -5,6 +5,7 @@ import FieldPolygon from './FieldPolygon';
 import FieldLegend from './FieldLegend';
 import SearchControl from './SearchControl';
 import BasemapSwitcher, { type BasemapDef } from './BasemapSwitcher';
+import { useFieldMap } from '../contexts/FieldMapContext';
 import type { GeoJsonObject } from 'geojson';
 import type * as GeoJSONNS from 'geojson';
 import L from 'leaflet';
@@ -161,6 +162,57 @@ const MiniMapControl: React.FC<{
   return null;
 };
 
+// Helper: navigate to specific field
+const NavigateToField: React.FC = () => {
+  const map = useMap();
+  const { targetField, clearTarget } = useFieldMap();
+
+  useEffect(() => {
+    if (!targetField?.boundaryGeoJson) return;
+
+    try {
+      const parsed = JSON.parse(targetField.boundaryGeoJson);
+      // Use GeoJSONNS.Feature for Feature objects
+      let geoJson: GeoJSONNS.Feature;
+
+      if (parsed.type === 'Feature') {
+        geoJson = parsed as GeoJSONNS.Feature;
+      } else if (parsed.type === 'Polygon') {
+        geoJson = {
+          type: 'Feature',
+          geometry: parsed,
+          properties: {
+            id: targetField.id,
+            name: targetField.name,
+          },
+        } as GeoJSONNS.Feature;
+      } else {
+        console.warn('Unsupported geometry type for field navigation');
+        return;
+      }
+
+      const layer = L.geoJSON(geoJson);
+      const bounds = layer.getBounds();
+
+      if (bounds.isValid()) {
+        map.fitBounds(bounds.pad(0.3), {
+          animate: true,
+          duration: 1.5,
+          maxZoom: 16,
+        });
+      }
+
+      // Clear the target after navigation
+      setTimeout(() => clearTarget(), 100);
+    } catch (error) {
+      console.error('Error navigating to field:', error);
+      clearTarget();
+    }
+  }, [targetField, map, clearTarget]);
+
+  return null;
+};
+
 const FieldMap: React.FC<FieldMapProps> = ({ fields, className }) => {
   const [fitDone, setFitDone] = useState(false);
   const [selectedBasemap, setSelectedBasemap] = useState<BasemapId>('osm');
@@ -249,6 +301,7 @@ const FieldMap: React.FC<FieldMapProps> = ({ fields, className }) => {
           subdomains={baseCfg.subdomains}
         />
         <SearchControl />
+        <NavigateToField />
 
         {/* Fit view to fields */}
         <FitBoundsToFields features={features} onFit={() => setFitDone(true)} />

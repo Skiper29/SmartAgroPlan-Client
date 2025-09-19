@@ -345,7 +345,7 @@ export const mockFields: Field[] = [
     id: 1,
     name: 'Поле №1',
     location: 'Київська область',
-    boundary: JSON.stringify({
+    boundaryGeoJson: JSON.stringify({
       type: 'Polygon',
       coordinates: [
         [
@@ -367,7 +367,7 @@ export const mockFields: Field[] = [
     id: 2,
     name: 'Поле №2',
     location: 'Вінницька область',
-    boundary: JSON.stringify({
+    boundaryGeoJson: JSON.stringify({
       type: 'Polygon',
       coordinates: [
         [
@@ -389,7 +389,7 @@ export const mockFields: Field[] = [
     id: 3,
     name: 'Сад №1',
     location: 'Львівська область',
-    boundary: JSON.stringify({
+    boundaryGeoJson: JSON.stringify({
       type: 'Polygon',
       coordinates: [
         [
@@ -411,7 +411,7 @@ export const mockFields: Field[] = [
     id: 4,
     name: 'Виноградник №1',
     location: 'Закарпатська область',
-    boundary: JSON.stringify({
+    boundaryGeoJson: JSON.stringify({
       type: 'Polygon',
       coordinates: [
         [
@@ -433,7 +433,7 @@ export const mockFields: Field[] = [
     id: 5,
     name: 'Теплиця №1',
     location: 'Харківська область',
-    boundary: JSON.stringify({
+    boundaryGeoJson: JSON.stringify({
       type: 'Polygon',
       coordinates: [
         [
@@ -455,7 +455,7 @@ export const mockFields: Field[] = [
     id: 6,
     name: 'Пара №1',
     location: 'Полтавська область',
-    boundary: JSON.stringify({
+    boundaryGeoJson: JSON.stringify({
       type: 'Polygon',
       coordinates: [
         [
@@ -477,7 +477,7 @@ export const mockFields: Field[] = [
     id: 7,
     name: 'Пара №1',
     location: 'Полтавська область',
-    boundary: JSON.stringify({
+    boundaryGeoJson: JSON.stringify({
       type: 'Polygon',
       coordinates: [
         [
@@ -499,7 +499,7 @@ export const mockFields: Field[] = [
     id: 8,
     name: 'Пара №1',
     location: 'Полтавська область',
-    boundary: JSON.stringify({
+    boundaryGeoJson: JSON.stringify({
       type: 'Polygon',
       coordinates: [
         [
@@ -521,7 +521,7 @@ export const mockFields: Field[] = [
     id: 9,
     name: 'Пара №1',
     location: 'Полтавська область',
-    boundary: JSON.stringify({
+    boundaryGeoJson: JSON.stringify({
       type: 'Polygon',
       coordinates: [
         [
