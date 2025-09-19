@@ -65,36 +65,38 @@ const EditFieldPage: React.FC = () => {
     },
   });
 
-  const watchedFieldType = watch('fieldType');
   const watchedCurrentCropId = watch('currentCropId');
   const watchedSoilId = watch('soilId');
 
-  const convertFieldType = (fieldType: FieldType) => {
-    if (typeof fieldType === 'number') {
-      // Map integer values to string enum values
-      const fieldTypeValues = Object.values(FieldType);
-      return (fieldTypeValues[fieldType] as FieldType) || FieldType.Arable;
-    }
+  const convertFieldType = (fieldType: FieldType): FieldType => {
     return fieldType as FieldType;
   };
 
   // Initialize form when field is loaded
   useEffect(() => {
-    if (!field) return;
+    if (field) {
+      // Convert integer fieldType from backend to string enum value
 
-    const formData = {
-      name: field.name,
-      location: field.location || '',
-      fieldType: convertFieldType(field.fieldType),
-      currentCropId: field.currentCrop?.id || 0,
-      soilId: field.soil?.id || 0,
-      boundaryGeoJson: field.boundaryGeoJson || '',
-    };
+      const formData = {
+        name: field.name,
+        location: field.location || '',
+        fieldType: convertFieldType(field.fieldType),
+        currentCropId: field.currentCrop?.id || 0,
+        soilId: field.soil?.id || 0,
+        boundaryGeoJson: field.boundaryGeoJson,
+      };
 
-    reset(formData);
-    setBoundaryGeoJson(field.boundaryGeoJson || '');
-    clearErrors(); // очищаємо старі помилки, якщо вони були
-  }, [field, reset, clearErrors]);
+      reset(formData);
+      setBoundaryGeoJson(field.boundaryGeoJson);
+
+      // Explicitly set the converted values after reset to ensure they stick
+      setTimeout(() => {
+        setValue('fieldType', convertFieldType(field.fieldType));
+        setValue('currentCropId', field.currentCrop?.id || 0);
+        setValue('soilId', field.soil?.id || 0);
+      }, 0);
+    }
+  }, [field, reset, setValue]);
 
   // Update boundary in form when it changes from map
   useEffect(() => {
@@ -268,7 +270,7 @@ const EditFieldPage: React.FC = () => {
                     control={control}
                     render={({ field }) => (
                       <FieldTypeSelect
-                        value={watchedFieldType || undefined}
+                        value={field.value}
                         onValueChange={(value) => {
                           field.onChange(value); // оновлює RHF
                           clearErrors('fieldType'); // чистимо помилку при зміні
