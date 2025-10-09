@@ -18,6 +18,7 @@ import MetricDisplay from '../components/MetricDisplay';
 import { weatherIcons } from '../utils/irrigationUtils';
 import WeeklyScheduleTable from '../components/WeeklyScheduleTable';
 import IrrigationStatusBadge from '../components/IrrigationStatusBadge';
+import ForecastChart from '@/features/irrigation/components/ForecastChart.tsx';
 
 const IrrigationDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -172,10 +173,13 @@ const IrrigationDetailPage: React.FC = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              {/* TODO: Замінити на компонент з графіком */}
-              <div className="text-center py-8 text-muted-foreground">
-                (Тут буде візуальний графік прогнозу ETc та опадів)
-              </div>
+              {recommendation.forecast ? (
+                <ForecastChart forecast={recommendation.forecast} />
+              ) : (
+                <div className="text-center py-8 text-muted-foreground">
+                  Прогноз недоступний.
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>
