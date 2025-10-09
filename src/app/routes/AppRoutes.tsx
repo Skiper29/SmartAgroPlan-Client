@@ -6,6 +6,7 @@ import AddFieldPage from '@/features/fields/pages/AddFieldPage';
 import EditFieldPage from '@/features/fields/pages/EditFieldPage';
 import FieldViewPage from '@/features/fields/pages/FieldViewPage';
 import Layout from '../../components/layout/Layout';
+import IrrigationDashboardPage from '@/features/irrigation/pages/IrrigationDashboardPage.tsx';
 
 export function AppRoutes() {
   return (
@@ -48,6 +49,14 @@ export function AppRoutes() {
         element={
           <Layout>
             <EditFieldPage />
+          </Layout>
+        }
+      />
+      <Route
+        path="/irrigation"
+        element={
+          <Layout>
+            <IrrigationDashboardPage />
           </Layout>
         }
       />

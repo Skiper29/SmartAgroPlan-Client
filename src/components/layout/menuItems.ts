@@ -105,8 +105,8 @@ export const menuItems: MenuItem[] = [
     submenu: [
       {
         icon: Droplets,
-        label: 'Вода',
-        to: '/resources/water',
+        label: 'Полив',
+        to: '/irrigation',
         description: 'Потреби та графік поливу',
       },
       {
