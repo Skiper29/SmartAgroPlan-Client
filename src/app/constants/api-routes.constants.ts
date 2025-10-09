@@ -25,4 +25,9 @@ export const API_ROUTES = {
     UPDATE: `crop/update`,
     DELETE: `crop/delete`,
   },
+  IRRIGATION: {
+    GET_RECOMMENDATION: 'Irrigation/recommendation',
+    GET_BATCH_RECOMMENDATIONS: 'Irrigation/recommendations/batch',
+    GET_WEEKLY_SCHEDULE: 'Irrigation/schedule/weekly',
+  },
 };
