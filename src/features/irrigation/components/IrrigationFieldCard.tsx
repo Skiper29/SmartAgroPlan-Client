@@ -30,7 +30,6 @@ const IrrigationFieldCard: React.FC<IrrigationFieldCardProps> = ({
       </CardHeader>
 
       <CardContent className="flex-1 space-y-4">
-        {/* ЗАМІНА: Використовуємо новий компонент замість простого тексту */}
         <RecommendationNotes notes={recommendation.notes} />
 
         <div className="grid grid-cols-2 gap-4 text-sm pt-2">
@@ -54,7 +53,10 @@ const IrrigationFieldCard: React.FC<IrrigationFieldCardProps> = ({
       </CardContent>
 
       <CardFooter className="border-t pt-4">
-        <Button asChild className="w-full">
+        <Button
+          asChild
+          className="w-full bg-gradient-to-r from-green-500 to-green-700 hover:from-green-600 hover:to-green-800 text-white font-semibold py-3 rounded-lg shadow-lg transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 dark:from-green-700 dark:to-green-900 dark:hover:from-green-800 dark:hover:to-green-900"
+        >
           <Link to={`/irrigation/${recommendation.fieldId}`}>
             Детальний План
             <ChevronRight className="ml-2 h-4 w-4" />

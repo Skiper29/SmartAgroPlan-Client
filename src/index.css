@@ -1,5 +1,6 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@plugin 'tailwind-scrollbar';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -140,16 +141,16 @@ body.dark .leaflet-geosearch-bar form input::placeholder {
 body.dark .leaflet-geosearch-bar .glass,
 body.dark .leaflet-geosearch-bar .reset,
 body.dark .leaflet-geosearch-bar .message,
-body.dark .leaflet-control-geosearch .results{
-    color: var(--muted-foreground);
-    background-color:var(--secondary);
+body.dark .leaflet-control-geosearch .results {
+  color: var(--muted-foreground);
+  background-color: var(--secondary);
 }
 
-.leaflet-control-geosearch button.reset:hover{
-    background:var(--secondary) !important;
+.leaflet-control-geosearch button.reset:hover {
+  background: var(--secondary) !important;
 }
 
 body.dark .leaflet-control-geosearch .results > .active,
-body.dark .leaflet-control-geosearch .results > :hover{
-    background-color:var(--secondary);
+body.dark .leaflet-control-geosearch .results > :hover {
+  background-color: var(--secondary);
 }

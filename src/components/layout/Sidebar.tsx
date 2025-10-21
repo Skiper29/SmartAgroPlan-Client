@@ -1,11 +1,5 @@
 import { Link } from 'react-router-dom';
-import {
-  Leaf,
-  Settings,
-  Moon,
-  Sun,
-  ChevronRight,
-} from 'lucide-react';
+import { Leaf, Settings, Moon, Sun, ChevronRight } from 'lucide-react';
 import { useTheme } from '../../app/providers/ThemeContext';
 import { useState } from 'react';
 import { menuItems } from './menuItems';
@@ -29,26 +23,33 @@ const Sidebar = () => {
 
   return (
     <aside
-      className="w-20 hover:w-80 transition-all duration-300 ease-in-out min-h-screen bg-gradient-to-b from-green-50 via-white to-green-100 border-r border-green-200 shadow-lg flex flex-col group
+      className="w-20 hover:w-80 transition-all duration-300 ease-in-out h-screen bg-gradient-to-b from-green-50 via-white to-green-100 border-r border-green-200 shadow-lg flex flex-col group
       dark:bg-gradient-to-b dark:from-green-950 dark:via-green-900 dark:to-green-800 dark:border-green-800 dark:shadow-xl"
     >
       {/* Logo */}
       <div className="p-4 border-b border-green-200 dark:border-green-700">
-        <Link
-          to={'/'}
-          className="flex items-center justify-center group-hover:justify-start transition-all duration-300"
-        >
-          <div className="w-12 h-12 bg-gradient-to-r from-green-600 to-green-700 dark:from-green-400 dark:to-green-500 rounded-xl flex items-center justify-center shadow-lg">
+        <Link to={'/'} className="flex items-center justify-start">
+          <div className="w-12 h-12 flex-shrink-0 bg-gradient-to-r from-green-600 to-green-700 dark:from-green-400 dark:to-green-500 rounded-xl flex items-center justify-center shadow-lg">
             <Leaf className="text-white" size={24} />
           </div>
-          <span className="ml-3 text-xl font-bold text-green-700 dark:text-green-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+          <span className="text-xl font-bold text-green-700 dark:text-green-300 whitespace-nowrap overflow-hidden opacity-0 max-w-0 group-hover:opacity-100 group-hover:max-w-xs group-hover:ml-3 transition-all duration-300">
             SmartAgroPlan
           </span>
         </Link>
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 py-4">
+      <nav
+        className="
+        flex-1 py-4 overflow-y-auto 
+        scrollbar-thin 
+        scrollbar-thumb-transparent 
+        scrollbar-track-transparent 
+        group-hover:scrollbar-thumb-green-600 
+        group-hover:scrollbar-track-green-100 
+        dark:group-hover:scrollbar-thumb-green-500 
+        dark:group-hover:scrollbar-track-green-800"
+      >
         {menuItems.map((item) => {
           const Icon = item.icon;
           const isExpanded = expandedItem === item.id;
