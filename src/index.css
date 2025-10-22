@@ -154,3 +154,40 @@ body.dark .leaflet-control-geosearch .results > .active,
 body.dark .leaflet-control-geosearch .results > :hover {
   background-color: var(--secondary);
 }
+
+/* ======================================= */
+/* === Глобальний стиль для скролбарів === */
+/* ======================================= */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: theme('colors.green.100');
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: theme('colors.green.600');
+  border-radius: 10px;
+  border: 2px solid theme('colors.green.100');
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: theme('colors.green.700');
+}
+
+body.dark ::-webkit-scrollbar-track {
+  background-color: theme('colors.green.800');
+}
+
+body.dark ::-webkit-scrollbar-thumb {
+  background-color: theme('colors.green.500');
+  border: 2px solid theme('colors.green.800');
+}
+
+body.dark ::-webkit-scrollbar-thumb:hover {
+  background-color: theme('colors.green.400');
+}
