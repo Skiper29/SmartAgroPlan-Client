@@ -27,7 +27,8 @@ export default interface Field {
   location?: string;
   boundaryGeoJson: string;
   fieldType: FieldType;
-  currentCrop: Crop;
+  currentCrop?: Crop;
+  sowingDate?: Date;
   soil: Soil;
   createdAt: Date;
   updatedAt: Date;
@@ -38,7 +39,8 @@ export interface FieldCreate {
   location?: string;
   boundaryGeoJson?: string;
   fieldType: FieldType;
-  currentCropId: number;
+  currentCropId?: number;
+  sowingDate?: Date;
   soilId: number;
 }
 

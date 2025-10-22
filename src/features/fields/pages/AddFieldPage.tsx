@@ -25,7 +25,10 @@ const AddFieldPage: React.FC = () => {
         location: data.location || '',
         boundaryGeoJson: data.boundaryGeoJson || boundaryGeoJson,
         fieldType: data.fieldType,
-        currentCropId: parseInt(data.currentCrop), // Assuming currentCrop contains the ID
+        currentCropId: data.currentCrop
+          ? parseInt(data.currentCrop)
+          : undefined,
+        sowingDate: data.sowingDate,
         soilId: parseInt(data.soil), // Assuming soil contains the ID
       };
 

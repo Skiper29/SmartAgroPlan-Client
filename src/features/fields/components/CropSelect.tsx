@@ -16,14 +16,16 @@ import { useCrops } from '@/features/crops/hooks/crop.hooks';
 
 interface CropSelectProps {
   value?: number;
-  onValueChange: (cropId: number) => void;
+  onValueChange: (cropId: number | undefined) => void;
   error?: string;
+  allowClear?: boolean;
 }
 
 const CropSelect: React.FC<CropSelectProps> = ({
   value,
   onValueChange,
   error,
+  allowClear = true,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -61,6 +63,12 @@ const CropSelect: React.FC<CropSelectProps> = ({
   const handleSelect = (crop: Crop) => {
     onValueChange(crop.id);
     setIsOpen(false);
+    setSearchTerm('');
+  };
+
+  const handleClear = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onValueChange(undefined);
     setSearchTerm('');
   };
 
@@ -136,7 +144,15 @@ const CropSelect: React.FC<CropSelectProps> = ({
             <span className="text-muted-foreground">Оберіть культуру</span>
           )}
         </div>
-        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+        <div className="flex items-center gap-1 ml-2">
+          {allowClear && selectedCrop && (
+            <X
+              className="h-4 w-4 shrink-0 opacity-50 hover:opacity-100 transition-opacity"
+              onClick={handleClear}
+            />
+          )}
+          <ChevronsUpDown className="h-4 w-4 shrink-0 opacity-50" />
+        </div>
       </Button>
 
       {isOpen && (

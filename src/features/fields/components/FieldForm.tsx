@@ -2,29 +2,51 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
+import { format } from 'date-fns';
+import { uk } from 'date-fns/locale';
+import { CalendarIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Calendar } from '@/components/ui/calendar';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 import FieldTypeSelect from './FieldTypeSelect';
 import CropSelect from './CropSelect';
 import SoilSelect from './SoilSelect';
 import { FieldType } from '@/models/field/field.model';
+import { cn } from '@/lib/utils';
 
 // Form validation schema
 const valuesAsTuple = <T extends string>(obj: Record<string, T>) =>
   Object.values(obj) as [T, ...T[]];
 
-const fieldFormSchema = z.object({
-  name: z
-    .string()
-    .min(1, "Назва поля обов'язкова")
-    .max(100, 'Назва занадто довга'),
-  location: z.string().optional(),
-  fieldType: z.enum(valuesAsTuple(FieldType), "Тип поля обов'язковий"),
-  currentCrop: z.string().min(1, "Поточна культура обов'язкова"),
-  soil: z.string().min(1, "Тип ґрунту обов'язковий"),
-  boundaryGeoJson: z.string().min(1, "Межі поля обов'язкові"),
-});
+const fieldFormSchema = z
+  .object({
+    name: z
+      .string()
+      .min(1, "Назва поля обов'язкова")
+      .max(100, 'Назва занадто довга'),
+    location: z.string().optional(),
+    fieldType: z.enum(valuesAsTuple(FieldType), "Тип поля обов'язковий"),
+    currentCrop: z.string().optional(),
+    sowingDate: z.date().optional(),
+    soil: z.string().min(1, "Тип ґрунту обов'язковий"),
+    boundaryGeoJson: z.string().min(1, "Межі поля обов'язкові"),
+  })
+  .refine(
+    (data) => {
+      // If crop is selected, sowing date should be provided
+      return !data.currentCrop || !!data.sowingDate;
+    },
+    {
+      message: "Дата посіву обов'язкова при виборі культури",
+      path: ['sowingDate'],
+    },
+  );
 
 export type FieldFormData = z.infer<typeof fieldFormSchema>;
 
@@ -53,6 +75,8 @@ const FieldForm: React.FC<FieldFormProps> = ({
       name: '',
       location: '',
       boundaryGeoJson: '',
+      currentCrop: undefined,
+      sowingDate: undefined,
     },
     mode: 'onSubmit',
     reValidateMode: 'onSubmit',
@@ -61,6 +85,7 @@ const FieldForm: React.FC<FieldFormProps> = ({
   const watchedFieldType = watch('fieldType');
   const watchedCurrentCrop = watch('currentCrop');
   const watchedSoil = watch('soil');
+  const watchedSowingDate = watch('sowingDate');
 
   // Update boundary in form when it changes from map
   React.useEffect(() => {
@@ -130,16 +155,29 @@ const FieldForm: React.FC<FieldFormProps> = ({
       {/* Current Crop */}
       <div className="space-y-2">
         <Label className="text-sm font-medium text-gray-700 dark:text-gray-200">
-          Поточна культура *
+          Поточна культура (необов'язково)
         </Label>
         <CropSelect
           value={watchedCurrentCrop ? parseInt(watchedCurrentCrop) : undefined}
           onValueChange={(cropId) => {
-            setValue('currentCrop', cropId.toString(), {
-              shouldDirty: true,
-              shouldValidate: false,
-            });
+            if (cropId === undefined) {
+              // Clear both crop and sowing date when crop is cleared
+              setValue('currentCrop', undefined, {
+                shouldDirty: true,
+                shouldValidate: false,
+              });
+              setValue('sowingDate', undefined, {
+                shouldDirty: true,
+                shouldValidate: false,
+              });
+            } else {
+              setValue('currentCrop', cropId.toString(), {
+                shouldDirty: true,
+                shouldValidate: false,
+              });
+            }
             clearErrors('currentCrop');
+            clearErrors('sowingDate');
           }}
           error={errors.currentCrop?.message}
         />
@@ -147,6 +185,58 @@ const FieldForm: React.FC<FieldFormProps> = ({
           <p className="text-sm text-red-500">{errors.currentCrop.message}</p>
         )}
       </div>
+
+      {/* Sowing Date - Only visible when crop is selected */}
+      {watchedCurrentCrop && (
+        <div className="space-y-2">
+          <Label className="text-sm font-medium text-gray-700 dark:text-gray-200">
+            Дата посіву *
+          </Label>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                type="button"
+                variant="outline"
+                className={cn(
+                  'w-full justify-start text-left font-normal',
+                  !watchedSowingDate && 'text-muted-foreground',
+                  errors.sowingDate && 'border-red-500',
+                )}
+              >
+                <CalendarIcon className="mr-2 h-4 w-4" />
+                {watchedSowingDate ? (
+                  format(watchedSowingDate, 'PPP', { locale: uk })
+                ) : (
+                  <span>Оберіть дату посіву</span>
+                )}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0" align="start">
+              <Calendar
+                mode="single"
+                selected={watchedSowingDate}
+                onSelect={(date) => {
+                  setValue('sowingDate', date, {
+                    shouldDirty: true,
+                    shouldValidate: false,
+                  });
+                  clearErrors('sowingDate');
+                }}
+                disabled={(date) =>
+                  date > new Date() || date < new Date('1900-01-01')
+                }
+                className="rounded-md border border-gray-200 dark:border-gray-700 shadow-lg"
+              />
+            </PopoverContent>
+          </Popover>
+          {errors.sowingDate && (
+            <p className="text-sm text-red-500">{errors.sowingDate.message}</p>
+          )}
+          <p className="text-xs text-gray-500 dark:text-gray-400">
+            Вкажіть дату, коли культуру було посаджено
+          </p>
+        </div>
+      )}
 
       {/* Soil Type */}
       <div className="space-y-2">
