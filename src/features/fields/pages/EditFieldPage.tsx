@@ -12,6 +12,7 @@ import UnifiedFieldForm from '../components/form/UnifiedFieldForm';
 import FieldPageHeader from '../components/layout/FieldPageHeader';
 import FieldFormSection from '../components/layout/FieldFormSection';
 import FieldMapSection from '../components/layout/FieldMapSection';
+import { TriangleAlert } from 'lucide-react';
 
 const EditFieldPage: React.FC = () => {
   const [boundaryGeoJson, setBoundaryGeoJson] = useState('');
@@ -80,19 +81,7 @@ const EditFieldPage: React.FC = () => {
       <div className="min-h-screen w-full flex justify-center items-center">
         <div className="text-center space-y-4">
           <div className="text-red-600 dark:text-red-400">
-            <svg
-              className="h-12 w-12 mx-auto mb-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.728-.833-2.598 0L4.216 15.5c-.77.833.192 2.5 1.732 2.5z"
-              />
-            </svg>
+            <TriangleAlert className="inline-block w-15 h-15 mb-2" />
             <p className="text-lg font-medium">Поле не знайдено</p>
             <p className="text-sm text-gray-500">
               Перевірте правильність посилання

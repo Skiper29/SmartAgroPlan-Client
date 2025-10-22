@@ -4,6 +4,7 @@ import FieldMap from '../components/map/FieldMap';
 import { useFields } from '../hooks/fields.hooks';
 import { FieldMapProvider } from '../contexts/FieldMapContext';
 import { Link } from 'react-router-dom';
+import { MapPinOff, Plus, ServerCrash, TriangleAlert } from 'lucide-react';
 
 const FieldListPage = () => {
   const { data: fields = [], isLoading, error } = useFields();
@@ -26,19 +27,7 @@ const FieldListPage = () => {
       <div className="min-h-screen w-full flex justify-center items-center">
         <div className="text-center space-y-4">
           <div className="text-red-600 dark:text-red-400">
-            <svg
-              className="h-12 w-12 mx-auto mb-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.728-.833-2.598 0L4.216 15.5c-.77.833.192 2.5 1.732 2.5z"
-              />
-            </svg>
+            <TriangleAlert className="inline-block w-15 h-15 mb-2" />
             <p className="text-lg font-medium">Помилка завантаження полів</p>
             <p className="text-sm text-gray-500">Спробуйте оновити сторінку</p>
           </div>
@@ -64,20 +53,7 @@ const FieldListPage = () => {
                   'flex items-center gap-2 px-7 py-3 rounded-full font-bold text-lg shadow-xl transition-all duration-200 bg-gradient-to-r from-green-500 to-green-700 hover:from-green-600 hover:to-green-800 text-white dark:bg-gradient-to-r dark:from-green-700 dark:to-green-900 dark:hover:from-green-800 dark:hover:to-green-950 dark:text-green-100 dark:shadow-2xl hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2'
                 }
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M12 4v16m8-8H4"
-                  />
-                </svg>
+                <Plus />
                 Додати поле
               </Button>
             </Link>
@@ -104,19 +80,11 @@ const FieldListPage = () => {
             {fields.length === 0 ? (
               <div className="text-center py-12">
                 <div className="text-gray-400 dark:text-gray-600 mb-4">
-                  <svg
-                    className="h-16 w-16 mx-auto"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={1}
-                      d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-                    />
-                  </svg>
+                  {error ? (
+                    <ServerCrash className="h-12 w-12 text-destructive mx-auto" />
+                  ) : (
+                    <MapPinOff className="h-12 w-12 text-muted-foreground mx-auto" />
+                  )}
                 </div>
                 <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">
                   Немає полів
