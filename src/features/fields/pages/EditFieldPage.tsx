@@ -8,10 +8,10 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import FieldMapEditor from '../components/FieldMapEditor';
-import FieldTypeSelect from '../components/FieldTypeSelect';
-import CropSelect from '../components/CropSelect';
-import SoilSelect from '../components/SoilSelect';
+import FieldMapEditor from '../components/map-editor/FieldMapEditor';
+import FieldTypeSelect from '../components/form/FieldTypeSelect';
+import CropSelect from '../components/form/CropSelect';
+import SoilSelect from '../components/form/SoilSelect';
 import { useUpdateField, useField } from '../hooks/fields.hooks';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';

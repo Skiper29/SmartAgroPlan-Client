@@ -5,7 +5,7 @@ import FieldPolygon from './FieldPolygon';
 import FieldLegend from './FieldLegend';
 import SearchControl from './SearchControl';
 import BasemapSwitcher, { type BasemapDef } from './BasemapSwitcher';
-import { useFieldMap } from '../contexts/FieldMapContext';
+import { useFieldMap } from '@/features/fields/contexts/FieldMapContext';
 import type { GeoJsonObject } from 'geojson';
 import type * as GeoJSONNS from 'geojson';
 import L from 'leaflet';

@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button.tsx';
-import FieldCard from '../components/FieldCard';
-import FieldMap from '../components/FieldMap';
+import FieldCard from '../components/card/FieldCard';
+import FieldMap from '../components/map/FieldMap';
 import { useFields } from '../hooks/fields.hooks';
 import { FieldMapProvider } from '../contexts/FieldMapContext';
 import { Link } from 'react-router-dom';

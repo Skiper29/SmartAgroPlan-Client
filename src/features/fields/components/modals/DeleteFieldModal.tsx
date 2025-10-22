@@ -8,7 +8,7 @@ import {
   DialogFooter,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { useDeleteField } from '../hooks/fields.hooks';
+import { useDeleteField } from '@/features/fields/hooks/fields.hooks';
 import type Field from '@/models/field/field.model';
 
 interface DeleteFieldModalProps {

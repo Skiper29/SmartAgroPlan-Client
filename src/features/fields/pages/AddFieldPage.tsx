@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import FieldForm, { type FieldFormData } from '../components/FieldForm';
-import FieldMapEditor from '../components/FieldMapEditor';
+import FieldForm, { type FieldFormData } from '../components/form/FieldForm';
+import FieldMapEditor from '../components/map-editor/FieldMapEditor';
 import { useCreateField } from '../hooks/fields.hooks';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';

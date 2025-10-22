@@ -4,7 +4,7 @@ import L from 'leaflet';
 import 'leaflet-draw';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-draw/dist/leaflet.draw.css';
-import DrawControls from '@/features/fields/components/DrawControls.tsx';
+import DrawControls from './DrawControls';
 
 // Fix for default markers in react-leaflet
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

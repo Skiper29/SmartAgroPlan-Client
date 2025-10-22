@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import FieldMap from '../components/FieldMap';
+import FieldMap from '../components/map/FieldMap';
 import { FieldMapProvider } from '../contexts/FieldMapContext';
 import { SoilType, SoilTypeLabels } from '@/models/field/soil.model';
 import { CropType, CropTypeLabels } from '@/models/crop/crop.model';

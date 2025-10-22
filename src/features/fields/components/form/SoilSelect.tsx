@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import UniversalSelect from './UniversalSelect';
-import { useSoils } from '../hooks/soils.hooks';
+import { useSoils } from '@/features/fields/hooks/soils.hooks';
 import { SoilType, SoilTypeLabels } from '@/models/field/soil.model';
 
 interface SoilSelectProps {

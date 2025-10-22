@@ -9,10 +9,10 @@ import {
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import FieldTypeBadge from './FieldTypeBadge';
-import DeleteFieldModal from './DeleteFieldModal';
+import DeleteFieldModal from '../modals/DeleteFieldModal';
 import { SoilType, SoilTypeLabels } from '@/models/field/soil.model';
 import { CropType, CropTypeLabels } from '@/models/crop/crop.model';
-import { useFieldMap } from '../contexts/FieldMapContext';
+import { useFieldMap } from '@/features/fields/contexts/FieldMapContext';
 import { useNavigate } from 'react-router-dom';
 
 interface FieldCardProps {
