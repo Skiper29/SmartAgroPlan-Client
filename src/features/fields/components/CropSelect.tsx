@@ -146,10 +146,14 @@ const CropSelect: React.FC<CropSelectProps> = ({
         </div>
         <div className="flex items-center gap-1 ml-2">
           {allowClear && selectedCrop && (
-            <X
-              className="h-4 w-4 shrink-0 opacity-50 hover:opacity-100 transition-opacity"
+            <span
+              role="button"
+              aria-label="Clear selection"
               onClick={handleClear}
-            />
+              className="p-0.5 rounded-full hover:bg-muted"
+            >
+              <X className="h-4 w-4 shrink-0 opacity-50" />
+            </span>
           )}
           <ChevronsUpDown className="h-4 w-4 shrink-0 opacity-50" />
         </div>
