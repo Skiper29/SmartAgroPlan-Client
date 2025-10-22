@@ -139,14 +139,14 @@ export const FieldCard: React.FC<FieldCardProps> = ({ field, className }) => {
           </CardDescription>
           <CardDescription className="text-xs text-gray-500">
             <span className="font-medium">Створено:</span>{' '}
-            {field.createdDate
-              ? new Date(field.createdDate).toLocaleDateString()
+            {field.createdAt
+              ? new Date(field.createdAt).toLocaleDateString()
               : '—'}
           </CardDescription>
           <CardDescription className="text-xs text-gray-500">
             <span className="font-medium">Оновлено:</span>{' '}
-            {field.updatedDate
-              ? new Date(field.updatedDate).toLocaleDateString()
+            {field.updatedAt
+              ? new Date(field.updatedAt).toLocaleDateString()
               : '—'}
           </CardDescription>
         </div>

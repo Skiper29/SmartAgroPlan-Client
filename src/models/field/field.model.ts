@@ -29,8 +29,8 @@ export default interface Field {
   fieldType: FieldType;
   currentCrop: Crop;
   soil: Soil;
-  createdDate: Date;
-  updatedDate: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface FieldCreate {

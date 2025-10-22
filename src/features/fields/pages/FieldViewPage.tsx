@@ -162,8 +162,8 @@ const FieldViewPage: React.FC = () => {
                         Створено:
                       </span>
                       <span className="text-sm text-gray-900 dark:text-white">
-                        {field.createdDate
-                          ? new Date(field.createdDate).toLocaleDateString(
+                        {field.createdAt
+                          ? new Date(field.createdAt).toLocaleDateString(
                               'uk-UA',
                             )
                           : '—'}
@@ -174,8 +174,8 @@ const FieldViewPage: React.FC = () => {
                         Оновлено:
                       </span>
                       <span className="text-sm text-gray-900 dark:text-white">
-                        {field.updatedDate
-                          ? new Date(field.updatedDate).toLocaleDateString(
+                        {field.updatedAt
+                          ? new Date(field.updatedAt).toLocaleDateString(
                               'uk-UA',
                             )
                           : '—'}
