@@ -16,8 +16,8 @@ import {
   Wheat,
   FlaskConical,
   Map,
-  AlertCircle,
 } from 'lucide-react';
+import ErrorDisplay from '@/components/ErrorDisplay.tsx';
 
 const FieldViewPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -70,20 +70,12 @@ const FieldViewPage: React.FC = () => {
 
   if (error || !field) {
     return (
-      <div className="min-h-screen w-full flex justify-center items-center">
-        <div className="text-center space-y-4">
-          <div className="text-red-600 dark:text-red-400">
-            <AlertCircle className="h-12 w-12 mx-auto mb-4" strokeWidth={2} />
-            <p className="text-lg font-medium">Поле не знайдено</p>
-            <p className="text-sm text-gray-500">
-              Можливо, поле було видалено або не існує
-            </p>
-            <Button onClick={() => navigate('/fields')} className="mt-4">
-              Повернутися до списку полів
-            </Button>
-          </div>
-        </div>
-      </div>
+      <ErrorDisplay
+        error={error || new Error('Поле не знайдено')}
+        title="Не вдалося завантажити інформацію про поле"
+        showHomeButton
+        homeRoute="/fields"
+      />
     );
   }
 

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
 import { useUpdateField, useField } from '../hooks/fields.hooks';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -12,7 +11,7 @@ import UnifiedFieldForm from '../components/form/UnifiedFieldForm';
 import FieldPageHeader from '../components/layout/FieldPageHeader';
 import FieldFormSection from '../components/layout/FieldFormSection';
 import FieldMapSection from '../components/layout/FieldMapSection';
-import { TriangleAlert } from 'lucide-react';
+import ErrorDisplay from '@/components/ErrorDisplay.tsx';
 
 const EditFieldPage: React.FC = () => {
   const [boundaryGeoJson, setBoundaryGeoJson] = useState('');
@@ -78,20 +77,11 @@ const EditFieldPage: React.FC = () => {
 
   if (error || !field) {
     return (
-      <div className="min-h-screen w-full flex justify-center items-center">
-        <div className="text-center space-y-4">
-          <div className="text-red-600 dark:text-red-400">
-            <TriangleAlert className="inline-block w-15 h-15 mb-2" />
-            <p className="text-lg font-medium">Поле не знайдено</p>
-            <p className="text-sm text-gray-500">
-              Перевірте правильність посилання
-            </p>
-          </div>
-          <Button onClick={() => navigate('/fields')} className="mt-4">
-            Повернутися до списку полів
-          </Button>
-        </div>
-      </div>
+      <ErrorDisplay
+        error={error || new Error('Поле не знайдено.')}
+        showHomeButton={true}
+        homeRoute="/fields"
+      />
     );
   }
 

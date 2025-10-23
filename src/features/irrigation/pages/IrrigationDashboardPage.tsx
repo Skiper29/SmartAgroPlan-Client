@@ -7,6 +7,7 @@ import { AlertTriangle, Droplets, CloudDrizzle, RefreshCw } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { IrrigationAction } from '../utils/irrigationUtils';
 import { cn } from '@/lib/utils.ts';
+import ErrorDisplay from '@/components/ErrorDisplay';
 
 const IrrigationDashboardPage: React.FC = () => {
   const { data: fields = [], isLoading: isLoadingFields } = useFields();
@@ -61,11 +62,7 @@ const IrrigationDashboardPage: React.FC = () => {
   }
 
   if (error) {
-    return (
-      <div className="text-red-500 text-center">
-        Помилка завантаження даних: {error.message}
-      </div>
-    );
+    return <ErrorDisplay error={error} onRetry={handleRefresh} />;
   }
 
   return (

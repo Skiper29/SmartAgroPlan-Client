@@ -6,19 +6,14 @@ import {
 } from '../hooks/irrigation.hooks';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import {
-  ChevronLeft,
-  Pencil,
-  AlertCircle,
-  BarChart2,
-  CalendarDays,
-} from 'lucide-react';
+import { ChevronLeft, Pencil, BarChart2, CalendarDays } from 'lucide-react';
 import RecommendationNotes from '../components/RecommendationNotes';
 import MetricDisplay from '../components/MetricDisplay';
 import { weatherIcons } from '../utils/irrigationUtils';
 import WeeklyScheduleTable from '../components/WeeklyScheduleTable';
 import IrrigationStatusBadge from '../components/IrrigationStatusBadge';
 import ForecastChart from '@/features/irrigation/components/ForecastChart.tsx';
+import ErrorDisplay from '@/components/ErrorDisplay';
 
 const IrrigationDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -54,18 +49,14 @@ const IrrigationDetailPage: React.FC = () => {
 
   if (error || !recommendation || !schedule) {
     return (
-      <div className="min-h-screen w-full flex justify-center items-center text-center">
-        <div>
-          <AlertCircle className="mx-auto h-12 w-12 text-red-500" />
-          <h2 className="mt-4 text-xl font-semibold">Помилка завантаження</h2>
-          <p className="mt-2 text-muted-foreground">
-            {error?.message || 'Не вдалося завантажити дані для цього поля.'}
-          </p>
-          <Button onClick={() => navigate('/irrigation')} className="mt-6">
-            Повернутися до огляду
-          </Button>
-        </div>
-      </div>
+      <ErrorDisplay
+        error={
+          error || new Error('Не вдалося завантажити дані для цього поля.')
+        }
+        title="Помилка завантаження"
+        showHomeButton={true}
+        homeRoute="/irrigation"
+      />
     );
   }
 

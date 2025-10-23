@@ -4,7 +4,8 @@ import FieldMap from '../components/map/FieldMap';
 import { useFields } from '../hooks/fields.hooks';
 import { FieldMapProvider } from '../contexts/FieldMapContext';
 import { Link } from 'react-router-dom';
-import { MapPinOff, Plus, ServerCrash, TriangleAlert } from 'lucide-react';
+import { MapPinOff, Plus, ServerCrash } from 'lucide-react';
+import ErrorDisplay from '@/components/ErrorDisplay.tsx';
 
 const FieldListPage = () => {
   const { data: fields = [], isLoading, error } = useFields();
@@ -23,17 +24,7 @@ const FieldListPage = () => {
   }
 
   if (error) {
-    return (
-      <div className="min-h-screen w-full flex justify-center items-center">
-        <div className="text-center space-y-4">
-          <div className="text-red-600 dark:text-red-400">
-            <TriangleAlert className="inline-block w-15 h-15 mb-2" />
-            <p className="text-lg font-medium">Помилка завантаження полів</p>
-            <p className="text-sm text-gray-500">Спробуйте оновити сторінку</p>
-          </div>
-        </div>
-      </div>
-    );
+    return <ErrorDisplay error={error} />;
   }
 
   return (
