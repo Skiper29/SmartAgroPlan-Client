@@ -30,4 +30,11 @@ export const API_ROUTES = {
     GET_BATCH_RECOMMENDATIONS: 'Irrigation/recommendations/batch',
     GET_WEEKLY_SCHEDULE: 'Irrigation/schedule/weekly',
   },
+  FIELD_CONDITIONS: {
+    GET_ALL: 'fieldCondition/getAll',
+    GET_BY_ID: `fieldCondition/getById`,
+    GET_BY_FIELD_ID: 'fieldCondition/getByFieldId',
+    CREATE: 'fieldCondition/create',
+    DELETE: `fieldCondition/delete`,
+  },
 };
