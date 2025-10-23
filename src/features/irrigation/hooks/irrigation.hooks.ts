@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { irrigationApi } from '@/features/irrigation/api/irrigation.api';
 import type { IrrigationRecommendation } from '@/models/irrigation/recommendation.model';
 import type { WeeklyIrrigationSchedule } from '@/models/irrigation/schedule.model';
+import type { ApiError } from '@/types/api-error.type';
 
 // Ключі для кешу
 const IRRIGATION_KEYS = {
@@ -22,7 +23,7 @@ export const useIrrigationRecommendation = (
   includeForecast: boolean = true,
   forecastDays: number = 7,
 ) =>
-  useQuery<IrrigationRecommendation, Error>({
+  useQuery<IrrigationRecommendation, ApiError>({
     queryKey: IRRIGATION_KEYS.recommendation(fieldId),
     queryFn: () =>
       irrigationApi.getRecommendation(fieldId, includeForecast, forecastDays),
@@ -34,7 +35,7 @@ export const useBatchIrrigationRecommendations = () => {
   const queryClient = useQueryClient();
   return useMutation<
     IrrigationRecommendation[],
-    Error,
+    ApiError,
     { fieldIds: number[]; date?: string | null }
   >({
     mutationFn: (data) => irrigationApi.getBatchRecommendations(data),
@@ -55,7 +56,7 @@ export const useWeeklyIrrigationSchedule = (
   fieldId: number,
   startDate?: string | null,
 ) =>
-  useQuery<WeeklyIrrigationSchedule, Error>({
+  useQuery<WeeklyIrrigationSchedule, ApiError>({
     queryKey: IRRIGATION_KEYS.weeklySchedule(fieldId),
     queryFn: () => irrigationApi.getWeeklySchedule(fieldId, startDate),
     enabled: !!fieldId,

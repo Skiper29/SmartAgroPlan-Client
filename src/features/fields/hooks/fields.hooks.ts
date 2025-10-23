@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { fieldsApi } from '@/features/fields/api/fields.api';
 import type Field from '@/models/field/field.model';
 import type { FieldCreate, FieldUpdate } from '@/models/field/field.model';
+import type { ApiError } from '@/types/api-error.type';
 
 // Ключі для кешу
 const FIELD_KEYS = {
@@ -13,13 +14,13 @@ const FIELD_KEYS = {
 };
 
 export const useFields = () =>
-  useQuery({
+  useQuery<Field[], ApiError>({
     queryKey: FIELD_KEYS.lists(),
     queryFn: fieldsApi.getFields,
   });
 
 export const useField = (id: number) =>
-  useQuery({
+  useQuery<Field, ApiError>({
     queryKey: FIELD_KEYS.detail(id),
     queryFn: () => fieldsApi.getField(id),
     enabled: !!id, // виконується тільки якщо id існує
@@ -27,7 +28,7 @@ export const useField = (id: number) =>
 
 export const useCreateField = () => {
   const queryClient = useQueryClient();
-  return useMutation({
+  return useMutation<Field, ApiError, FieldCreate>({
     mutationFn: (data: FieldCreate) => fieldsApi.createField(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: FIELD_KEYS.lists() }); // оновлюємо список після створення
@@ -37,7 +38,7 @@ export const useCreateField = () => {
 
 export const useUpdateField = () => {
   const queryClient = useQueryClient();
-  return useMutation({
+  return useMutation<Field, ApiError, FieldUpdate>({
     mutationFn: (data: FieldUpdate) => fieldsApi.updateField(data),
     onSuccess: (updatedField: Field) => {
       // Оновлюємо кеш конкретного поля
@@ -53,7 +54,7 @@ export const useUpdateField = () => {
 
 export const useDeleteField = () => {
   const queryClient = useQueryClient();
-  return useMutation({
+  return useMutation<void, ApiError, number>({
     mutationFn: (id: number) => fieldsApi.deleteField(id),
     onSuccess: (_, id) => {
       // Видаляємо з кешу конкретне поле

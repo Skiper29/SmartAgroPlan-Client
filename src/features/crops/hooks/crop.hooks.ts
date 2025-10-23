@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { cropsApi } from '@/features/crops/api/crops.api.ts';
 import type { Crop } from '@/models/crop/crop.model.ts';
 import type { CropCreate, CropUpdate } from '@/models/crop/crop.model.ts';
+import type { ApiError } from '@/types/api-error.type';
 
 // Ключі для кешу
 const CROP_KEYS = {
@@ -13,20 +14,20 @@ const CROP_KEYS = {
 };
 
 export const useCrops = () =>
-  useQuery({
+  useQuery<Crop[], ApiError>({
     queryKey: CROP_KEYS.lists(),
     queryFn: cropsApi.getCrops,
   });
 
 export const useCrop = (id: number) =>
-  useQuery({
+  useQuery<Crop, ApiError>({
     queryKey: CROP_KEYS.detail(id),
     queryFn: () => cropsApi.getCrop(id),
     enabled: !!id, // виконується тільки якщо id існує
   });
 
 export const useCropByType = (type: string) =>
-  useQuery({
+  useQuery<Crop[], ApiError>({
     queryKey: [...CROP_KEYS.lists(), 'type', type],
     queryFn: () => cropsApi.getCropsByType(type),
     enabled: !!type, // виконується тільки якщо type існує
@@ -34,7 +35,7 @@ export const useCropByType = (type: string) =>
 
 export const useCreateCrop = () => {
   const queryClient = useQueryClient();
-  return useMutation({
+  return useMutation<Crop, ApiError, CropCreate>({
     mutationFn: (data: CropCreate) => cropsApi.createCrop(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: CROP_KEYS.lists() }); // оновлюємо список після створення
@@ -44,7 +45,7 @@ export const useCreateCrop = () => {
 
 export const useUpdateCrop = () => {
   const queryClient = useQueryClient();
-  return useMutation({
+  return useMutation<Crop, ApiError, CropUpdate>({
     mutationFn: (data: CropUpdate) => cropsApi.updateCrop(data),
     onSuccess: (updatedCrop: Crop) => {
       // Оновлюємо кеш конкретного поля
@@ -57,7 +58,7 @@ export const useUpdateCrop = () => {
 
 export const useDeleteCrop = () => {
   const queryClient = useQueryClient();
-  return useMutation({
+  return useMutation<void, ApiError, number>({
     mutationFn: (id: number) => cropsApi.deleteCrop(id),
     onSuccess: (_, id) => {
       queryClient.invalidateQueries({ queryKey: CROP_KEYS.lists() }); // оновлюємо список після видалення
