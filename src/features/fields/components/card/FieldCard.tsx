@@ -14,7 +14,8 @@ import { SoilType, SoilTypeLabels } from '@/models/field/soil.model';
 import { CropType, CropTypeLabels } from '@/models/crop/crop.model';
 import { useFieldMap } from '@/features/fields/contexts/FieldMapContext';
 import { useNavigate } from 'react-router-dom';
-import { Locate, SquarePen, Trash2 } from 'lucide-react';
+import { Locate, SquarePen, Trash2, DatabaseZap } from 'lucide-react';
+import AddFieldConditionModal from '@/features/fields/components/modals/AddFieldConditionModal.tsx';
 
 interface FieldCardProps {
   field: Field;
@@ -25,6 +26,7 @@ export const FieldCard: React.FC<FieldCardProps> = ({ field, className }) => {
   const { navigateToField } = useFieldMap();
   const navigate = useNavigate();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isConditionModalOpen, setIsConditionModalOpen] = useState(false);
 
   // Process soil type from backend (handle integer enum values)
   const getSoilTypeLabel = () => {
@@ -156,6 +158,17 @@ export const FieldCard: React.FC<FieldCardProps> = ({ field, className }) => {
             <Button
               variant="ghost"
               size="sm"
+              onClick={() => setIsConditionModalOpen(true)}
+              className="flex items-center gap-2 text-sm text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-900/40 transition-colors rounded-md"
+              title="Додати дані про стан"
+            >
+              <DatabaseZap />
+              Стан
+            </Button>
+
+            <Button
+              variant="ghost"
+              size="sm"
               onClick={() => setIsDeleteModalOpen(true)}
               className="flex items-center gap-2 text-sm text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/40 transition-colors rounded-md"
               title="Видалити поле"
@@ -173,6 +186,14 @@ export const FieldCard: React.FC<FieldCardProps> = ({ field, className }) => {
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
         onSuccess={handleDeleteSuccess}
+      />
+
+      {/* Add Field Condition Modal */}
+      <AddFieldConditionModal
+        fieldId={field.id}
+        fieldName={field.name}
+        isOpen={isConditionModalOpen}
+        onClose={() => setIsConditionModalOpen(false)}
       />
     </>
   );

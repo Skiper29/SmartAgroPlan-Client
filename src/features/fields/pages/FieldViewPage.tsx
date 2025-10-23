@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -16,13 +16,16 @@ import {
   Wheat,
   FlaskConical,
   Map,
+  DatabaseZap,
 } from 'lucide-react';
 import ErrorDisplay from '@/components/ErrorDisplay.tsx';
+import AddFieldConditionModal from '@/features/fields/components/modals/AddFieldConditionModal.tsx';
 
 const FieldViewPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const fieldId = parseInt(id || '0', 10);
+  const [isConditionModalOpen, setIsConditionModalOpen] = useState(false);
 
   const { data: field, isLoading, error } = useField(fieldId);
 
@@ -91,6 +94,16 @@ const FieldViewPage: React.FC = () => {
               Перегляд поля "{field.name}"
             </h1>
             <div className="flex items-center space-x-3">
+              <Button
+                variant="outline"
+                onClick={() => setIsConditionModalOpen(true)}
+                className="flex items-center gap-2"
+              >
+                <DatabaseZap className="h-4 w-4" />{' '}
+                {/* Use an appropriate icon */}
+                Додати стан
+              </Button>
+
               <Button
                 variant="outline"
                 onClick={() => navigate(`/fields/edit/${field.id}`)}
@@ -336,8 +349,22 @@ const FieldViewPage: React.FC = () => {
               </Card>
             </div>
           </div>
+
+          <section className="bg-white dark:bg-gray-900 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-800 p-6">
+            <h2 className="text-2xl font-semibold text-green-800 dark:text-green-200 mb-4">
+              Історія стану поля
+            </h2>
+            {/* Component to display fetched field conditions */}
+          </section>
         </div>
       </div>
+
+      <AddFieldConditionModal
+        fieldId={field.id}
+        fieldName={field.name}
+        isOpen={isConditionModalOpen}
+        onClose={() => setIsConditionModalOpen(false)}
+      />
     </FieldMapProvider>
   );
 };
