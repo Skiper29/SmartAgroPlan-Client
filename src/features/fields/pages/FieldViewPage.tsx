@@ -40,6 +40,7 @@ import {
 import ErrorDisplay from '@/components/ErrorDisplay.tsx';
 import AddFieldConditionModal from '@/features/fields/components/modals/AddFieldConditionModal.tsx';
 import FieldConditionHistory from '@/features/fields/components/chart/FieldConditionHistory.tsx';
+import area from '@turf/area';
 
 const FieldViewPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -80,24 +81,21 @@ const FieldViewPage: React.FC = () => {
 
   const calculateFieldArea = () => {
     if (!field?.boundaryGeoJson) return null;
+
     try {
       const geoJson = JSON.parse(field.boundaryGeoJson);
-      if (geoJson.type === 'Polygon' && geoJson.coordinates?.[0]) {
-        const coords = geoJson.coordinates[0];
-        let area = 0;
-        for (let i = 0; i < coords.length - 1; i++) {
-          const [x1, y1] = coords[i];
-          const [x2, y2] = coords[i + 1];
-          area += x1 * y2 - x2 * y1;
-        }
-        area = Math.abs(area / 2);
-        // Convert to hectares (approximate)
-        const hectares = area * 12365.19; // rough conversion for lat/lon to hectares
+
+      if (geoJson.type === 'Polygon' || geoJson.type === 'MultiPolygon') {
+        const areaInSquareMeters = area(geoJson);
+
+        const hectares = areaInSquareMeters / 10000;
+
         return hectares.toFixed(2);
       }
     } catch (e) {
-      console.error('Error calculating area:', e);
+      console.error('Error calculating area with Turf:', e);
     }
+
     return null;
   };
 
