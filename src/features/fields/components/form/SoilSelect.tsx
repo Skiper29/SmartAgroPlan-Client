@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import UniversalSelect from './UniversalSelect';
 import { useSoils } from '@/features/fields/hooks/soils.hooks';
 import { SoilType, SoilTypeLabels } from '@/models/field/soil.model';
+import { extractErrorMessage } from '@/types/api-error.type.ts';
 
 interface SoilSelectProps {
   value?: string;
@@ -42,7 +43,7 @@ const SoilSelect: React.FC<SoilSelectProps> = ({
       options={selectOptions}
       isLoading={isLoading}
       isError={isError}
-      error={error || apiError?.message}
+      error={error || extractErrorMessage(apiError)}
       placeholder={placeholder}
       loadingText="Завантаження типів ґрунту..."
       errorText="Помилка завантаження типів ґрунту"

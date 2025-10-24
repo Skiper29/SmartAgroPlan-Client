@@ -13,6 +13,7 @@ import { Badge } from '@/components/ui/badge';
 import type { Crop } from '@/models/crop/crop.model';
 import { CropType, CropTypeLabels } from '@/models/crop/crop.model';
 import { useCrops } from '@/features/crops/hooks/crop.hooks';
+import { extractErrorMessage } from '@/types/api-error.type.ts';
 
 interface CropSelectProps {
   value?: number;
@@ -103,7 +104,11 @@ const CropSelect: React.FC<CropSelectProps> = ({
           <span className="text-red-500">Помилка завантаження культур</span>
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
-        {apiError && <p className="text-sm text-red-500">{apiError.message}</p>}
+        {apiError && (
+          <p className="text-sm text-red-500">
+            {extractErrorMessage(apiError)}
+          </p>
+        )}
       </div>
     );
   }
