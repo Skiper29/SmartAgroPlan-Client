@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import ErrorDisplay from '@/components/ErrorDisplay.tsx';
 import AddFieldConditionModal from '@/features/fields/components/modals/AddFieldConditionModal.tsx';
+import FieldConditionHistory from '@/features/fields/components/chart/FieldConditionHistory.tsx';
 
 const FieldViewPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -351,9 +352,10 @@ const FieldViewPage: React.FC = () => {
           </div>
 
           <section className="bg-white dark:bg-gray-900 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-800 p-6">
-            <h2 className="text-2xl font-semibold text-green-800 dark:text-green-200 mb-4">
+            <h2 className="text-2xl font-semibold text-green-800 dark:text-green-200 mb-6">
               Історія стану поля
             </h2>
+            <FieldConditionHistory fieldId={field.id} fieldName={field.name} />
             {/* Component to display fetched field conditions */}
           </section>
         </div>
