@@ -111,7 +111,35 @@ const FieldConditionChart: React.FC<FieldConditionChartProps> = ({
     (metric) => visibility[metric.key] && hasData(metric.key),
   );
 
-  const tickColor = theme === 'dark' ? '#a1a1aa' : '#71717a';
+  // Helper to determine dynamic Y-axis labels
+  const getAxisLabel = (axisId: 'left' | 'right') => {
+    const metricsOnAxis = visibleMetrics.filter(
+      (metric) => (metric.yAxisId || 'left') === axisId,
+    );
+
+    if (metricsOnAxis.length === 0) {
+      return '';
+    }
+
+    const uniqueUnits = [
+      ...new Set(metricsOnAxis.map((metric) => metric.unit)),
+    ];
+
+    if (uniqueUnits.length === 1) {
+      return uniqueUnits[0];
+    }
+
+    if (axisId === 'left') {
+      return 'Значення';
+    }
+
+    return uniqueUnits.join(' / ');
+  };
+
+  const leftAxisLabel = getAxisLabel('left');
+  const rightAxisLabel = getAxisLabel('right');
+
+  const tickColor = theme === 'dark' ? '#a1a1aa' : '#7171a';
   const gridColor = theme === 'dark' ? '#374151' : '#e5e7eb';
 
   if (conditions.length === 0) {
@@ -165,24 +193,26 @@ const FieldConditionChart: React.FC<FieldConditionChartProps> = ({
               orientation="left"
               tick={{ fill: tickColor, fontSize: 12 }}
               label={{
-                value: 'Значення',
+                value: leftAxisLabel,
                 angle: -90,
                 position: 'insideLeft',
                 fill: tickColor,
                 offset: 0,
               }}
+              hide={!leftAxisLabel}
             />
             <YAxis
               yAxisId="right"
               orientation="right"
               tick={{ fill: tickColor, fontSize: 12 }}
               label={{
-                value: 'кг/га',
+                value: rightAxisLabel,
                 angle: 90,
                 position: 'insideRight',
                 fill: tickColor,
                 offset: 0,
               }}
+              hide={!rightAxisLabel}
             />
             <Tooltip content={<ChartTooltip metrics={visibleMetrics} />} />
 

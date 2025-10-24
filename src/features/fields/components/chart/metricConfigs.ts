@@ -1,5 +1,4 @@
 // Metric configurations for field conditions
-// Metric configurations for field conditions
 import type { MetricConfig } from './types';
 
 export const METRIC_CONFIGS: MetricConfig[] = [
