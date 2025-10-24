@@ -19,6 +19,7 @@ import {
   calculateExpectedHarvestDate,
   formatDayMonth,
 } from '../utils/fieldCalculations';
+import FieldConditionTableSection from '@/features/fields/components/view/FieldConditionTableSection.tsx';
 
 const FieldViewPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -90,6 +91,11 @@ const FieldViewPage: React.FC = () => {
           )}
 
           <FieldConditionHistorySection
+            fieldId={field.id}
+            fieldName={field.name}
+          />
+
+          <FieldConditionTableSection
             fieldId={field.id}
             fieldName={field.name}
           />
