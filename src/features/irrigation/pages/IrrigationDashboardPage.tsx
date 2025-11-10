@@ -3,11 +3,11 @@ import { Button } from '@/components/ui/button';
 import { useFields } from '@/features/fields/hooks/fields.hooks';
 import { useBatchIrrigationRecommendations } from '../hooks/irrigation.hooks';
 import IrrigationFieldCard from '../components/IrrigationFieldCard';
-import { AlertTriangle, Droplets, CloudDrizzle, RefreshCw } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { RefreshCw } from 'lucide-react';
 import { IrrigationAction } from '../utils/irrigationUtils';
 import { cn } from '@/lib/utils.ts';
 import ErrorDisplay from '@/components/ErrorDisplay';
+import IrrigationSummaryCards from '@/features/irrigation/components/IrrigationSummaryCards.tsx';
 
 const IrrigationDashboardPage: React.FC = () => {
   const { data: fields = [], isLoading: isLoadingFields } = useFields();
@@ -85,55 +85,15 @@ const IrrigationDashboardPage: React.FC = () => {
       </header>
 
       {/* Summary Cards */}
-      <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card>
-          <CardHeader className="flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">
-              Потребують зрошення
-            </CardTitle>
-            <CloudDrizzle className="h-5 w-5 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{fieldsToIrrigate}</div>
-            <p className="text-xs text-muted-foreground">
-              полів потребують уваги
-            </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">
-              Загальна потреба
-            </CardTitle>
-            <Droplets className="h-5 w-5 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{totalWaterNeeded} мм</div>
-            <p className="text-xs text-muted-foreground">
-              сумарно для всіх полів
-            </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Критичні поля</CardTitle>
-            <AlertTriangle className="h-5 w-5 text-red-500" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {
-                recommendations.filter(
-                  (rec) =>
-                    rec.recommendedAction === IrrigationAction.VeryIntensive,
-                ).length
-              }
-            </div>
-            <p className="text-xs text-muted-foreground">
-              з дуже інтенсивним поливом
-            </p>
-          </CardContent>
-        </Card>
-      </section>
+      <IrrigationSummaryCards
+        fieldsNeedingIrrigation={fieldsToIrrigate}
+        generalSoilMoistureDeficit={Number(totalWaterNeeded)}
+        criticalSoilMoistureLevels={
+          recommendations.filter(
+            (rec) => rec.recommendedAction === IrrigationAction.VeryIntensive,
+          ).length
+        }
+      />
 
       {/* Fields List */}
       <section className="space-y-4">
