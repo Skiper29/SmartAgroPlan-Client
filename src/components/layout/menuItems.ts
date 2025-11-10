@@ -112,8 +112,8 @@ export const menuItems: MenuItem[] = [
       {
         icon: Calculator,
         label: 'Добрива',
-        to: '/resources/fertilizers',
-        description: 'Оптимальні дози',
+        to: '/fertilizer',
+        description: 'Планування та аналіз',
       },
       {
         icon: Target,

@@ -8,6 +8,10 @@ import FieldViewPage from '@/features/fields/pages/FieldViewPage';
 import Layout from '../../components/layout/Layout';
 import IrrigationDashboardPage from '@/features/irrigation/pages/IrrigationDashboardPage.tsx';
 import IrrigationDetailPage from '@/features/irrigation/pages/IrrigationDetailPage.tsx';
+import FertilizerDashboardPage from '@/features/fertilizer/pages/FertilizerDashboardPage';
+import FertilizerPlanPage from '@/features/fertilizer/pages/FertilizerPlanPage';
+import FertilizerBalancePage from '@/features/fertilizer/pages/FertilizerBalancePage';
+import FertilizerHistoryPage from '@/features/fertilizer/pages/FertilizerHistoryPage';
 
 export function AppRoutes() {
   return (
@@ -66,6 +70,38 @@ export function AppRoutes() {
         element={
           <Layout>
             <IrrigationDetailPage />
+          </Layout>
+        }
+      />
+      <Route
+        path="/fertilizer"
+        element={
+          <Layout>
+            <FertilizerDashboardPage />
+          </Layout>
+        }
+      />
+      <Route
+        path="/fertilizer/plan/:id"
+        element={
+          <Layout>
+            <FertilizerPlanPage />
+          </Layout>
+        }
+      />
+      <Route
+        path="/fertilizer/balance/:id"
+        element={
+          <Layout>
+            <FertilizerBalancePage />
+          </Layout>
+        }
+      />
+      <Route
+        path="/fertilizer/history/:id"
+        element={
+          <Layout>
+            <FertilizerHistoryPage />
           </Layout>
         }
       />
