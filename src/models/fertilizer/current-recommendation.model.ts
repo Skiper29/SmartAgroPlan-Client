@@ -3,10 +3,10 @@ import type { FertilizerProduct } from './fertilizer-product.model';
 import type { ApplicationMethod } from './fertilizer-application.model';
 
 export const RecommendationPriority = {
-  Low: 'Low',
-  Medium: 'Medium',
-  High: 'High',
-  Critical: 'Critical',
+  Low: 'Низький',
+  Medium: 'Середній',
+  High: 'Високий',
+  Critical: 'Критичний',
 } as const;
 
 export type RecommendationPriority =
@@ -20,16 +20,6 @@ export const RecommendationPriorityLabels: Record<
   [RecommendationPriority.Medium]: 'Середній',
   [RecommendationPriority.High]: 'Високий',
   [RecommendationPriority.Critical]: 'Критичний',
-};
-
-export const RecommendationPriorityColors: Record<
-  RecommendationPriority,
-  string
-> = {
-  [RecommendationPriority.Low]: 'text-green-600',
-  [RecommendationPriority.Medium]: 'text-yellow-600',
-  [RecommendationPriority.High]: 'text-orange-600',
-  [RecommendationPriority.Critical]: 'text-red-600',
 };
 
 export interface CurrentRecommendation {

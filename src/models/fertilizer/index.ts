@@ -32,14 +32,13 @@ export type {
 } from './season-plan.model';
 
 // Current recommendation models
-export type {
-  CurrentRecommendation,
+export {
+  type CurrentRecommendation,
   RecommendationPriority,
 } from './current-recommendation.model';
 export {
   RecommendationPriority as RecommendationPriorityEnum,
   RecommendationPriorityLabels,
-  RecommendationPriorityColors,
 } from './current-recommendation.model';
 
 // Nutrient balance models
