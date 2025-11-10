@@ -37,4 +37,15 @@ export const API_ROUTES = {
     CREATE: 'fieldCondition/create',
     DELETE: `fieldCondition/delete`,
   },
+  FERTILIZER_PLANNING: {
+    CALCULATE_PLAN: 'FertilizerPlanning/CalculateSeasonPlan',
+    SAVE_PLAN: 'FertilizerPlanning/SaveSeasonPlan',
+    GET_CURRENT_REC: 'FertilizerPlanning/GetCurrentRecommendation',
+    GET_UPCOMING: 'FertilizerPlanning/GetUpcomingApplications',
+    GET_BY_DATE_RANGE: 'FertilizerPlanning/GetApplicationsByDateRange',
+    GET_SUMMARY: 'FertilizerPlanning/GetApplicationSummary',
+    RECORD_APP: 'FertilizerPlanning/RecordApplication',
+    GET_BALANCE: 'FertilizerPlanning/GetNutrientBalance',
+    GET_DEFICIT: 'FertilizerPlanning/AnalyzeNutrientDeficit',
+  },
 };
