@@ -1,13 +1,13 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useFields } from '@/features/fields/hooks/fields.hooks';
 import { fertilizerApi } from '../api/fertilizer.api';
 import FertilizerFieldCard from '../components/FertilizerFieldCard';
-import { AlertTriangle, Sprout, Calendar, RefreshCw } from 'lucide-react';
+import { AlertTriangle, RefreshCw } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import ErrorDisplay from '@/components/ErrorDisplay';
 import type { CurrentRecommendation } from '@/models/fertilizer';
+import { FertilizerSummaryCards } from '@/features/fertilizer/components/FertilizerSummaryCards';
 
 const FertilizerDashboardPage: React.FC = () => {
   const {
@@ -120,52 +120,11 @@ const FertilizerDashboardPage: React.FC = () => {
       </header>
 
       {/* Summary Cards */}
-      <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card>
-          <CardHeader className="flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">
-              Потребують уваги
-            </CardTitle>
-            <Sprout className="h-5 w-5 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{needsAttention}</div>
-            <p className="text-xs text-muted-foreground">
-              полів потребують внесення добрив
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">
-              Наступні внесення
-            </CardTitle>
-            <Calendar className="h-5 w-5 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{upcomingApplications}</div>
-            <p className="text-xs text-muted-foreground">
-              заплановано найближчим часом
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Критичні поля</CardTitle>
-            <AlertTriangle className="h-5 w-5 text-red-500" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-red-600">
-              {criticalFields}
-            </div>
-            <p className="text-xs text-muted-foreground">
-              з критичним дефіцитом
-            </p>
-          </CardContent>
-        </Card>
-      </section>
+      <FertilizerSummaryCards
+        needsAttention={needsAttention}
+        upcomingApplications={upcomingApplications}
+        criticalFields={criticalFields}
+      />
 
       {/* Fields List */}
       <section className="space-y-4">
