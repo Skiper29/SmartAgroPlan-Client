@@ -63,7 +63,7 @@ const NutrientTable: React.FC<NutrientTableProps> = ({
                 <TableHead className="text-right">Внесено</TableHead>
               )}
               <TableHead className="text-right">
-                {showComparison ? 'Баланс' : 'Кількість'}
+                {showComparison ? 'Дефіцит  ' : 'Кількість'}
               </TableHead>
             </TableRow>
           </TableHeader>
