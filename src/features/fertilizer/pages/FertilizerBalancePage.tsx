@@ -3,18 +3,18 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, AlertTriangle, TrendingUp, RefreshCw } from 'lucide-react';
+import { ArrowLeft, AlertTriangle, RefreshCw } from 'lucide-react';
 import {
   useNutrientBalance,
   useNutrientDeficit,
 } from '../hooks/fertilizer.hooks';
 import { useField } from '@/features/fields/hooks/fields.hooks';
-import NutrientTable from '../components/NutrientTable';
 import ErrorDisplay from '@/components/ErrorDisplay';
 import { getNutrientNameUA } from '../utils/fertilizerUtils';
 import { cn } from '@/lib/utils';
 import { DeficitUrgencyLabels } from '@/models/fertilizer';
 import NutrientBalanceStatusCard from '@/features/fertilizer/components/NutrientBalanceStatusCard.tsx';
+import NutrientBalanceDetailCard from '@/features/fertilizer/components/NutrientBalanceDetailCardProps.tsx';
 
 const FertilizerBalancePage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -110,27 +110,7 @@ const FertilizerBalancePage: React.FC = () => {
       <NutrientBalanceStatusCard balance={balance} />
 
       {/* Nutrient Balance Table */}
-      <section>
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              <TrendingUp className="h-5 w-5 mr-2" />
-              Баланс поживних речовин
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <NutrientTable
-              nutrients={balance.deficit}
-              showComparison={true}
-              comparison={{
-                required: balance.requiredForTargetYield,
-                available: balance.availableInSoil,
-                applied: balance.alreadyApplied,
-              }}
-            />
-          </CardContent>
-        </Card>
-      </section>
+      <NutrientBalanceDetailCard balance={balance} />
 
       {/* Deficit Analysis */}
       {deficitAnalysis && deficitAnalysis.deficits.length > 0 && (
