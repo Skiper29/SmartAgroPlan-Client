@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowLeft, AlertTriangle, RefreshCw } from 'lucide-react';
+import { ArrowLeft, AlertTriangle, RefreshCw, Info } from 'lucide-react';
 import {
   useNutrientBalance,
   useNutrientDeficit,
@@ -13,6 +13,8 @@ import { cn } from '@/lib/utils';
 import NutrientBalanceStatusCard from '@/features/fertilizer/components/NutrientBalanceStatusCard.tsx';
 import NutrientBalanceDetailCard from '@/features/fertilizer/components/NutrientBalanceDetailCardProps.tsx';
 import NutrientDeficitAnalysisSection from '@/features/fertilizer/components/NutrientDeficitAnalysisSection.tsx';
+import RecommendationItem from '@/features/fertilizer/components/RecommendationItem.tsx';
+import WarningItem from '@/features/fertilizer/components/WarningItem.tsx';
 
 const FertilizerBalancePage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -118,21 +120,20 @@ const FertilizerBalancePage: React.FC = () => {
       {/* Recommendations */}
       {balance.recommendations && balance.recommendations.length > 0 && (
         <section>
-          <Card>
+          <Card className="border-l-4 border-green-500 bg-green-50 dark:bg-green-900/20">
             <CardHeader>
-              <CardTitle>Рекомендації</CardTitle>
+              <CardTitle className="flex items-center text-green-700 dark:text-green-300">
+                <Info className="h-5 w-5 mr-2" />
+                Рекомендації
+              </CardTitle>
             </CardHeader>
             <CardContent>
-              <ul className="space-y-2">
+              <ul className="space-y-1 divide-y divide-green-200 dark:divide-green-800/50">
                 {balance.recommendations.map((recommendation, index) => (
-                  <li key={index} className="flex items-start">
-                    <span className="text-green-600 dark:text-green-400 mr-2">
-                      ✓
-                    </span>
-                    <span className="text-sm text-gray-700 dark:text-gray-300">
-                      {recommendation}
-                    </span>
-                  </li>
+                  <RecommendationItem
+                    key={index}
+                    recommendation={recommendation}
+                  />
                 ))}
               </ul>
             </CardContent>
@@ -143,7 +144,7 @@ const FertilizerBalancePage: React.FC = () => {
       {/* Warnings */}
       {balance.warnings && balance.warnings.length > 0 && (
         <section>
-          <Card className="border-yellow-500 bg-yellow-50 dark:bg-yellow-900/20">
+          <Card className="border-l-4 border-yellow-500 bg-yellow-50 dark:bg-yellow-900/20">
             <CardHeader>
               <CardTitle className="flex items-center text-yellow-800 dark:text-yellow-200">
                 <AlertTriangle className="h-5 w-5 mr-2" />
@@ -151,14 +152,9 @@ const FertilizerBalancePage: React.FC = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <ul className="space-y-2">
+              <ul className="space-y-1 divide-y divide-yellow-200 dark:divide-yellow-800/50">
                 {balance.warnings.map((warning, index) => (
-                  <li
-                    key={index}
-                    className="text-sm text-yellow-700 dark:text-yellow-300"
-                  >
-                    • {warning}
-                  </li>
+                  <WarningItem key={index} warning={warning} />
                 ))}
               </ul>
             </CardContent>
