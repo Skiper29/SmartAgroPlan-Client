@@ -5,6 +5,9 @@ import {
   CheckCircle,
   Info,
   type LucideIcon,
+  MinusCircle,
+  PlusCircle,
+  ThumbsUp,
 } from 'lucide-react';
 import {
   RecommendationPriority,
@@ -69,6 +72,68 @@ export const getPriorityStyling = (
       };
   }
 };
+
+/**
+ * Returns a full styling profile for the nutrient balance status
+ */
+export const getBalanceStatusStyling = (
+  status: string,
+): {
+  icon: LucideIcon;
+  text: string;
+  border: string;
+  bg: string;
+  headerBg: string;
+  headerText: string;
+  iconBg: string;
+} => {
+  const statusLower = safeLowerCase(status);
+
+  if (statusLower.includes('critical') || statusLower.includes('критичний')) {
+    return {
+      icon: AlertTriangle,
+      text: 'text-red-700 dark:text-red-300',
+      border: 'border-l-red-500',
+      bg: 'bg-red-50 dark:bg-red-900/20',
+      headerBg: 'bg-red-50 dark:bg-gray-800',
+      headerText: 'text-red-700 dark:text-red-300',
+      iconBg: 'bg-red-500',
+    };
+  }
+  if (statusLower.includes('deficit') || statusLower.includes('дефіцит')) {
+    return {
+      icon: MinusCircle,
+      text: 'text-yellow-700 dark:text-yellow-300',
+      border: 'border-l-yellow-500',
+      bg: 'bg-yellow-50 dark:bg-yellow-900/20',
+      headerBg: 'bg-yellow-50 dark:bg-gray-800',
+      headerText: 'text-yellow-700 dark:text-yellow-300',
+      iconBg: 'bg-yellow-500',
+    };
+  }
+  if (statusLower.includes('surplus') || statusLower.includes('надлишок')) {
+    return {
+      icon: PlusCircle,
+      text: 'text-blue-700 dark:text-blue-300',
+      border: 'border-l-blue-500',
+      bg: 'bg-blue-50 dark:bg-blue-900/20',
+      headerBg: 'bg-blue-50 dark:bg-gray-800',
+      headerText: 'text-blue-700 dark:text-blue-300',
+      iconBg: 'bg-blue-500',
+    };
+  }
+  // Default to "Balanced"
+  return {
+    icon: ThumbsUp,
+    text: 'text-green-700 dark:text-green-300',
+    border: 'border-l-green-500',
+    bg: 'bg-green-50 dark:bg-green-900/20',
+    headerBg: 'bg-green-50 dark:bg-gray-800',
+    headerText: 'text-green-700 dark:text-green-300',
+    iconBg: 'bg-green-500',
+  };
+};
+
 /**
  * Format nutrient value for display
  */

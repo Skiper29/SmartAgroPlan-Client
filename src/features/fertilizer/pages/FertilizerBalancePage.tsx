@@ -11,12 +11,10 @@ import {
 import { useField } from '@/features/fields/hooks/fields.hooks';
 import NutrientTable from '../components/NutrientTable';
 import ErrorDisplay from '@/components/ErrorDisplay';
-import {
-  getBalanceStatusColor,
-  getNutrientNameUA,
-} from '../utils/fertilizerUtils';
+import { getNutrientNameUA } from '../utils/fertilizerUtils';
 import { cn } from '@/lib/utils';
 import { DeficitUrgencyLabels } from '@/models/fertilizer';
+import NutrientBalanceStatusCard from '@/features/fertilizer/components/NutrientBalanceStatusCard.tsx';
 
 const FertilizerBalancePage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -72,8 +70,6 @@ const FertilizerBalancePage: React.FC = () => {
     );
   }
 
-  const statusColor = getBalanceStatusColor(balance.overallStatus);
-
   return (
     <div className="w-full max-w-7xl mx-auto space-y-8 pb-8">
       {/* Header */}
@@ -111,40 +107,7 @@ const FertilizerBalancePage: React.FC = () => {
       </header>
 
       {/* Overall Status */}
-      <section>
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center justify-between">
-              <span>Загальний статус</span>
-              <Badge className={statusColor}>{balance.overallStatus}</Badge>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-              <div>
-                <span className="text-gray-500 dark:text-gray-400">
-                  Дата аналізу:{' '}
-                </span>
-                <span className="font-medium">
-                  {new Date(balance.analysisDate).toLocaleDateString('uk-UA')}
-                </span>
-              </div>
-              <div>
-                <span className="text-gray-500 dark:text-gray-400">
-                  Днів після посіву:{' '}
-                </span>
-                <span className="font-medium">{balance.daysAfterPlanting}</span>
-              </div>
-              <div>
-                <span className="text-gray-500 dark:text-gray-400">
-                  Днів до збирання:{' '}
-                </span>
-                <span className="font-medium">{balance.daysToHarvest}</span>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </section>
+      <NutrientBalanceStatusCard balance={balance} />
 
       {/* Nutrient Balance Table */}
       <section>
