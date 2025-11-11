@@ -1,4 +1,7 @@
-import type { NutrientRequirement } from '@/models/fertilizer';
+import {
+  type DeficitUrgency,
+  type NutrientRequirement,
+} from '@/models/fertilizer';
 import {
   AlertCircle,
   AlertTriangle,
@@ -13,6 +16,8 @@ import {
   RecommendationPriority,
   type RecommendationPriority as PriorityType,
 } from '@/models/fertilizer';
+import { DeficitUrgencyEnum, DeficitUrgencyLabels } from '@/models/fertilizer';
+
 /**
  * Helper function to safely lowercase a string
  */
@@ -132,6 +137,63 @@ export const getBalanceStatusStyling = (
     headerText: 'text-green-700 dark:text-green-300',
     iconBg: 'bg-green-500',
   };
+};
+
+export const getDeficitUrgencyStyling = (
+  urgency: DeficitUrgency | string,
+): {
+  label: string;
+  icon: LucideIcon;
+  border: string;
+  bg: string;
+  text: string;
+  badge: string;
+} => {
+  const urgencyLabel =
+    DeficitUrgencyLabels[urgency as DeficitUrgencyEnum] || urgency;
+
+  switch (urgency) {
+    case DeficitUrgencyEnum.Critical:
+      return {
+        label: urgencyLabel,
+        icon: AlertTriangle,
+        border: 'border-red-500',
+        bg: 'bg-red-50 dark:bg-red-900/20',
+        text: 'text-red-600 dark:text-red-400',
+        badge:
+          'bg-red-100 text-red-800 border-red-200 dark:bg-red-900 dark:text-red-200 dark:border-red-700',
+      };
+    case DeficitUrgencyEnum.High:
+      return {
+        label: urgencyLabel,
+        icon: AlertCircle,
+        border: 'border-orange-500',
+        bg: 'bg-orange-50 dark:bg-orange-900/20',
+        text: 'text-orange-600 dark:text-orange-400',
+        badge:
+          'bg-orange-100 text-orange-800 border-orange-200 dark:bg-orange-900 dark:text-orange-200 dark:border-orange-700',
+      };
+    case DeficitUrgencyEnum.Medium:
+      return {
+        label: urgencyLabel,
+        icon: Info,
+        border: 'border-yellow-500',
+        bg: 'bg-yellow-50 dark:bg-yellow-900/20',
+        text: 'text-yellow-600 dark:text-yellow-400',
+        badge:
+          'bg-yellow-100 text-yellow-800 border-yellow-200 dark:bg-yellow-900 dark:text-yellow-200 dark:border-yellow-700',
+      };
+    default:
+      return {
+        label: urgencyLabel,
+        icon: Info,
+        border: 'border-gray-500',
+        bg: 'bg-gray-50 dark:bg-gray-800/20',
+        text: 'text-gray-600 dark:text-gray-400',
+        badge:
+          'bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600',
+      };
+  }
 };
 
 /**

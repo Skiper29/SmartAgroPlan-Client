@@ -2,7 +2,6 @@ import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { ArrowLeft, AlertTriangle, RefreshCw } from 'lucide-react';
 import {
   useNutrientBalance,
@@ -10,11 +9,10 @@ import {
 } from '../hooks/fertilizer.hooks';
 import { useField } from '@/features/fields/hooks/fields.hooks';
 import ErrorDisplay from '@/components/ErrorDisplay';
-import { getNutrientNameUA } from '../utils/fertilizerUtils';
 import { cn } from '@/lib/utils';
-import { DeficitUrgencyLabels } from '@/models/fertilizer';
 import NutrientBalanceStatusCard from '@/features/fertilizer/components/NutrientBalanceStatusCard.tsx';
 import NutrientBalanceDetailCard from '@/features/fertilizer/components/NutrientBalanceDetailCardProps.tsx';
+import NutrientDeficitAnalysisSection from '@/features/fertilizer/components/NutrientDeficitAnalysisSection.tsx';
 
 const FertilizerBalancePage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -113,59 +111,8 @@ const FertilizerBalancePage: React.FC = () => {
       <NutrientBalanceDetailCard balance={balance} />
 
       {/* Deficit Analysis */}
-      {deficitAnalysis && deficitAnalysis.deficits.length > 0 && (
-        <section className="space-y-4">
-          <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 flex items-center">
-            <AlertTriangle className="h-6 w-6 mr-2 text-orange-500" />
-            Виявлені дефіцити
-          </h2>
-
-          <div className="grid grid-cols-1 gap-4">
-            {deficitAnalysis.deficits.map((deficit, index) => {
-              const urgencyColor =
-                deficit.urgency === 'Critical'
-                  ? 'border-red-500 bg-red-50 dark:bg-red-900/20'
-                  : deficit.urgency === 'High'
-                    ? 'border-orange-500 bg-orange-50 dark:bg-orange-900/20'
-                    : 'border-yellow-500 bg-yellow-50 dark:bg-yellow-900/20';
-
-              return (
-                <Card key={index} className={`border-l-4 ${urgencyColor}`}>
-                  <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <CardTitle className="text-lg">
-                        {getNutrientNameUA(deficit.nutrientName)}
-                      </CardTitle>
-                      <Badge variant="outline">
-                        {DeficitUrgencyLabels[
-                          deficit.urgency as keyof typeof DeficitUrgencyLabels
-                        ] || deficit.urgency}
-                      </Badge>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div>
-                      <span className="text-sm text-gray-600 dark:text-gray-400">
-                        Дефіцит:{' '}
-                      </span>
-                      <span className="text-sm font-semibold text-red-600 dark:text-red-400">
-                        {Math.abs(deficit.deficitAmount).toFixed(1)} кг/га
-                      </span>
-                    </div>
-                    <div>
-                      <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">
-                        Симптоми:
-                      </h4>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">
-                        {deficit.symptoms}
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
-              );
-            })}
-          </div>
-        </section>
+      {deficitAnalysis && (
+        <NutrientDeficitAnalysisSection deficitAnalysis={deficitAnalysis} />
       )}
 
       {/* Recommendations */}
