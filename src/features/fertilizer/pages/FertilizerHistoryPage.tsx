@@ -1,31 +1,19 @@
 import React, { useState, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import {
-  ArrowLeft,
-  RefreshCw,
-  CheckCircle2,
-  Clock,
-  AlertCircle,
-} from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
+import { ArrowLeft, RefreshCw, History, AlertCircle } from 'lucide-react';
 import {
   useApplicationSummary,
   useApplicationsByDateRange,
 } from '../hooks/fertilizer.hooks';
 import { useField } from '@/features/fields/hooks/fields.hooks';
-import SimpleNutrientTable from '../components/SimpleNutrientTable';
 import DateRangeFilter from '../components/DateRangeFilter';
+import ApplicationSummaryCard from '../components/ApplicationSummaryCard';
+import ApplicationCard from '../components/ApplicationCard';
 import ErrorDisplay from '@/components/ErrorDisplay';
-import {
-  formatDateLong,
-  getPrimaryNutrientsString,
-  getStatusBadgeColor,
-  sortApplicationsByDate,
-} from '../utils/fertilizerUtils';
+import { sortApplicationsByDate } from '../utils/fertilizerUtils';
 import { cn } from '@/lib/utils';
-import { CropStageLabels } from '@/models/fertilizer';
 
 const FertilizerHistoryPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -105,25 +93,30 @@ const FertilizerHistoryPage: React.FC = () => {
   }
 
   return (
-    <div className="w-full max-w-7xl mx-auto space-y-8 pb-8">
+    <div className="w-full max-w-7xl mx-auto space-y-6 pb-8">
       {/* Header */}
-      <header className="sticky top-0 z-10 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-xl shadow-md px-8 py-6 border-b border-gray-200 dark:border-gray-700">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
+      <header className="sticky top-0 z-10 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-xl shadow-md px-8 py-6 border border-gray-200 dark:border-gray-700">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="flex items-center gap-4 flex-1">
             <Button
               variant="ghost"
               size="sm"
               onClick={() => navigate('/fertilizer')}
+              className="shrink-0"
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
               Назад
             </Button>
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-                {field.name} - Історія Внесень
-              </h1>
+            <div className="min-w-0">
+              <div className="flex items-center gap-2 mb-1">
+                <History className="h-6 w-6 text-green-600 dark:text-green-400 shrink-0" />
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 truncate">
+                  {field.name}
+                </h1>
+              </div>
               <p className="text-sm text-gray-500 dark:text-gray-400">
-                {field.currentCrop?.name || 'Немає культури'}
+                {field.currentCrop?.name || 'Немає культури'} • Історія внесень
+                добрив
               </p>
             </div>
           </div>
@@ -131,6 +124,8 @@ const FertilizerHistoryPage: React.FC = () => {
             onClick={handleRefresh}
             disabled={isLoading}
             variant="outline"
+            size="default"
+            className="shrink-0"
           >
             <RefreshCw
               className={cn('h-4 w-4 mr-2', isLoading && 'animate-spin')}
@@ -155,184 +150,44 @@ const FertilizerHistoryPage: React.FC = () => {
       {/* Summary */}
       {summary && (
         <section>
-          <Card>
-            <CardHeader>
-              <CardTitle>Підсумок за період</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {/* Stats */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="flex items-center">
-                  <CheckCircle2 className="h-5 w-5 text-green-500 mr-2" />
-                  <div>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">
-                      Виконано
-                    </p>
-                    <p className="text-xl font-bold">
-                      {summary.completedApplications}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-center">
-                  <Clock className="h-5 w-5 text-yellow-500 mr-2" />
-                  <div>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">
-                      Заплановано
-                    </p>
-                    <p className="text-xl font-bold">
-                      {summary.pendingApplications}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Nutrients Summary */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="bg-green-50 dark:bg-green-900/20 rounded p-3">
-                  <p className="text-sm font-semibold text-green-800 dark:text-green-200 mb-1">
-                    Вже внесено:
-                  </p>
-                  <p className="font-mono text-sm">
-                    {getPrimaryNutrientsString(summary.totalApplied)}
-                  </p>
-                </div>
-                <div className="bg-orange-50 dark:bg-orange-900/20 rounded p-3">
-                  <p className="text-sm font-semibold text-orange-800 dark:text-orange-200 mb-1">
-                    Заплановано:
-                  </p>
-                  <p className="font-mono text-sm">
-                    {getPrimaryNutrientsString(summary.plannedToApply)}
-                  </p>
-                </div>
-              </div>
-
-              {/* Detailed Tables */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4">
-                <SimpleNutrientTable
-                  nutrients={summary.totalApplied}
-                  title="Внесено (детально)"
-                />
-                <SimpleNutrientTable
-                  nutrients={summary.plannedToApply}
-                  title="Заплановано (детально)"
-                />
-              </div>
-            </CardContent>
-          </Card>
+          <ApplicationSummaryCard summary={summary} />
         </section>
       )}
 
       {/* Applications List */}
-      <section className="space-y-4">
-        <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
-          Внесення ({sortedApplications.length})
-        </h2>
+      <section className="space-y-5">
+        <div className="flex items-center justify-between">
+          <h2 className="text-2xl font-bold text-green-800 dark:text-green-200">
+            Історія внесень
+          </h2>
+          <div className="bg-gray-100 dark:bg-gray-800 px-4 py-2 rounded-lg">
+            <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
+              Всього:{' '}
+            </span>
+            <span className="text-lg font-bold text-gray-900 dark:text-gray-100">
+              {sortedApplications.length}
+            </span>
+          </div>
+        </div>
 
         {sortedApplications.length > 0 ? (
-          <div className="space-y-4">
-            {sortedApplications.map((application, index) => {
-              const statusBadgeColor = getStatusBadgeColor(
-                application.isCompleted,
-                application.recommendedDate,
-              );
-
-              return (
-                <Card key={application.id || index} className="overflow-hidden">
-                  <CardHeader className="bg-gray-50 dark:bg-gray-800/50">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-2">
-                          <Badge className={`${statusBadgeColor} text-white`}>
-                            {application.isCompleted ? (
-                              <>
-                                <CheckCircle2 className="h-3 w-3 mr-1" />
-                                Виконано
-                              </>
-                            ) : new Date(application.recommendedDate) <
-                              new Date() ? (
-                              <>
-                                <AlertCircle className="h-3 w-3 mr-1" />
-                                Прострочено
-                              </>
-                            ) : (
-                              <>
-                                <Clock className="h-3 w-3 mr-1" />
-                                Заплановано
-                              </>
-                            )}
-                          </Badge>
-                          <span className="text-lg font-semibold">
-                            {formatDateLong(application.recommendedDate)}
-                          </span>
-                        </div>
-                        <div className="text-sm text-gray-600 dark:text-gray-400">
-                          {CropStageLabels[
-                            application.cropStage as keyof typeof CropStageLabels
-                          ] || application.cropStage}{' '}
-                          • {application.daysAfterPlanting} днів після посіву
-                        </div>
-                      </div>
-                    </div>
-                  </CardHeader>
-
-                  <CardContent className="pt-4">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {/* Nutrients */}
-                      <div>
-                        <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                          Поживні речовини:
-                        </h4>
-                        <div className="bg-gray-50 dark:bg-gray-800 rounded p-2">
-                          <p className="font-mono text-sm">
-                            {getPrimaryNutrientsString(
-                              application.nutrientsToApply,
-                            )}
-                          </p>
-                        </div>
-                      </div>
-
-                      {/* Products */}
-                      {application.products &&
-                        application.products.length > 0 && (
-                          <div>
-                            <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                              Добрива:
-                            </h4>
-                            <div className="space-y-1">
-                              {application.products.map((product) => (
-                                <div
-                                  key={product.id}
-                                  className="text-sm bg-blue-50 dark:bg-blue-900/20 rounded px-2 py-1"
-                                >
-                                  {product.name}
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-                    </div>
-
-                    {/* Rationale */}
-                    {application.rationale && (
-                      <div className="mt-4">
-                        <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">
-                          Обґрунтування:
-                        </h4>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">
-                          {application.rationale}
-                        </p>
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
-              );
-            })}
+          <div className="grid grid-cols-1 gap-5">
+            {sortedApplications.map((application, index) => (
+              <ApplicationCard
+                key={application.id || index}
+                application={application}
+              />
+            ))}
           </div>
         ) : (
-          <Card>
-            <CardContent className="text-center py-12">
-              <p className="text-gray-500 dark:text-gray-400">
+          <Card className="border-2 border-dashed border-gray-300 dark:border-gray-700">
+            <CardContent className="text-center py-16">
+              <AlertCircle className="h-12 w-12 text-gray-400 dark:text-gray-600 mx-auto mb-4" />
+              <p className="text-lg font-medium text-gray-600 dark:text-gray-400 mb-2">
                 Немає внесень за вибраний період
+              </p>
+              <p className="text-sm text-gray-500 dark:text-gray-500">
+                Спробуйте розширити діапазон дат або перевірте інший період
               </p>
             </CardContent>
           </Card>

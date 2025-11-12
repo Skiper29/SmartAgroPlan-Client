@@ -276,6 +276,20 @@ export const getPrimaryNutrientsString = (
 };
 
 /**
+ * Get all nutrients as a formatted string
+ */
+export const getAllNutrientsString = (
+  nutrients: NutrientRequirement,
+): string => {
+  return Object.entries(nutrients)
+    .map(
+      ([key, value]) =>
+        `${getNutrientSymbol(key)}:${formatNutrientValue(value)}`,
+    )
+    .join(' ');
+};
+
+/**
  * Get primary nutrients (N-P-K) as a simple array for mapping
  */
 export const getPrimaryNutrientsArray = (
