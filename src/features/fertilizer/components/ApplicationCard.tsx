@@ -15,13 +15,20 @@ import {
   getStatusBadgeColor,
 } from '../utils/fertilizerUtils';
 import { CropStageLabels } from '@/models/fertilizer';
-import type { FertilizerApplication } from '@/models/fertilizer';
+import type {
+  FertilizerApplication,
+  FertilizerProduct,
+} from '@/models/fertilizer';
 
 interface ApplicationCardProps {
   application: FertilizerApplication;
+  onProductClick?: (product: FertilizerProduct) => void;
 }
 
-const ApplicationCard: React.FC<ApplicationCardProps> = ({ application }) => {
+const ApplicationCard: React.FC<ApplicationCardProps> = ({
+  application,
+  onProductClick,
+}) => {
   const statusBadgeColor = getStatusBadgeColor(
     application.isCompleted,
     application.recommendedDate,
@@ -111,12 +118,13 @@ const ApplicationCard: React.FC<ApplicationCardProps> = ({ application }) => {
               </h4>
               <div className="space-y-2">
                 {application.products.map((product) => (
-                  <div
+                  <button
                     key={product.id}
-                    className="text-sm bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-lg px-3 py-2 border border-purple-200 dark:border-purple-800 font-medium"
+                    onClick={() => onProductClick?.(product)}
+                    className="w-full text-left text-sm bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-lg px-3 py-2 border border-purple-200 dark:border-purple-800 font-medium transition-all hover:shadow-md hover:scale-[1.02] hover:border-purple-400 dark:hover:border-purple-600 cursor-pointer"
                   >
                     {product.name}
-                  </div>
+                  </button>
                 ))}
               </div>
             </div>

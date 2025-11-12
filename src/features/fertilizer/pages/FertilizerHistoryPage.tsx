@@ -11,9 +11,11 @@ import { useField } from '@/features/fields/hooks/fields.hooks';
 import DateRangeFilter from '../components/DateRangeFilter';
 import ApplicationSummaryCard from '../components/ApplicationSummaryCard';
 import ApplicationCard from '../components/ApplicationCard';
+import ProductDetailsModal from '../components/ProductDetailsModal';
 import ErrorDisplay from '@/components/ErrorDisplay';
 import { sortApplicationsByDate } from '../utils/fertilizerUtils';
 import { cn } from '@/lib/utils';
+import type { FertilizerProduct } from '@/models/fertilizer';
 
 const FertilizerHistoryPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -33,6 +35,20 @@ const FertilizerHistoryPage: React.FC = () => {
     date.setHours(23, 59, 59, 999); // End of day
     return date;
   });
+
+  // Product details modal
+  const [selectedProduct, setSelectedProduct] = useState<FertilizerProduct | null>(null);
+  const [isProductModalOpen, setIsProductModalOpen] = useState(false);
+
+  const handleProductClick = (product: FertilizerProduct) => {
+    setSelectedProduct(product);
+    setIsProductModalOpen(true);
+  };
+
+  const handleCloseProductModal = () => {
+    setIsProductModalOpen(false);
+    setSelectedProduct(null);
+  };
 
   const { data: field, isLoading: isLoadingField } = useField(fieldId);
 
@@ -176,6 +192,7 @@ const FertilizerHistoryPage: React.FC = () => {
               <ApplicationCard
                 key={application.id || index}
                 application={application}
+                onProductClick={handleProductClick}
               />
             ))}
           </div>
@@ -193,6 +210,13 @@ const FertilizerHistoryPage: React.FC = () => {
           </Card>
         )}
       </section>
+
+      {/* Product Details Modal */}
+      <ProductDetailsModal
+        product={selectedProduct}
+        isOpen={isProductModalOpen}
+        onClose={handleCloseProductModal}
+      />
     </div>
   );
 };
