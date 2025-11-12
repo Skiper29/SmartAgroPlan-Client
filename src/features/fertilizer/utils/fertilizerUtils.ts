@@ -197,25 +197,36 @@ export const getDeficitUrgencyStyling = (
 };
 
 /**
- * NEW: Get badge color class for nutrient balance
+ * Get comprehensive styling for nutrient balance display
+ * Includes icon, colors, and badge styling for consistent UI
  */
 export const getNutrientBalanceStyling = (
   value: number,
-): { text: string; bg: string; border: string } => {
+): {
+  text: string;
+  bg: string;
+  border: string;
+  icon: LucideIcon;
+  iconColor: string;
+} => {
   if (value < -10) {
     // Значний дефіцит
     return {
       text: 'text-red-800 dark:text-red-200',
       bg: 'bg-red-100 dark:bg-red-900/30',
       border: 'border-red-300 dark:border-red-700/50',
+      icon: AlertTriangle,
+      iconColor: 'text-red-600 dark:text-red-400',
     };
   }
-  if (value < 0) {
+  if (value < -5) {
     // Невеликий дефіцит
     return {
       text: 'text-yellow-800 dark:text-yellow-200',
       bg: 'bg-yellow-100 dark:bg-yellow-900/30',
       border: 'border-yellow-300 dark:border-yellow-700/50',
+      icon: MinusCircle,
+      iconColor: 'text-yellow-600 dark:text-yellow-400',
     };
   }
   if (value > 10) {
@@ -224,13 +235,27 @@ export const getNutrientBalanceStyling = (
       text: 'text-blue-800 dark:text-blue-200',
       bg: 'bg-blue-100 dark:bg-blue-900/30',
       border: 'border-blue-300 dark:border-blue-700/50',
+      icon: PlusCircle,
+      iconColor: 'text-blue-600 dark:text-blue-400',
     };
   }
-  // Збалансовано
+  if (value > 5) {
+    // Невеликий надлишок
+    return {
+      text: 'text-blue-700 dark:text-blue-300',
+      bg: 'bg-blue-50 dark:bg-blue-900/20',
+      border: 'border-blue-200 dark:border-blue-700/40',
+      icon: PlusCircle,
+      iconColor: 'text-blue-500 dark:text-blue-400',
+    };
+  }
+  // Збалансовано (-5 to +5)
   return {
     text: 'text-green-800 dark:text-green-200',
     bg: 'bg-green-100 dark:bg-green-900/30',
     border: 'border-green-300 dark:border-green-700/50',
+    icon: CheckCircle,
+    iconColor: 'text-green-600 dark:text-green-400',
   };
 };
 

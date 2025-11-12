@@ -17,7 +17,7 @@ import {
   useApplicationsByDateRange,
 } from '../hooks/fertilizer.hooks';
 import { useField } from '@/features/fields/hooks/fields.hooks';
-import NutrientTable from '../components/NutrientTable';
+import SimpleNutrientTable from '../components/SimpleNutrientTable';
 import ErrorDisplay from '@/components/ErrorDisplay';
 import {
   formatDateLong,
@@ -230,11 +230,11 @@ const FertilizerHistoryPage: React.FC = () => {
 
               {/* Detailed Tables */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4">
-                <NutrientTable
+                <SimpleNutrientTable
                   nutrients={summary.totalApplied}
                   title="Внесено (детально)"
                 />
-                <NutrientTable
+                <SimpleNutrientTable
                   nutrients={summary.plannedToApply}
                   title="Заплановано (детально)"
                 />

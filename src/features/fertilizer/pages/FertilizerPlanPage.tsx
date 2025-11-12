@@ -27,6 +27,7 @@ import {
   sortApplicationsByDate,
 } from '../utils/fertilizerUtils';
 import { ApplicationMethodLabels, CropStageLabels } from '@/models/fertilizer';
+import { createEmptyNutrientRequirement } from '@/models/fertilizer/nutrient-requirement.model';
 import { cn } from '@/lib/utils';
 
 const FertilizerPlanPage: React.FC = () => {
@@ -158,13 +159,11 @@ const FertilizerPlanPage: React.FC = () => {
           </CardHeader>
           <CardContent>
             <NutrientTable
-              nutrients={plan.remainingToApply}
-              showComparison={true}
-              comparison={{
-                required: plan.totalSeasonRequirement,
-                available: plan.soilSupply,
-                applied: plan.alreadyApplied,
-              }}
+              required={plan.totalSeasonRequirement}
+              available={plan.soilSupply}
+              applied={plan.alreadyApplied}
+              deficit={plan.remainingToApply}
+              surplus={createEmptyNutrientRequirement()}
             />
           </CardContent>
         </Card>

@@ -29,10 +29,11 @@ const NutrientBalanceDetailCard: React.FC<NutrientBalanceDetailCardProps> = ({
       </CardHeader>
       <CardContent className="pt-4">
         <NutrientTable
-          balance={balance.deficit} // API 'deficit' field actually contains the balance (deficit/surplus)
           required={balance.requiredForTargetYield}
           available={balance.availableInSoil}
           applied={balance.alreadyApplied}
+          deficit={balance.deficit}
+          surplus={balance.surplus}
         />
       </CardContent>
     </Card>
