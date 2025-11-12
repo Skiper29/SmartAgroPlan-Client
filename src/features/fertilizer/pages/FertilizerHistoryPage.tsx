@@ -3,14 +3,12 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
 import {
   ArrowLeft,
   RefreshCw,
   CheckCircle2,
   Clock,
   AlertCircle,
-  Calendar,
 } from 'lucide-react';
 import {
   useApplicationSummary,
@@ -18,6 +16,7 @@ import {
 } from '../hooks/fertilizer.hooks';
 import { useField } from '@/features/fields/hooks/fields.hooks';
 import SimpleNutrientTable from '../components/SimpleNutrientTable';
+import DateRangeFilter from '../components/DateRangeFilter';
 import ErrorDisplay from '@/components/ErrorDisplay';
 import {
   formatDateLong,
@@ -34,31 +33,37 @@ const FertilizerHistoryPage: React.FC = () => {
   const fieldId = Number(id);
 
   // Date range for filtering
-  const [startDate, setStartDate] = useState<string>(() => {
+  const [startDate, setStartDate] = useState<Date | undefined>(() => {
     const date = new Date();
     date.setMonth(date.getMonth() - 3); // 3 months ago
-    return date.toISOString().split('T')[0];
+    date.setHours(0, 0, 0, 0); // Start of day
+    return date;
   });
-  const [endDate, setEndDate] = useState<string>(() => {
+  const [endDate, setEndDate] = useState<Date | undefined>(() => {
     const date = new Date();
     date.setMonth(date.getMonth() + 3); // 3 months ahead
-    return date.toISOString().split('T')[0];
+    date.setHours(23, 59, 59, 999); // End of day
+    return date;
   });
 
   const { data: field, isLoading: isLoadingField } = useField(fieldId);
+
+  // Convert dates to ISO strings for API calls
+  const startDateStr = startDate ? startDate.toISOString().split('T')[0] : '';
+  const endDateStr = endDate ? endDate.toISOString().split('T')[0] : '';
 
   const {
     data: summary,
     isLoading: isLoadingSummary,
     error: summaryError,
     refetch: refetchSummary,
-  } = useApplicationSummary(fieldId, startDate, endDate);
+  } = useApplicationSummary(fieldId, startDateStr, endDateStr);
 
   const {
     data: applications = [],
     isLoading: isLoadingApplications,
     refetch: refetchApplications,
-  } = useApplicationsByDateRange(fieldId, startDate, endDate);
+  } = useApplicationsByDateRange(fieldId, startDateStr, endDateStr);
 
   const handleRefresh = () => {
     refetchSummary();
@@ -137,41 +142,14 @@ const FertilizerHistoryPage: React.FC = () => {
 
       {/* Date Filter */}
       <section>
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              <Calendar className="h-5 w-5 mr-2" />
-              Фільтр за періодом
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex flex-col md:flex-row gap-4">
-              <div className="flex-1">
-                <label className="text-sm text-gray-600 dark:text-gray-400 mb-1 block">
-                  Дата початку
-                </label>
-                <Input
-                  type="date"
-                  value={startDate}
-                  onChange={(e) => setStartDate(e.target.value)}
-                />
-              </div>
-              <div className="flex-1">
-                <label className="text-sm text-gray-600 dark:text-gray-400 mb-1 block">
-                  Дата завершення
-                </label>
-                <Input
-                  type="date"
-                  value={endDate}
-                  onChange={(e) => setEndDate(e.target.value)}
-                />
-              </div>
-              <div className="flex items-end">
-                <Button onClick={handleRefresh}>Застосувати</Button>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+        <DateRangeFilter
+          startDate={startDate}
+          endDate={endDate}
+          onStartDateChange={setStartDate}
+          onEndDateChange={setEndDate}
+          onApply={handleRefresh}
+          isLoading={isLoading}
+        />
       </section>
 
       {/* Summary */}
