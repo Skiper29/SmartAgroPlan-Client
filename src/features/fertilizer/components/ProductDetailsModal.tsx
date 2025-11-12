@@ -13,6 +13,10 @@ import {
   ProductFormLabels,
   type FertilizerProduct,
 } from '@/models/fertilizer/fertilizer-product.model';
+import {
+  getNutrientNameUA,
+  getNutrientContainerClasses,
+} from '@/features/fertilizer/utils/fertilizerUtils.ts';
 
 interface ProductDetailsModalProps {
   product: FertilizerProduct | null;
@@ -28,24 +32,48 @@ const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({
   if (!product) return null;
 
   const mainNutrients = [
-    { label: 'Азот (N)', value: product.nitrogenContent, color: 'blue' },
-    { label: 'Фосфор (P)', value: product.phosphorusContent, color: 'orange' },
-    { label: 'Калій (K)', value: product.potassiumContent, color: 'purple' },
+    {
+      label: getNutrientNameUA('nitrogen'),
+      value: product.nitrogenContent,
+      variant: 'N' as const,
+    },
+    {
+      label: getNutrientNameUA('phosphorus'),
+      value: product.phosphorusContent,
+      variant: 'P' as const,
+    },
+    {
+      label: getNutrientNameUA('potassium'),
+      value: product.potassiumContent,
+      variant: 'K' as const,
+    },
   ];
 
   const secondaryNutrients = [
-    { label: 'Сірка (S)', value: product.sulfurContent },
-    { label: 'Кальцій (Ca)', value: product.calciumContent },
-    { label: 'Магній (Mg)', value: product.magnesiumContent },
+    {
+      label: getNutrientNameUA('sulfur'),
+      value: product.sulfurContent,
+    },
+    {
+      label: getNutrientNameUA('calcium'),
+      value: product.calciumContent,
+    },
+    {
+      label: getNutrientNameUA('magnesium'),
+      value: product.magnesiumContent,
+    },
   ];
 
   const micronutrients = [
-    { label: 'Залізо (Fe)', value: product.ironContent },
-    { label: 'Цинк (Zn)', value: product.zincContent },
-    { label: 'Бор (B)', value: product.boronContent },
-    { label: 'Марганець (Mn)', value: product.manganeseContent },
-    { label: 'Мідь (Cu)', value: product.copperContent },
-    { label: 'Молібден (Mo)', value: product.molybdenumContent },
+    { label: getNutrientNameUA('iron'), value: product.ironContent },
+    { label: getNutrientNameUA('zinc'), value: product.zincContent },
+    { label: getNutrientNameUA('boron'), value: product.boronContent },
+    { label: getNutrientNameUA('manganese'), value: product.manganeseContent },
+    { label: getNutrientNameUA('copper'), value: product.copperContent },
+    {
+      label: getNutrientNameUA('molybdenum'),
+      value: product.molybdenumContent,
+    },
   ];
 
   const hasSecondaryNutrients = secondaryNutrients.some(
@@ -85,13 +113,7 @@ const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({
               {mainNutrients.map((nutrient) => (
                 <div
                   key={nutrient.label}
-                  className={`bg-gradient-to-br ${
-                    nutrient.color === 'blue'
-                      ? 'from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/30 border-blue-300 dark:border-blue-700'
-                      : nutrient.color === 'orange'
-                        ? 'from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/30 border-orange-300 dark:border-orange-700'
-                        : 'from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/30 border-purple-300 dark:border-purple-700'
-                  } rounded-lg p-4 border-2`}
+                  className={getNutrientContainerClasses(nutrient.variant)}
                 >
                   <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
                     {nutrient.label}
@@ -117,7 +139,7 @@ const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({
                   .map((nutrient) => (
                     <div
                       key={nutrient.label}
-                      className="bg-gradient-to-br from-teal-50 to-teal-100 dark:from-teal-900/20 dark:to-teal-800/30 rounded-lg p-3 border border-teal-200 dark:border-teal-800"
+                      className={getNutrientContainerClasses('secondary')}
                     >
                       <p className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
                         {nutrient.label}
@@ -144,7 +166,7 @@ const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({
                   .map((nutrient) => (
                     <div
                       key={nutrient.label}
-                      className="bg-gradient-to-br from-amber-50 to-amber-100 dark:from-amber-900/20 dark:to-amber-800/30 rounded-lg p-3 border border-amber-200 dark:border-amber-800"
+                      className={getNutrientContainerClasses('micro')}
                     >
                       <p className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
                         {nutrient.label}

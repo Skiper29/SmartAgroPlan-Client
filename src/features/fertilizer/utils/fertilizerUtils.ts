@@ -457,7 +457,7 @@ export const getNutrientNameUA = (nutrientKey: string): string => {
     nitrogen: 'Азот (N)',
     phosphorus: 'Фосфор (P)',
     potassium: 'Калій (K)',
-    sulfur: 'Сірка (S)',
+    sulfur: 'Сірка (SO₃)',
     calcium: 'Кальцій (Ca)',
     magnesium: 'Магній (Mg)',
     boron: 'Бор (B)',
@@ -479,7 +479,7 @@ export const getNutrientSymbol = (nutrientKey: string): string => {
     nitrogen: 'N',
     phosphorus: 'P',
     potassium: 'K',
-    sulfur: 'S',
+    sulfur: 'SO₃',
     calcium: 'Ca',
     magnesium: 'Mg',
     boron: 'B',
@@ -593,4 +593,28 @@ export const sumNutrients = (
       molybdenum: 0,
     },
   );
+};
+
+export type NutrientCardVariant = 'N' | 'P' | 'K' | 'secondary' | 'micro';
+
+/**
+ * Get container classes for nutrient cards by variant
+ * Centralizes gradient, border, and padding for consistent styling
+ */
+export const getNutrientContainerClasses = (
+  variant: NutrientCardVariant,
+): string => {
+  switch (variant) {
+    case 'N': // Nitrogen -> blue
+      return 'bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/30 rounded-lg p-4 border-2 border-blue-300 dark:border-blue-700';
+    case 'P': // Phosphorus -> orange
+      return 'bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/30 rounded-lg p-4 border-2 border-orange-300 dark:border-orange-700';
+    case 'K': // Potassium -> purple
+      return 'bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/30 rounded-lg p-4 border-2 border-purple-300 dark:border-purple-700';
+    case 'secondary': // S, Ca, Mg -> teal
+      return 'bg-gradient-to-br from-teal-50 to-teal-100 dark:from-teal-900/20 dark:to-teal-800/30 rounded-lg p-3 border border-teal-200 dark:border-teal-800';
+    case 'micro': // Fe, Zn, B, etc. -> amber
+    default:
+      return 'bg-gradient-to-br from-amber-50 to-amber-100 dark:from-amber-900/20 dark:to-amber-800/30 rounded-lg p-3 border border-amber-200 dark:border-amber-800';
+  }
 };
