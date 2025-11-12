@@ -33,10 +33,29 @@ export const FertilizerTypeLabels: Record<FertilizerType, string> = {
   [FertilizerType.Foliar]: 'Листкові',
 };
 
+export const ProductForm = {
+  Granular: 'Granular',
+  Prilled: 'Prilled',
+  Liquid: 'Liquid',
+  WatterSolublePowder: 'WaterSolublePowder',
+  SolubleConcentrate: 'SolubleConcentrate',
+} as const;
+
+export type ProductForm = (typeof ProductForm)[keyof typeof ProductForm];
+
+export const ProductFormLabels: Record<ProductForm, string> = {
+  [ProductForm.Granular]: 'Гранульовані',
+  [ProductForm.Prilled]: 'Прильовані гранули',
+  [ProductForm.Liquid]: 'Рідкі',
+  [ProductForm.WatterSolublePowder]: 'Водорозчинний порошок',
+  [ProductForm.SolubleConcentrate]: 'Розчинний концентрат',
+};
+
 export interface FertilizerProduct {
   id: number;
   name: string;
   type: FertilizerType;
+  form: ProductForm;
   nitrogenContent: number;
   phosphorusContent: number;
   potassiumContent: number;
