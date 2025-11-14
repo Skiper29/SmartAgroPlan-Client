@@ -26,7 +26,7 @@ export const fertilizerApi = {
       params.append('sowingDate', sowingDate);
     }
     return await Agent.get<SeasonFertilizerPlan>(
-      API_ROUTES.FERTILIZER_PLANNING.CALCULATE_PLAN,
+      API_ROUTES.FERTILIZER.PLANNING.CALCULATE_PLAN,
       params,
     );
   },
@@ -34,7 +34,7 @@ export const fertilizerApi = {
   // Save season plan
   saveSeasonPlan: async (data: SaveSeasonPlanRequest): Promise<number> => {
     return await Agent.post<number>(
-      API_ROUTES.FERTILIZER_PLANNING.SAVE_PLAN,
+      API_ROUTES.FERTILIZER.PLANNING.SAVE_PLAN,
       data,
     );
   },
@@ -44,7 +44,7 @@ export const fertilizerApi = {
     fieldId: number,
   ): Promise<CurrentRecommendation> => {
     return await Agent.get<CurrentRecommendation>(
-      API_ROUTES.FERTILIZER_PLANNING.GET_CURRENT_REC,
+      API_ROUTES.FERTILIZER.PLANNING.GET_CURRENT_REC,
       new URLSearchParams({ fieldId: String(fieldId) }),
     );
   },
@@ -55,7 +55,7 @@ export const fertilizerApi = {
     daysAhead: number = 14,
   ): Promise<FertilizerApplication[]> => {
     return await Agent.get<FertilizerApplication[]>(
-      API_ROUTES.FERTILIZER_PLANNING.GET_UPCOMING,
+      API_ROUTES.FERTILIZER.APPLICATION.GET_UPCOMING,
       new URLSearchParams({
         fieldId: String(fieldId),
         daysAhead: String(daysAhead),
@@ -70,7 +70,7 @@ export const fertilizerApi = {
     endDate: string,
   ): Promise<FertilizerApplication[]> => {
     return await Agent.get<FertilizerApplication[]>(
-      API_ROUTES.FERTILIZER_PLANNING.GET_BY_DATE_RANGE,
+      API_ROUTES.FERTILIZER.APPLICATION.GET_BY_DATE_RANGE,
       new URLSearchParams({
         fieldId: String(fieldId),
         startDate,
@@ -86,7 +86,7 @@ export const fertilizerApi = {
     toDate: string,
   ): Promise<NutrientApplicationSummary> => {
     return await Agent.get<NutrientApplicationSummary>(
-      API_ROUTES.FERTILIZER_PLANNING.GET_SUMMARY,
+      API_ROUTES.FERTILIZER.APPLICATION.GET_APP_SUMMARY,
       new URLSearchParams({
         fieldId: String(fieldId),
         fromDate,
@@ -100,7 +100,7 @@ export const fertilizerApi = {
     data: RecordApplicationRequest,
   ): Promise<number> => {
     return await Agent.post<number>(
-      API_ROUTES.FERTILIZER_PLANNING.RECORD_APP,
+      API_ROUTES.FERTILIZER.APPLICATION.RECORD_APP,
       data,
     );
   },
@@ -108,7 +108,7 @@ export const fertilizerApi = {
   // Get nutrient balance
   getNutrientBalance: async (fieldId: number): Promise<NutrientBalance> => {
     return await Agent.get<NutrientBalance>(
-      API_ROUTES.FERTILIZER_PLANNING.GET_BALANCE,
+      API_ROUTES.FERTILIZER.ANALYSIS.GET_BALANCE,
       new URLSearchParams({ fieldId: String(fieldId) }),
     );
   },
@@ -118,7 +118,7 @@ export const fertilizerApi = {
     fieldId: number,
   ): Promise<NutrientDeficitAnalysis> => {
     return await Agent.get<NutrientDeficitAnalysis>(
-      API_ROUTES.FERTILIZER_PLANNING.GET_DEFICIT,
+      API_ROUTES.FERTILIZER.ANALYSIS.GET_DEFICIT,
       new URLSearchParams({ fieldId: String(fieldId) }),
     );
   },
