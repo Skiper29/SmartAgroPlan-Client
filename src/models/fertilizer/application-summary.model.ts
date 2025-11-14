@@ -8,9 +8,12 @@ export interface ApplicationSummaryItem {
   nutrients: Partial<NutrientRequirement>;
 }
 
+/**
+ * DTO matching the API response structure for NutrientApplicationSummaryDto
+ */
 export interface NutrientApplicationSummary {
   fieldId: number;
-  fieldName: string;
+  fieldName: string | null;
   fromDate: string;
   toDate: string;
   totalApplied: NutrientRequirement;

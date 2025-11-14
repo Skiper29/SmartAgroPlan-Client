@@ -24,8 +24,8 @@ export const RecommendationPriorityLabels: Record<
 
 export interface CurrentRecommendation {
   fieldId: number;
-  fieldName: string;
-  date: string;
+  fieldName: string | null;
+  date: string; // ISO DateTime
   currentStage: string;
   daysAfterPlanting: number;
   daysToHarvest: number;
@@ -36,6 +36,6 @@ export interface CurrentRecommendation {
   priority: RecommendationPriority | string;
   reasoning: string;
   warnings?: string[];
-  weatherConsiderations?: string;
-  nextRecommendedDate?: string;
+  weatherConsiderations?: string | null;
+  nextRecommendedDate?: string | null; // ISO DateTime
 }

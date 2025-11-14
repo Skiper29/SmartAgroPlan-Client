@@ -32,9 +32,9 @@ export const NutrientBalanceStatusColors: Record<
 
 export interface NutrientBalance {
   fieldId: number;
-  fieldName: string;
-  cropName: string;
-  analysisDate: string;
+  fieldName: string | null;
+  cropName: string | null;
+  analysisDate: string; // ISO DateTime
   daysAfterPlanting: number;
   daysToHarvest: number;
   requiredForTargetYield: NutrientRequirement;
