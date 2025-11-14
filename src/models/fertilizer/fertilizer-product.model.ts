@@ -37,7 +37,7 @@ export const ProductForm = {
   Granular: 'Granular',
   Prilled: 'Prilled',
   Liquid: 'Liquid',
-  WatterSolublePowder: 'WaterSolublePowder',
+  WaterSolublePowder: 'WaterSolublePowder',
   SolubleConcentrate: 'SolubleConcentrate',
 } as const;
 
@@ -47,7 +47,7 @@ export const ProductFormLabels: Record<ProductForm, string> = {
   [ProductForm.Granular]: 'Гранульовані',
   [ProductForm.Prilled]: 'Прильовані гранули',
   [ProductForm.Liquid]: 'Рідкі',
-  [ProductForm.WatterSolublePowder]: 'Водорозчинний порошок',
+  [ProductForm.WaterSolublePowder]: 'Водорозчинний порошок',
   [ProductForm.SolubleConcentrate]: 'Розчинний концентрат',
 };
 
@@ -59,15 +59,38 @@ export interface FertilizerProduct {
   nitrogenContent: number;
   phosphorusContent: number;
   potassiumContent: number;
-  sulfurContent?: number;
-  calciumContent?: number;
-  magnesiumContent?: number;
-  ironContent?: number;
-  zincContent?: number;
-  boronContent?: number;
-  manganeseContent?: number;
-  copperContent?: number;
-  molybdenumContent?: number;
-  description?: string;
-  manufacturer?: string;
+  sulfurContent?: number | null;
+  calciumContent?: number | null;
+  magnesiumContent?: number | null;
+  ironContent?: number | null;
+  zincContent?: number | null;
+  boronContent?: number | null;
+  manganeseContent?: number | null;
+  copperContent?: number | null;
+  molybdenumContent?: number | null;
+  description?: string | null;
+  manufacturer?: string | null;
 }
+
+// DTOs for creating/updating products
+export interface CreateFertilizerProductDto {
+  name: string;
+  type: FertilizerType;
+  form: ProductForm;
+  nitrogenContent: number;
+  phosphorusContent: number;
+  potassiumContent: number;
+  sulfurContent?: number | null;
+  calciumContent?: number | null;
+  magnesiumContent?: number | null;
+  ironContent?: number | null;
+  zincContent?: number | null;
+  boronContent?: number | null;
+  manganeseContent?: number | null;
+  copperContent?: number | null;
+  molybdenumContent?: number | null;
+  description?: string | null;
+  manufacturer?: string | null;
+}
+
+export type UpdateFertilizerProductDto = CreateFertilizerProductDto;
