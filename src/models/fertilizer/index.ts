@@ -6,10 +6,15 @@ export { createEmptyNutrientRequirement } from './nutrient-requirement.model';
 export type {
   FertilizerProduct,
   FertilizerType,
+  ProductForm,
+  CreateFertilizerProductDto,
+  UpdateFertilizerProductDto,
 } from './fertilizer-product.model';
 export {
   FertilizerType as FertilizerTypeEnum,
   FertilizerTypeLabels,
+  ProductForm as ProductFormEnum,
+  ProductFormLabels,
 } from './fertilizer-product.model';
 
 // Application models
@@ -64,7 +69,29 @@ export type {
 } from './application-summary.model';
 
 // Record application models
+export type { RecordApplicationRequest } from './record-application.model';
+
+// Application record models (detailed)
 export type {
-  RecordApplicationRequest,
-  ApplicationRecord,
-} from './record-application.model';
+  FertilizerApplicationRecordDto,
+  ApplicationRecordProductDto,
+  UpdateApplicationRecordDto,
+} from './application-record.model';
+
+// Application plan models
+export type {
+  UpdateApplicationPlanDto,
+  CompleteApplicationRequest,
+} from './application-plan.model';
+
+// Product optimization models
+export type {
+  OptimizeProductsRequest,
+  RecommendedProductDto,
+  ProductRecommendationDto,
+  OptimizationStrategy,
+} from './product-optimization.model';
+export {
+  OptimizationStrategy as OptimizationStrategyEnum,
+  OptimizationStrategyLabels,
+} from './product-optimization.model';
