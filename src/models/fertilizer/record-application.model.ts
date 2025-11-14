@@ -1,25 +1,14 @@
+/**
+ * Request to record a fertilizer application
+ */
 export interface RecordApplicationRequest {
   fieldId: number;
-  applicationDate: string;
+  applicationDate: string; // ISO DateTime
   applicationMethodId: number;
-  productsUsed: Record<string, number>; // Product ID -> quantity in kg/ha
-  applicationPlanId?: number;
-  notes?: string;
-  temperature?: number;
-  windSpeed?: number;
-  humidity?: number;
-}
-
-export interface ApplicationRecord {
-  id: number;
-  fieldId: number;
-  applicationDate: string;
-  applicationMethodId: number;
-  productsUsed: Record<string, number>;
-  applicationPlanId?: number;
-  notes?: string;
-  temperature?: number;
-  windSpeed?: number;
-  humidity?: number;
-  createdAt: string;
+  productsUsed: Record<number, number>; // Product ID -> quantity in kg/ha
+  applicationPlanId?: number | null;
+  notes?: string | null;
+  temperature?: number | null; // Celsius
+  windSpeed?: number | null; // km/h
+  humidity?: number | null; // %
 }
