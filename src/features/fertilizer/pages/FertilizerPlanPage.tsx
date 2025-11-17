@@ -172,7 +172,7 @@ const FertilizerPlanPage: React.FC = () => {
               Назад
             </Button>
             <div>
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+              <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
                 {plan.fieldName} - Сезонний План
               </h1>
               <p className="text-sm text-gray-500 dark:text-gray-400">
@@ -201,10 +201,10 @@ const FertilizerPlanPage: React.FC = () => {
 
       {/* Plan Info Card */}
       <Card className="border-l-4 border-green-500 shadow-md">
-        <CardHeader className="bg-green-50 dark:bg-green-900/20">
+        <CardHeader>
           <div className="flex items-start justify-between">
             <div>
-              <CardTitle className="flex items-center text-green-700 dark:text-green-300">
+              <CardTitle className="flex items-center text-green-700 dark:text-green-300 text-2xl">
                 <Info className="h-5 w-5 mr-2" />
                 Інформація про план
               </CardTitle>
@@ -270,8 +270,8 @@ const FertilizerPlanPage: React.FC = () => {
       <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Total Requirement Card */}
         <Card className="border-l-4 border-blue-500 shadow-md hover:shadow-lg transition-shadow">
-          <CardHeader className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20">
-            <CardTitle className="flex items-center text-blue-700 dark:text-blue-300 text-lg">
+          <CardHeader>
+            <CardTitle className="flex items-center text-blue-700 dark:text-blue-300 text-xl">
               <TrendingUp className="h-5 w-5 mr-2" />
               Загальна потреба
             </CardTitle>
@@ -314,8 +314,8 @@ const FertilizerPlanPage: React.FC = () => {
 
         {/* Already Applied Card */}
         <Card className="border-l-4 border-green-500 shadow-md hover:shadow-lg transition-shadow">
-          <CardHeader className="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20">
-            <CardTitle className="flex items-center text-green-700 dark:text-green-300 text-lg">
+          <CardHeader>
+            <CardTitle className="flex items-center text-green-700 dark:text-green-300 text-xl">
               <CheckCircle2 className="h-5 w-5 mr-2" />
               Вже внесено
             </CardTitle>
@@ -358,8 +358,8 @@ const FertilizerPlanPage: React.FC = () => {
 
         {/* Remaining to Apply Card */}
         <Card className="border-l-4 border-orange-500 shadow-md hover:shadow-lg transition-shadow">
-          <CardHeader className="bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20">
-            <CardTitle className="flex items-center text-orange-700 dark:text-orange-300 text-lg">
+          <CardHeader>
+            <CardTitle className="flex items-center text-orange-700 dark:text-orange-300 text-xl">
               <Package className="h-5 w-5 mr-2" />
               Залишилось внести
             </CardTitle>
