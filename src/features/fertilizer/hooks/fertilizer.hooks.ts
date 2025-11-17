@@ -1,3 +1,17 @@
+/**
+ * @deprecated This file is deprecated. Use the new modular hooks instead:
+ *
+ * New imports:
+ * - Planning: import { useCalculateSeasonPlan, useSaveSeasonPlan, useCurrentRecommendation } from '@/features/fertilizer/hooks'
+ * - Applications: import { useRecordApplication, useApplicationHistory, etc. } from '@/features/fertilizer/hooks'
+ * - Analysis: import { useNutrientBalance, useNutrientDeficit } from '@/features/fertilizer/hooks'
+ *
+ * See: src/features/fertilizer/hooks/README.md for migration guide
+ * See: src/features/fertilizer/MIGRATION_COMPLETE.md for details
+ *
+ * This file will be removed in a future version.
+ */
+
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { fertilizerApi } from '@/features/fertilizer/api/fertilizer.api';
 import type {
