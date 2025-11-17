@@ -21,6 +21,24 @@ export interface SeasonFertilizerPlan {
   savedPlanId?: number | null;
 }
 
+export interface SavedSeasonFertilizerPlan {
+  fieldId: number;
+  cropName: string | null;
+  fieldName: string | null;
+  sowingDate: string; // ISO DateTime
+  expectedHarvestDate: string; // ISO DateTime
+  planGeneratedDate: string; // ISO DateTime
+  totalRequirement: NutrientRequirement;
+  alreadyApplied: NutrientRequirement;
+  remainingToApply: NutrientRequirement;
+  applications: FertilizerApplication[];
+  fieldAreaHa: number;
+  expectedYield: number; // tons/ha
+  notes?: string | null;
+  isSaved: boolean;
+  savedPlanId?: number | null;
+}
+
 export interface SaveSeasonPlanRequest {
   fieldId: number;
   targetYield: number; // tons/ha

@@ -45,6 +45,7 @@ export const API_ROUTES = {
       CALCULATE_PLAN: 'fertilizer/planning/season-plan', // GET
       SAVE_PLAN: 'fertilizer/planning/season-plan', // POST
       GET_CURRENT_REC: 'fertilizer/planning/current-recommendation', // GET
+      GET_SAVED_APPLICATION_PLANS: 'fertilizer/planning/season-plan/saved', // GET
     },
     APPLICATION: {
       RECORD_APP: 'fertilizer/applications', // POST

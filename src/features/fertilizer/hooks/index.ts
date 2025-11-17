@@ -8,6 +8,7 @@ export {
   useCalculateSeasonPlan,
   useSaveSeasonPlan,
   useCurrentRecommendation,
+  useSavedSeasonPlan,
   FERTILIZER_PLANNING_KEYS,
 } from './fertilizer-planning.hooks';
 

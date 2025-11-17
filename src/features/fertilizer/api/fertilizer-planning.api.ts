@@ -5,6 +5,7 @@ import type {
   SaveSeasonPlanRequest,
   CurrentRecommendation,
 } from '@/models/fertilizer';
+import type { SavedSeasonFertilizerPlan } from '@/models/fertilizer/season-plan.model.ts';
 
 /**
  * Fertilizer Planning API
@@ -53,6 +54,19 @@ export const fertilizerPlanningApi = {
   ): Promise<CurrentRecommendation> => {
     return await Agent.get<CurrentRecommendation>(
       API_ROUTES.FERTILIZER.PLANNING.GET_CURRENT_REC,
+      new URLSearchParams({ fieldId: String(fieldId) }),
+    );
+  },
+
+  /**
+   * Get saved season fertilizer plan for a field
+   * GET /fertilizer/planning/season-plan/saved
+   */
+  getSavedSeasonPlan: async (
+    fieldId: number,
+  ): Promise<SavedSeasonFertilizerPlan> => {
+    return await Agent.get<SavedSeasonFertilizerPlan>(
+      API_ROUTES.FERTILIZER.PLANNING.GET_SAVED_APPLICATION_PLANS,
       new URLSearchParams({ fieldId: String(fieldId) }),
     );
   },

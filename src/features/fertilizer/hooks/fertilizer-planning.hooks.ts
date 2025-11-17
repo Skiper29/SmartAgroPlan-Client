@@ -6,6 +6,7 @@ import type {
   CurrentRecommendation,
 } from '@/models/fertilizer';
 import type { ApiError } from '@/types/api-error.type';
+import type { SavedSeasonFertilizerPlan } from '@/models/fertilizer/season-plan.model.ts';
 
 /**
  * Query keys for fertilizer planning
@@ -22,6 +23,8 @@ export const FERTILIZER_PLANNING_KEYS = {
     [...FERTILIZER_PLANNING_KEYS.all, 'current-recommendations'] as const,
   currentRecommendation: (fieldId: number) =>
     [...FERTILIZER_PLANNING_KEYS.currentRecommendations(), fieldId] as const,
+  savedSeasonPlan: (fieldId: number) =>
+    [...FERTILIZER_PLANNING_KEYS.seasonPlans(), 'saved', fieldId] as const,
 };
 
 /**
@@ -99,5 +102,21 @@ export const useCurrentRecommendation = (
     queryFn: () => fertilizerPlanningApi.getCurrentRecommendation(fieldId),
     enabled: enabled && !!fieldId,
     staleTime: 2 * 60 * 1000, // 2 minutes
+  });
+};
+
+/** * Hook to get saved season fertilizer plans for a field
+ * @param fieldId - Field ID
+ * @param enabled - Whether the query is enabled
+ */
+export const useSavedSeasonPlan = (
+  fieldId: number,
+  enabled: boolean = true,
+) => {
+  return useQuery<SavedSeasonFertilizerPlan, ApiError>({
+    queryKey: FERTILIZER_PLANNING_KEYS.savedSeasonPlan(fieldId),
+    queryFn: () => fertilizerPlanningApi.getSavedSeasonPlan(fieldId),
+    enabled: enabled && !!fieldId,
+    staleTime: 10 * 60 * 1000, // 10 minutes
   });
 };
