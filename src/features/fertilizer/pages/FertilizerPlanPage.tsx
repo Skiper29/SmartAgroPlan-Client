@@ -16,7 +16,6 @@ import {
 } from 'lucide-react';
 import { useSavedSeasonPlan } from '@/features/fertilizer/hooks';
 import { useField } from '@/features/fields/hooks/fields.hooks';
-import ErrorDisplay from '@/components/ErrorDisplay';
 import { sortApplicationsByDate } from '../utils/fertilizerUtils';
 import { cn } from '@/lib/utils';
 import type {
@@ -35,7 +34,6 @@ const FertilizerPlanPage: React.FC = () => {
   const {
     data: plan,
     isLoading: isLoadingPlan,
-    error: planError,
     refetch: refetchPlan,
   } = useSavedSeasonPlan(fieldId);
 
@@ -70,15 +68,11 @@ const FertilizerPlanPage: React.FC = () => {
         <div className="text-center space-y-4">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto"></div>
           <p className="text-lg text-gray-600 dark:text-gray-400">
-            Завантаження планів...
+            Завантаження плану...
           </p>
         </div>
       </div>
     );
-  }
-
-  if (planError) {
-    return <ErrorDisplay error={planError} onRetry={handleRefresh} />;
   }
 
   if (!field) {
@@ -133,20 +127,41 @@ const FertilizerPlanPage: React.FC = () => {
               </div>
               <div className="space-y-2">
                 <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-200">
-                  Немає збережених планів
+                  Немає збереженого плану
                 </h3>
                 <p className="text-gray-600 dark:text-gray-400">
-                  Створіть перший сезонний план добрив для цього поля
+                  Створіть сезонний план добрив для цього поля, щоб отримати
+                  рекомендації з внесення поживних речовин
                 </p>
               </div>
-              <Button
-                onClick={handleGenerateNew}
-                size="lg"
-                className="text-lg h-14 shadow-lg"
-              >
-                <Sparkles className="h-5 w-5 mr-2" />
-                Створити новий план
-              </Button>
+              <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                <Button
+                  onClick={handleGenerateNew}
+                  size="lg"
+                  className="text-lg h-14 shadow-lg"
+                >
+                  <Sparkles className="h-5 w-5 mr-2" />
+                  Створити новий план
+                </Button>
+                <Button
+                  onClick={handleRefresh}
+                  variant="outline"
+                  size="lg"
+                  disabled={isLoading}
+                  className="text-lg h-14"
+                >
+                  <RefreshCw
+                    className={cn('h-5 w-5 mr-2', isLoading && 'animate-spin')}
+                  />
+                  Оновити
+                </Button>
+              </div>
+              <div className="pt-4 border-t border-gray-200 dark:border-gray-700 mt-6">
+                <p className="text-sm text-muted-foreground">
+                  💡 План буде включати рекомендації по всіх етапах вегетації з
+                  урахуванням стану ґрунту та погодних умов
+                </p>
+              </div>
             </div>
           </CardContent>
         </Card>
