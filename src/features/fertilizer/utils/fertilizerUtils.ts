@@ -521,6 +521,9 @@ export const sortApplicationsByDate = <T extends { recommendedDate: string }>(
   applications: T[],
   ascending: boolean = true,
 ): T[] => {
+  if (!applications || !Array.isArray(applications)) {
+    return [];
+  }
   return [...applications].sort((a, b) => {
     const dateA = new Date(a.recommendedDate).getTime();
     const dateB = new Date(b.recommendedDate).getTime();

@@ -10,6 +10,7 @@ import IrrigationDashboardPage from '@/features/irrigation/pages/IrrigationDashb
 import IrrigationDetailPage from '@/features/irrigation/pages/IrrigationDetailPage.tsx';
 import FertilizerDashboardPage from '@/features/fertilizer/pages/FertilizerDashboardPage';
 import FertilizerPlanPage from '@/features/fertilizer/pages/FertilizerPlanPage';
+import GenerateSeasonPlanPage from '@/features/fertilizer/pages/GenerateSeasonPlanPage';
 import FertilizerBalancePage from '@/features/fertilizer/pages/FertilizerBalancePage';
 import FertilizerHistoryPage from '@/features/fertilizer/pages/FertilizerHistoryPage';
 
@@ -86,6 +87,14 @@ export function AppRoutes() {
         element={
           <Layout>
             <FertilizerPlanPage />
+          </Layout>
+        }
+      />
+      <Route
+        path="/fertilizer/generate-plan/:id"
+        element={
+          <Layout>
+            <GenerateSeasonPlanPage />
           </Layout>
         }
       />
