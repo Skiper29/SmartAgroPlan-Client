@@ -17,7 +17,7 @@ import {
 } from '@/features/fertilizer/hooks';
 import { useField } from '@/features/fields/hooks/fields.hooks';
 import SeasonPlanCard from '../components/SeasonPlanCard';
-import NutrientTable from '../components/NutrientTable';
+import NutrientTable from '../components/nutrient/NutrientTable.tsx';
 import ErrorDisplay from '@/components/ErrorDisplay';
 import { extractErrorMessage } from '@/types/api-error.type';
 import {

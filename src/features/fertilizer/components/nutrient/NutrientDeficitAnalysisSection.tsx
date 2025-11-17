@@ -1,6 +1,6 @@
 import React from 'react';
 import type { NutrientDeficitAnalysis } from '@/models/fertilizer';
-import NutrientDeficitAnalysisCard from './NutrientDeficitAnalysisCard';
+import NutrientDeficitAnalysisCard from './NutrientDeficitAnalysisCard.tsx';
 import { AlertTriangle } from 'lucide-react';
 
 interface NutrientDeficitAnalysisSectionProps {

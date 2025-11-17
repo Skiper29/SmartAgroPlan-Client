@@ -1,12 +1,17 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card.tsx';
 import type { NutrientBalance } from '@/models/fertilizer';
 import {
   getBalanceStatusStyling,
   formatDate,
-} from '@/features/fertilizer/utils/fertilizerUtils';
+} from '@/features/fertilizer/utils/fertilizerUtils.ts';
 import { Calendar, Clock, Target } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/utils.ts';
 
 interface NutrientBalanceStatusCardProps {
   balance: NutrientBalance;

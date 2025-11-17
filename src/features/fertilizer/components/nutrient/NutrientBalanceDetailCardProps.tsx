@@ -1,9 +1,14 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card.tsx';
 import { Scale } from 'lucide-react';
 import type { NutrientBalance } from '@/models/fertilizer';
-import NutrientTable from './NutrientTable';
-import { cn } from '@/lib/utils';
+import NutrientTable from './NutrientTable.tsx';
+import { cn } from '@/lib/utils.ts';
 
 interface NutrientBalanceDetailCardProps {
   balance: NutrientBalance;

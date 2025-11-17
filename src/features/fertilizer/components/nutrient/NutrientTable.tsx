@@ -6,15 +6,15 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
+} from '@/components/ui/table.tsx';
 import type { NutrientRequirement } from '@/models/fertilizer';
 import {
   getNutrientNameUA,
   formatNutrientValue,
   getNutrientBalanceStyling,
-} from '../utils/fertilizerUtils';
-import { Badge } from '@/components/ui/badge';
-import { cn } from '@/lib/utils';
+} from '../../utils/fertilizerUtils.ts';
+import { Badge } from '@/components/ui/badge.tsx';
+import { cn } from '@/lib/utils.ts';
 
 interface NutrientTableProps {
   required: NutrientRequirement;

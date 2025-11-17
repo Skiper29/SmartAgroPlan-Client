@@ -1,12 +1,17 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card.tsx';
+import { Badge } from '@/components/ui/badge.tsx';
 import type { NutrientDeficit } from '@/models/fertilizer';
 import {
   getDeficitUrgencyStyling,
   getNutrientNameUA,
-} from '../utils/fertilizerUtils';
-import { cn } from '@/lib/utils';
+} from '../../utils/fertilizerUtils.ts';
+import { cn } from '@/lib/utils.ts';
 
 interface NutrientDeficitAnalysisCardProps {
   deficit: NutrientDeficit;
