@@ -1,9 +1,11 @@
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useMemo } from 'react';
+import { useQueries } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { useFields } from '@/features/fields/hooks/fields.hooks';
-import { fertilizerApi } from '../api/fertilizer.api';
+import { FERTILIZER_PLANNING_KEYS } from '@/features/fertilizer/hooks';
+import { fertilizerPlanningApi } from '@/features/fertilizer/api';
 import FertilizerFieldCard from '../components/FertilizerFieldCard';
-import { AlertTriangle, RefreshCw } from 'lucide-react';
+import { RefreshCw } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import ErrorDisplay from '@/components/ErrorDisplay';
 import type { CurrentRecommendation } from '@/models/fertilizer';
@@ -14,56 +16,46 @@ const FertilizerDashboardPage: React.FC = () => {
     data: fields = [],
     isLoading: isLoadingFields,
     error: fieldsError,
+    refetch: refetchFields,
   } = useFields();
 
-  const [recommendations, setRecommendations] = useState<
-    CurrentRecommendation[]
-  >([]);
-  const [isLoadingRecommendations, setIsLoadingRecommendations] =
-    useState(false);
-  const [recommendationsError, setRecommendationsError] =
-    useState<Error | null>(null);
+  // Fetch recommendations for all fields using useQueries
+  const recommendationQueries = useQueries({
+    queries: fields.map((field) => ({
+      queryKey: FERTILIZER_PLANNING_KEYS.currentRecommendation(field.id),
+      queryFn: () => fertilizerPlanningApi.getCurrentRecommendation(field.id),
+      staleTime: 2 * 60 * 1000, // 2 minutes
+      enabled: !!field.id,
+    })),
+  });
 
-  // Fetch recommendations for all fields
-  const fetchRecommendations = async () => {
-    if (fields.length === 0) return;
+  // Extract successful recommendations
+  const recommendationsArray = useMemo(() => {
+    return recommendationQueries
+      .filter((query) => query.data)
+      .map((query) => query.data as CurrentRecommendation);
+  }, [recommendationQueries]);
 
-    setIsLoadingRecommendations(true);
-    setRecommendationsError(null);
-
-    try {
-      const promises = fields.map((field) =>
-        fertilizerApi.getCurrentRecommendation(field.id).catch(() => null),
-      );
-      const results = await Promise.all(promises);
-      setRecommendations(
-        results.filter((rec) => rec !== null) as CurrentRecommendation[],
-      );
-    } catch (error) {
-      setRecommendationsError(error as Error);
-    } finally {
-      setIsLoadingRecommendations(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchRecommendations();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fields.length]);
+  // Check if any queries are still loading
+  const isLoadingRecommendations = recommendationQueries.some(
+    (query) => query.isLoading,
+  );
 
   const handleRefresh = () => {
-    fetchRecommendations();
+    refetchFields();
+    recommendationQueries.forEach((query) => query.refetch());
   };
 
+  // Calculate summary statistics
   const { needsAttention, upcomingApplications, criticalFields } =
     useMemo(() => {
-      const needsAttention = recommendations.filter(
+      const needsAttention = recommendationsArray.filter(
         (rec) => rec.shouldApplyNow,
       ).length;
-      const upcomingApplications = recommendations.filter(
+      const upcomingApplications = recommendationsArray.filter(
         (rec) => rec.shouldApplyNow && rec.priority !== 'Low',
       ).length;
-      const criticalFields = recommendations.filter(
+      const criticalFields = recommendationsArray.filter(
         (rec) => rec.priority === 'Critical',
       ).length;
 
@@ -72,7 +64,7 @@ const FertilizerDashboardPage: React.FC = () => {
         upcomingApplications,
         criticalFields,
       };
-    }, [recommendations]);
+    }, [recommendationsArray]);
 
   const isLoading = isLoadingFields || isLoadingRecommendations;
 
@@ -91,12 +83,6 @@ const FertilizerDashboardPage: React.FC = () => {
 
   if (fieldsError) {
     return <ErrorDisplay error={fieldsError} onRetry={handleRefresh} />;
-  }
-
-  if (recommendationsError && recommendations.length === 0) {
-    return (
-      <ErrorDisplay error={recommendationsError} onRetry={handleRefresh} />
-    );
   }
 
   return (
@@ -131,38 +117,22 @@ const FertilizerDashboardPage: React.FC = () => {
         <h2 className="text-2xl font-semibold text-green-800 dark:text-green-200">
           Рекомендації по полях
         </h2>
-        {recommendations.length > 0 ? (
+        {recommendationsArray.length > 0 ? (
           <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-            {recommendations.map((rec) => (
+            {recommendationsArray.map((rec) => (
               <FertilizerFieldCard key={rec.fieldId} recommendation={rec} />
             ))}
           </div>
         ) : (
           <div className="text-center py-12 bg-white dark:bg-gray-800 rounded-lg">
             <p className="text-gray-500 dark:text-gray-400">
-              Немає доступних рекомендацій. Додайте поля та посіви для початку.
+              {fields.length === 0
+                ? 'Немає доступних рекомендацій. Додайте поля та посіви для початку.'
+                : 'Завантаження рекомендацій...'}
             </p>
           </div>
         )}
       </section>
-
-      {/* Errors notice */}
-      {recommendationsError && recommendations.length > 0 && (
-        <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
-          <div className="flex items-start">
-            <AlertTriangle className="h-5 w-5 text-yellow-600 dark:text-yellow-500 mr-3 mt-0.5" />
-            <div>
-              <h3 className="font-semibold text-yellow-800 dark:text-yellow-200">
-                Помилка завантаження деяких полів
-              </h3>
-              <p className="text-sm text-yellow-700 dark:text-yellow-300 mt-1">
-                Деякі рекомендації можуть бути недоступні. Дані можуть бути
-                неповними.
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
