@@ -11,7 +11,7 @@ import { useField } from '@/features/fields/hooks/fields.hooks';
 import ErrorDisplay from '@/components/ErrorDisplay';
 import { cn } from '@/lib/utils';
 import NutrientBalanceStatusCard from '@/features/fertilizer/components/nutrient/NutrientBalanceStatusCard.tsx';
-import NutrientBalanceDetailCard from '@/features/fertilizer/components/nutrient/NutrientBalanceDetailCardProps.tsx';
+import NutrientBalanceDetailCard from '@/features/fertilizer/components/nutrient/NutrientBalanceDetailCard.tsx';
 import NutrientDeficitAnalysisSection from '@/features/fertilizer/components/nutrient/NutrientDeficitAnalysisSection.tsx';
 import RecommendationItem from '@/features/fertilizer/components/RecommendationItem.tsx';
 import WarningItem from '@/features/fertilizer/components/WarningItem.tsx';
