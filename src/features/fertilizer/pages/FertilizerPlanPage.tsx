@@ -404,9 +404,17 @@ const FertilizerPlanPage: React.FC = () => {
       {/* Applications List */}
       <section className="space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
-            Заплановані внесення ({plan.applications?.length || 0})
+          <h2 className="text-2xl font-bold text-green-800 dark:text-green-200">
+            Заплановані внесення
           </h2>
+          <div className="bg-gray-100 dark:bg-gray-800 px-4 py-2 rounded-lg">
+            <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
+              Всього:{' '}
+            </span>
+            <span className="text-lg font-bold text-gray-900 dark:text-gray-100">
+              {plan.applications?.length || 0}
+            </span>
+          </div>
         </div>
 
         {sortedApplications.length > 0 ? (
