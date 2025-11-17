@@ -22,6 +22,7 @@ export type {
   FertilizerApplication,
   ApplicationMethod,
   CropStage,
+  RecommendedProductApplication,
 } from './fertilizer-application.model';
 export {
   ApplicationMethod as ApplicationMethodEnum,

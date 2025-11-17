@@ -54,11 +54,18 @@ export interface FertilizerApplication {
   cropStage: CropStage | string;
   daysAfterPlanting: number;
   nutrientsToApply: NutrientRequirement;
-  products: FertilizerProduct[];
+  products: RecommendedProductApplication[];
   applicationMethod: ApplicationMethod | string;
   rationale: string;
   weatherConsiderations?: string;
   warnings?: string | null;
   isCompleted: boolean;
   actualApplicationDate?: string | null;
+}
+
+export interface RecommendedProductApplication {
+  product: FertilizerProduct;
+  quantityKgPerHa: number;
+  totalQuantityKg: number;
+  nutrientsProvidedPerHa: NutrientRequirement;
 }

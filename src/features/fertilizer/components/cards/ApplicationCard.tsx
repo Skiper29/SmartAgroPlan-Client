@@ -119,11 +119,11 @@ const ApplicationCard: React.FC<ApplicationCardProps> = ({
               <div className="space-y-2">
                 {application.products.map((product) => (
                   <button
-                    key={product.id}
-                    onClick={() => onProductClick?.(product)}
+                    key={product.product.id}
+                    onClick={() => onProductClick?.(product.product)}
                     className="w-full text-left text-sm bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-lg px-3 py-2 border border-purple-200 dark:border-purple-800 font-medium transition-all hover:shadow-md hover:scale-[1.02] hover:border-purple-400 dark:hover:border-purple-600 cursor-pointer"
                   >
-                    {product.name}
+                    {product.product.name}
                   </button>
                 ))}
               </div>
