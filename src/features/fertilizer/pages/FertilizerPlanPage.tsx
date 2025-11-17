@@ -16,7 +16,7 @@ import {
   useSaveSeasonPlan,
 } from '@/features/fertilizer/hooks';
 import { useField } from '@/features/fields/hooks/fields.hooks';
-import SeasonPlanCard from '../components/SeasonPlanCard';
+import SeasonPlanCard from '../components/cards/SeasonPlanCard.tsx';
 import NutrientTable from '../components/nutrient/NutrientTable.tsx';
 import ErrorDisplay from '@/components/ErrorDisplay';
 import { extractErrorMessage } from '@/types/api-error.type';

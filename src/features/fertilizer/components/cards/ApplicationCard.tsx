@@ -1,6 +1,6 @@
 import React from 'react';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader } from '@/components/ui/card.tsx';
+import { Badge } from '@/components/ui/badge.tsx';
 import {
   CheckCircle2,
   Clock,
@@ -13,7 +13,7 @@ import {
   formatDateLong,
   getAllNutrientsString,
   getStatusBadgeColor,
-} from '../utils/fertilizerUtils';
+} from '../../utils/fertilizerUtils.ts';
 import { CropStageLabels } from '@/models/fertilizer';
 import type {
   FertilizerApplication,

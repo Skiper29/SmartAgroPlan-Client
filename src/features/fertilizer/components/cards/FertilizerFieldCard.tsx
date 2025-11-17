@@ -5,9 +5,9 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+} from '@/components/ui/card.tsx';
+import { Badge } from '@/components/ui/badge.tsx';
+import { Button } from '@/components/ui/button.tsx';
 import {
   Calendar,
   AlertCircle,
@@ -21,9 +21,9 @@ import {
   getPriorityStyling,
   formatDateLong,
   isUpcoming,
-} from '../utils/fertilizerUtils';
+} from '../../utils/fertilizerUtils.ts';
 import { useNavigate } from 'react-router-dom';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/utils.ts';
 
 interface FertilizerFieldCardProps {
   recommendation: CurrentRecommendation;

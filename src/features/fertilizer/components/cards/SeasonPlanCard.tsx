@@ -1,12 +1,17 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card.tsx';
+import { Badge } from '@/components/ui/badge.tsx';
 import type { SeasonFertilizerPlan } from '@/models/fertilizer';
 import {
   formatDate,
   getPrimaryNutrientsString,
   groupApplicationsByStatus,
-} from '../utils/fertilizerUtils';
+} from '../../utils/fertilizerUtils.ts';
 import { Calendar, TrendingUp, CheckCircle2, Clock } from 'lucide-react';
 
 interface SeasonPlanCardProps {

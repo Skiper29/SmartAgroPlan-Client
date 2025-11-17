@@ -6,13 +6,13 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
+} from '@/components/ui/table.tsx';
 import type { NutrientRequirement } from '@/models/fertilizer';
 import {
   getNutrientNameUA,
   formatNutrientValue,
-} from '../utils/fertilizerUtils';
-import { cn } from '@/lib/utils';
+} from '../../utils/fertilizerUtils.ts';
+import { cn } from '@/lib/utils.ts';
 
 interface SimpleNutrientTableProps {
   nutrients: NutrientRequirement;

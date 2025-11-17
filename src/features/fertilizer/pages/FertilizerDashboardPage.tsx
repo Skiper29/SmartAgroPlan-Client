@@ -4,12 +4,12 @@ import { Button } from '@/components/ui/button';
 import { useFields } from '@/features/fields/hooks/fields.hooks';
 import { FERTILIZER_PLANNING_KEYS } from '@/features/fertilizer/hooks';
 import { fertilizerPlanningApi } from '@/features/fertilizer/api';
-import FertilizerFieldCard from '../components/FertilizerFieldCard';
+import FertilizerFieldCard from '../components/cards/FertilizerFieldCard.tsx';
 import { RefreshCw } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import ErrorDisplay from '@/components/ErrorDisplay';
 import type { CurrentRecommendation } from '@/models/fertilizer';
-import { FertilizerSummaryCards } from '@/features/fertilizer/components/FertilizerSummaryCards';
+import { FertilizerSummaryCards } from '@/features/fertilizer/components/cards/FertilizerSummaryCards.tsx';
 
 const FertilizerDashboardPage: React.FC = () => {
   const {

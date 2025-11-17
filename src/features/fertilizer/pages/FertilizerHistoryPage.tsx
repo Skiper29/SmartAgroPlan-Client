@@ -9,8 +9,8 @@ import {
 } from '@/features/fertilizer/hooks';
 import { useField } from '@/features/fields/hooks/fields.hooks';
 import DateRangeFilter from '../components/DateRangeFilter';
-import ApplicationSummaryCard from '../components/ApplicationSummaryCard';
-import ApplicationCard from '../components/ApplicationCard';
+import ApplicationSummaryCard from '../components/cards/ApplicationSummaryCard.tsx';
+import ApplicationCard from '../components/cards/ApplicationCard.tsx';
 import ProductDetailsModal from '../components/ProductDetailsModal';
 import ErrorDisplay from '@/components/ErrorDisplay';
 import { sortApplicationsByDate } from '../utils/fertilizerUtils';

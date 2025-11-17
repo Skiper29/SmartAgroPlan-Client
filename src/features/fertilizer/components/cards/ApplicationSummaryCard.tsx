@@ -1,8 +1,13 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card.tsx';
 import { CheckCircle2, Clock, TrendingUp } from 'lucide-react';
-import SimpleNutrientTable from './SimpleNutrientTable';
-import { getPrimaryNutrientsString } from '../utils/fertilizerUtils';
+import SimpleNutrientTable from '../tables/SimpleNutrientTable.tsx';
+import { getPrimaryNutrientsString } from '../../utils/fertilizerUtils.ts';
 import type { NutrientApplicationSummary } from '@/models/fertilizer';
 
 interface ApplicationSummaryCardProps {
