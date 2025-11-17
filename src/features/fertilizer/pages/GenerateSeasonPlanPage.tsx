@@ -10,6 +10,7 @@ import {
   RefreshCw,
   Sparkles,
   AlertCircle,
+  Scale,
 } from 'lucide-react';
 import {
   useCalculateSeasonPlan,
@@ -282,9 +283,19 @@ const GenerateSeasonPlanPage: React.FC = () => {
 
           {/* Detailed Nutrient Table */}
           <section>
-            <Card className="shadow-lg">
-              <CardHeader className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20">
-                <CardTitle>Детальний баланс поживних речовин</CardTitle>
+            <Card id="balance" className="border-l-4 border-l-blue-500">
+              <CardHeader
+                className={cn(
+                  'pb-4 text-lg',
+                  ' text-blue-700 dark:text-blue-300',
+                )}
+              >
+                <CardTitle className="flex items-center gap-2 text-xl">
+                  <div className="p-1.5 bg-blue-500 rounded-lg">
+                    <Scale className="h-5 w-5 text-white" />
+                  </div>
+                  Детальний Баланс Поживних Речовин
+                </CardTitle>
               </CardHeader>
               <CardContent className="pt-6">
                 <NutrientTable
