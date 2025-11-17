@@ -6,7 +6,7 @@ import { ArrowLeft, AlertTriangle, RefreshCw, Info } from 'lucide-react';
 import {
   useNutrientBalance,
   useNutrientDeficit,
-} from '../hooks/fertilizer.hooks';
+} from '@/features/fertilizer/hooks';
 import { useField } from '@/features/fields/hooks/fields.hooks';
 import ErrorDisplay from '@/components/ErrorDisplay';
 import { cn } from '@/lib/utils';

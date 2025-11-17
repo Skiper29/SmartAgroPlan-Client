@@ -14,7 +14,7 @@ import {
 import {
   useCalculateSeasonPlan,
   useSaveSeasonPlan,
-} from '../hooks/fertilizer.hooks';
+} from '@/features/fertilizer/hooks';
 import { useField } from '@/features/fields/hooks/fields.hooks';
 import SeasonPlanCard from '../components/SeasonPlanCard';
 import NutrientTable from '../components/NutrientTable';

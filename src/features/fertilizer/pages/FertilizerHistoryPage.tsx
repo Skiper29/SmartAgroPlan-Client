@@ -6,7 +6,7 @@ import { ArrowLeft, RefreshCw, History, AlertCircle } from 'lucide-react';
 import {
   useApplicationSummary,
   useApplicationsByDateRange,
-} from '../hooks/fertilizer.hooks';
+} from '@/features/fertilizer/hooks';
 import { useField } from '@/features/fields/hooks/fields.hooks';
 import DateRangeFilter from '../components/DateRangeFilter';
 import ApplicationSummaryCard from '../components/ApplicationSummaryCard';
@@ -37,7 +37,8 @@ const FertilizerHistoryPage: React.FC = () => {
   });
 
   // Product details modal
-  const [selectedProduct, setSelectedProduct] = useState<FertilizerProduct | null>(null);
+  const [selectedProduct, setSelectedProduct] =
+    useState<FertilizerProduct | null>(null);
   const [isProductModalOpen, setIsProductModalOpen] = useState(false);
 
   const handleProductClick = (product: FertilizerProduct) => {
