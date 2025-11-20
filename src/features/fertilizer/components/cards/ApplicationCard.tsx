@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card.tsx';
 import { Badge } from '@/components/ui/badge.tsx';
+import { Button } from '@/components/ui/button.tsx';
 import {
   CheckCircle2,
   Clock,
@@ -8,6 +9,7 @@ import {
   Leaf,
   Calendar,
   Package,
+  ClipboardCheck,
 } from 'lucide-react';
 import {
   formatDateLong,
@@ -23,11 +25,15 @@ import type {
 interface ApplicationCardProps {
   application: FertilizerApplication;
   onProductClick?: (product: FertilizerProduct) => void;
+  onRecordClick?: (application: FertilizerApplication) => void;
+  showRecordButton?: boolean;
 }
 
 const ApplicationCard: React.FC<ApplicationCardProps> = ({
   application,
   onProductClick,
+  onRecordClick,
+  showRecordButton = false,
 }) => {
   const statusBadgeColor = getStatusBadgeColor(
     application.isCompleted,
@@ -91,6 +97,18 @@ const ApplicationCard: React.FC<ApplicationCardProps> = ({
               <span>{application.daysAfterPlanting} днів після посіву</span>
             </div>
           </div>
+
+          {/* Record Button (conditional) */}
+          {showRecordButton && !application.isCompleted && (
+            <Button
+              onClick={() => onRecordClick?.(application)}
+              className="bg-green-600 hover:bg-green-700 text-white shadow-md"
+              size="sm"
+            >
+              <ClipboardCheck className="h-4 w-4 mr-2" />
+              Записати внесення
+            </Button>
+          )}
         </div>
       </CardHeader>
 

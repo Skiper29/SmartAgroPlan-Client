@@ -31,7 +31,7 @@ const FertilizerHistoryPage: React.FC = () => {
   });
   const [endDate, setEndDate] = useState<Date | undefined>(() => {
     const date = new Date();
-    date.setMonth(date.getMonth() + 3); // 3 months ahead
+    date.setMonth(date.getMonth() + 9); // 9 months ahead
     date.setHours(23, 59, 59, 999); // End of day
     return date;
   });

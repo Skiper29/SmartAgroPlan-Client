@@ -14,7 +14,10 @@ import {
   TrendingUp,
   Package,
 } from 'lucide-react';
-import { useSavedSeasonPlan } from '@/features/fertilizer/hooks';
+import {
+  useSavedSeasonPlan,
+  useRecordApplication,
+} from '@/features/fertilizer/hooks';
 import { useField } from '@/features/fields/hooks/fields.hooks';
 import { sortApplicationsByDate } from '../utils/fertilizerUtils';
 import { cn } from '@/lib/utils';
@@ -22,8 +25,11 @@ import type {
   FertilizerApplication,
   FertilizerProduct,
 } from '@/models/fertilizer';
+import type { RecordApplicationRequest } from '@/models/fertilizer/record-application.model';
 import ApplicationCard from '@/features/fertilizer/components/cards/ApplicationCard.tsx';
 import ProductDetailsModal from '@/features/fertilizer/components/ProductDetailsModal.tsx';
+import RecordApplicationModal from '@/features/fertilizer/components/modals/RecordApplicationModal.tsx';
+import { extractErrorMessage } from '@/types/api-error.type';
 
 const FertilizerPlanPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -58,6 +64,36 @@ const FertilizerPlanPage: React.FC = () => {
   const handleCloseProductModal = () => {
     setIsProductModalOpen(false);
     setSelectedProduct(null);
+  };
+
+  // Record application modal
+  const [selectedApplication, setSelectedApplication] =
+    useState<FertilizerApplication | null>(null);
+  const [isRecordModalOpen, setIsRecordModalOpen] = useState(false);
+  const { mutate: recordApplication, isPending: isRecording } =
+    useRecordApplication();
+
+  const handleRecordClick = (application: FertilizerApplication) => {
+    setSelectedApplication(application);
+    setIsRecordModalOpen(true);
+  };
+
+  const handleCloseRecordModal = () => {
+    setIsRecordModalOpen(false);
+    setSelectedApplication(null);
+  };
+
+  const handleSubmitRecord = (data: RecordApplicationRequest) => {
+    recordApplication(data, {
+      onSuccess: () => {
+        alert('Внесення успішно записано!');
+        handleCloseRecordModal();
+        refetchPlan();
+      },
+      onError: (error) => {
+        alert(`Помилка запису внесення: ${extractErrorMessage(error)}`);
+      },
+    });
   };
 
   const isLoading = isLoadingField || isLoadingPlan;
@@ -439,6 +475,8 @@ const FertilizerPlanPage: React.FC = () => {
                 key={application.id || index}
                 application={application}
                 onProductClick={handleProductClick}
+                showRecordButton={true}
+                onRecordClick={handleRecordClick}
               />
             ))}
           </div>
@@ -477,6 +515,18 @@ const FertilizerPlanPage: React.FC = () => {
         isOpen={isProductModalOpen}
         onClose={handleCloseProductModal}
       />
+
+      {/* Record Application Modal */}
+      {selectedApplication && (
+        <RecordApplicationModal
+          isOpen={isRecordModalOpen}
+          onClose={handleCloseRecordModal}
+          application={selectedApplication}
+          fieldId={fieldId}
+          onSubmit={handleSubmitRecord}
+          isSubmitting={isRecording}
+        />
+      )}
     </div>
   );
 };
