@@ -24,8 +24,8 @@ export const DashboardStatsSection: React.FC<DashboardStatsSectionProps> = ({
     // Count fields needing attention (deficit or critical deficit)
     const fieldsNeedingAttention = nutrientBalances.filter(
       (balance) =>
-        balance.overallStatus === 'Deficit' ||
-        balance.overallStatus === 'Critical Deficit',
+        balance.overallStatus === 'Помірний дефіцит' ||
+        balance.overallStatus === 'Дефіцитний',
     ).length;
 
     // Count critical deficits
