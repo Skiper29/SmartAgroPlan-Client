@@ -45,7 +45,7 @@ const AddFieldPage: React.FC = () => {
       <div className="w-full max-w-[1600px] mx-auto space-y-8">
         <FieldPageHeader title="Додати нове поле" />
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           <FieldFormSection
             title="Інформація про поле"
             description="Заповніть форму нижче, щоб додати нове поле до вашої ферми."
