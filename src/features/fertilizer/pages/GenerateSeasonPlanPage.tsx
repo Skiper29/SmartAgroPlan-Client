@@ -22,7 +22,10 @@ import NutrientTable from '../components/nutrient/NutrientTable.tsx';
 import ErrorDisplay from '@/components/ErrorDisplay';
 import { extractErrorMessage } from '@/types/api-error.type';
 import { sortApplicationsByDate } from '../utils/fertilizerUtils';
-import { type FertilizerProduct } from '@/models/fertilizer';
+import {
+  type FertilizerProduct,
+  type RecommendedProductApplication,
+} from '@/models/fertilizer';
 import { createEmptyNutrientRequirement } from '@/models/fertilizer/nutrient-requirement.model';
 import { cn } from '@/lib/utils';
 import ApplicationCard from '@/features/fertilizer/components/cards/ApplicationCard.tsx';
@@ -86,16 +89,32 @@ const GenerateSeasonPlanPage: React.FC = () => {
   // Product details modal
   const [selectedProduct, setSelectedProduct] =
     useState<FertilizerProduct | null>(null);
+  const [selectedProductQuantity, setSelectedProductQuantity] = useState<{
+    quantityKgPerHa?: number;
+    totalQuantityKg?: number;
+  }>({});
   const [isProductModalOpen, setIsProductModalOpen] = useState(false);
 
-  const handleProductClick = (product: FertilizerProduct) => {
+  const handleProductClick = (
+    product: FertilizerProduct,
+    productApplication?: RecommendedProductApplication,
+  ) => {
     setSelectedProduct(product);
+    if (productApplication) {
+      setSelectedProductQuantity({
+        quantityKgPerHa: productApplication.quantityKgPerHa,
+        totalQuantityKg: productApplication.totalQuantityKg,
+      });
+    } else {
+      setSelectedProductQuantity({});
+    }
     setIsProductModalOpen(true);
   };
 
   const handleCloseProductModal = () => {
     setIsProductModalOpen(false);
     setSelectedProduct(null);
+    setSelectedProductQuantity({});
   };
 
   if (isLoadingField) {
@@ -353,6 +372,8 @@ const GenerateSeasonPlanPage: React.FC = () => {
         product={selectedProduct}
         isOpen={isProductModalOpen}
         onClose={handleCloseProductModal}
+        quantityKgPerHa={selectedProductQuantity.quantityKgPerHa}
+        totalQuantityKg={selectedProductQuantity.totalQuantityKg}
       />
     </div>
   );

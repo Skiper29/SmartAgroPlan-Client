@@ -22,12 +22,16 @@ interface ProductDetailsModalProps {
   product: FertilizerProduct | null;
   isOpen: boolean;
   onClose: () => void;
+  quantityKgPerHa?: number;
+  totalQuantityKg?: number;
 }
 
 const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({
   product,
   isOpen,
   onClose,
+  quantityKgPerHa,
+  totalQuantityKg,
 }) => {
   if (!product) return null;
 
@@ -102,6 +106,32 @@ const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({
               {ProductFormLabels[product.form]}
             </Badge>
           </div>
+
+          {/* Quantity Information */}
+          {(quantityKgPerHa !== undefined || totalQuantityKg !== undefined) && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {quantityKgPerHa !== undefined && (
+                <div className="bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 rounded-lg p-4 border border-blue-200 dark:border-blue-800">
+                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
+                    Норма внесення на га
+                  </p>
+                  <p className="text-2xl font-bold text-blue-900 dark:text-blue-100">
+                    {quantityKgPerHa.toFixed(2)} кг/га
+                  </p>
+                </div>
+              )}
+              {totalQuantityKg !== undefined && (
+                <div className="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 rounded-lg p-4 border border-amber-200 dark:border-amber-800">
+                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
+                    Загальна кількість
+                  </p>
+                  <p className="text-2xl font-bold text-amber-900 dark:text-amber-100">
+                    {totalQuantityKg.toFixed(2)} кг
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
 
           {/* Main Nutrients NPK */}
           <div className="space-y-3">

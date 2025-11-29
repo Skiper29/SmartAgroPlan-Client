@@ -15,7 +15,10 @@ import ProductDetailsModal from '../components/ProductDetailsModal';
 import ErrorDisplay from '@/components/ErrorDisplay';
 import { sortApplicationsByDate } from '../utils/fertilizerUtils';
 import { cn } from '@/lib/utils';
-import type { FertilizerProduct } from '@/models/fertilizer';
+import type {
+  FertilizerProduct,
+  RecommendedProductApplication,
+} from '@/models/fertilizer';
 
 const FertilizerHistoryPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -39,16 +42,32 @@ const FertilizerHistoryPage: React.FC = () => {
   // Product details modal
   const [selectedProduct, setSelectedProduct] =
     useState<FertilizerProduct | null>(null);
+  const [selectedProductQuantity, setSelectedProductQuantity] = useState<{
+    quantityKgPerHa?: number;
+    totalQuantityKg?: number;
+  }>({});
   const [isProductModalOpen, setIsProductModalOpen] = useState(false);
 
-  const handleProductClick = (product: FertilizerProduct) => {
+  const handleProductClick = (
+    product: FertilizerProduct,
+    productApplication?: RecommendedProductApplication,
+  ) => {
     setSelectedProduct(product);
+    if (productApplication) {
+      setSelectedProductQuantity({
+        quantityKgPerHa: productApplication.quantityKgPerHa,
+        totalQuantityKg: productApplication.totalQuantityKg,
+      });
+    } else {
+      setSelectedProductQuantity({});
+    }
     setIsProductModalOpen(true);
   };
 
   const handleCloseProductModal = () => {
     setIsProductModalOpen(false);
     setSelectedProduct(null);
+    setSelectedProductQuantity({});
   };
 
   const { data: field, isLoading: isLoadingField } = useField(fieldId);
@@ -217,6 +236,8 @@ const FertilizerHistoryPage: React.FC = () => {
         product={selectedProduct}
         isOpen={isProductModalOpen}
         onClose={handleCloseProductModal}
+        quantityKgPerHa={selectedProductQuantity.quantityKgPerHa}
+        totalQuantityKg={selectedProductQuantity.totalQuantityKg}
       />
     </div>
   );

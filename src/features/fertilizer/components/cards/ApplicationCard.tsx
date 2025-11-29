@@ -20,11 +20,15 @@ import { CropStageLabels } from '@/models/fertilizer';
 import type {
   FertilizerApplication,
   FertilizerProduct,
+  RecommendedProductApplication,
 } from '@/models/fertilizer';
 
 interface ApplicationCardProps {
   application: FertilizerApplication;
-  onProductClick?: (product: FertilizerProduct) => void;
+  onProductClick?: (
+    product: FertilizerProduct,
+    productApplication?: RecommendedProductApplication,
+  ) => void;
   onRecordClick?: (application: FertilizerApplication) => void;
   showRecordButton?: boolean;
 }
@@ -43,6 +47,13 @@ const ApplicationCard: React.FC<ApplicationCardProps> = ({
   const isOverdue =
     !application.isCompleted &&
     new Date(application.recommendedDate) < new Date();
+
+  // Calculate total fertilizer amount
+  const totalFertilizerKg =
+    application.products?.reduce(
+      (sum, product) => sum + product.totalQuantityKg,
+      0,
+    ) || 0;
 
   return (
     <Card
@@ -135,19 +146,40 @@ const ApplicationCard: React.FC<ApplicationCardProps> = ({
                 Добрива ({application.products.length}):
               </h4>
               <div className="space-y-2">
-                {application.products.map((product) => (
+                {application.products.map((productApplication) => (
                   <button
-                    key={product.product.id}
-                    onClick={() => onProductClick?.(product.product)}
+                    key={productApplication.product.id}
+                    onClick={() =>
+                      onProductClick?.(
+                        productApplication.product,
+                        productApplication,
+                      )
+                    }
                     className="w-full text-left text-sm bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-lg px-3 py-2 border border-purple-200 dark:border-purple-800 font-medium transition-all hover:shadow-md hover:scale-[1.02] hover:border-purple-400 dark:hover:border-purple-600 cursor-pointer"
                   >
-                    {product.product.name}
+                    {productApplication.product.name}
                   </button>
                 ))}
               </div>
             </div>
           )}
         </div>
+
+        {/* Total Fertilizer Amount */}
+        {application.products &&
+          application.products.length > 0 &&
+          totalFertilizerKg > 0 && (
+            <div className="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 rounded-lg p-4 border border-amber-200 dark:border-amber-800">
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                  Загальна кількість добрив:
+                </span>
+                <span className="text-2xl font-bold text-amber-900 dark:text-amber-100">
+                  {totalFertilizerKg.toFixed(2)} кг
+                </span>
+              </div>
+            </div>
+          )}
 
         {/* Rationale */}
         {application.rationale && (

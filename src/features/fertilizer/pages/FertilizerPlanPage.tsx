@@ -24,6 +24,7 @@ import { cn } from '@/lib/utils';
 import type {
   FertilizerApplication,
   FertilizerProduct,
+  RecommendedProductApplication,
 } from '@/models/fertilizer';
 import type { RecordApplicationRequest } from '@/models/fertilizer/record-application.model';
 import ApplicationCard from '@/features/fertilizer/components/cards/ApplicationCard.tsx';
@@ -54,16 +55,32 @@ const FertilizerPlanPage: React.FC = () => {
   // Product details modal
   const [selectedProduct, setSelectedProduct] =
     useState<FertilizerProduct | null>(null);
+  const [selectedProductQuantity, setSelectedProductQuantity] = useState<{
+    quantityKgPerHa?: number;
+    totalQuantityKg?: number;
+  }>({});
   const [isProductModalOpen, setIsProductModalOpen] = useState(false);
 
-  const handleProductClick = (product: FertilizerProduct) => {
+  const handleProductClick = (
+    product: FertilizerProduct,
+    productApplication?: RecommendedProductApplication,
+  ) => {
     setSelectedProduct(product);
+    if (productApplication) {
+      setSelectedProductQuantity({
+        quantityKgPerHa: productApplication.quantityKgPerHa,
+        totalQuantityKg: productApplication.totalQuantityKg,
+      });
+    } else {
+      setSelectedProductQuantity({});
+    }
     setIsProductModalOpen(true);
   };
 
   const handleCloseProductModal = () => {
     setIsProductModalOpen(false);
     setSelectedProduct(null);
+    setSelectedProductQuantity({});
   };
 
   // Record application modal
@@ -514,6 +531,8 @@ const FertilizerPlanPage: React.FC = () => {
         product={selectedProduct}
         isOpen={isProductModalOpen}
         onClose={handleCloseProductModal}
+        quantityKgPerHa={selectedProductQuantity.quantityKgPerHa}
+        totalQuantityKg={selectedProductQuantity.totalQuantityKg}
       />
 
       {/* Record Application Modal */}
