@@ -11,7 +11,7 @@ const FieldPageHeader: React.FC<FieldPageHeaderProps> = ({ title }) => {
   const navigate = useNavigate();
 
   return (
-    <header className="sticky top-0 z-10 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-xl shadow-md flex items-center justify-between px-8 py-6 border-b border-gray-200 dark:border-gray-700">
+    <header className="sticky top-0 z-10000 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-xl shadow-md flex items-center justify-between px-8 py-6 border-b border-gray-200 dark:border-gray-700">
       <h1 className="text-3xl font-extrabold text-green-700 dark:text-green-200 tracking-tight">
         {title}
       </h1>

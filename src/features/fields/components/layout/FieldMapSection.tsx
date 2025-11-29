@@ -23,7 +23,7 @@ const FieldMapSection: React.FC<FieldMapSectionProps> = ({
   isEdit = false,
 }) => {
   return (
-    <section className="bg-white dark:bg-gray-900 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-800 p-8 lg:col-span-2">
+    <section className="bg-white dark:bg-gray-900 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-800 p-8 lg:col-span-3">
       <div className="space-y-6">
         <div className="space-y-2">
           <h2 className="text-2xl font-semibold text-green-800 dark:text-green-200">

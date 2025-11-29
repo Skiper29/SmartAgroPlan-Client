@@ -5,6 +5,7 @@ import 'leaflet-draw';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-draw/dist/leaflet.draw.css';
 import DrawControls from './DrawControls';
+import SearchControl from '../map/SearchControl';
 
 // Fix for default markers in react-leaflet
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -32,7 +33,7 @@ const FieldMapEditor: React.FC<FieldMapEditorProps> = ({
   zoom = 6,
 }) => {
   return (
-    <div className="w-full h-96 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700">
+    <div className="w-full h-[600px] rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700">
       <MapContainer center={center} zoom={zoom} className="w-full h-full">
         {/* Esri World Imagery (satellite) */}
         <TileLayer
@@ -49,6 +50,7 @@ const FieldMapEditor: React.FC<FieldMapEditorProps> = ({
           onBoundaryChange={onBoundaryChange}
           initialBoundary={initialBoundary}
         />
+        <SearchControl />
       </MapContainer>
     </div>
   );

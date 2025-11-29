@@ -42,7 +42,7 @@ const AddFieldPage: React.FC = () => {
 
   return (
     <div className="min-h-screen w-full flex justify-center items-start py-8 px-2">
-      <div className="w-full max-w-7xl space-y-8">
+      <div className="w-full max-w-[1600px] mx-auto space-y-8">
         <FieldPageHeader title="Додати нове поле" />
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
