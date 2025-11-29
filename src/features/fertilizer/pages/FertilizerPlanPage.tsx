@@ -1,19 +1,8 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import {
-  ArrowLeft,
-  RefreshCw,
-  CheckCircle2,
-  Plus,
-  Calendar,
-  Sparkles,
-  Info,
-  TrendingUp,
-  Package,
-} from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
+import { ArrowLeft, RefreshCw, Plus, Calendar, Sparkles } from 'lucide-react';
 import {
   useSavedSeasonPlan,
   useRecordApplication,
@@ -30,6 +19,8 @@ import type { RecordApplicationRequest } from '@/models/fertilizer/record-applic
 import ApplicationCard from '@/features/fertilizer/components/cards/ApplicationCard.tsx';
 import ProductDetailsModal from '@/features/fertilizer/components/ProductDetailsModal.tsx';
 import RecordApplicationModal from '@/features/fertilizer/components/modals/RecordApplicationModal.tsx';
+import PlanInfoCard from '@/features/fertilizer/components/cards/PlanInfoCard.tsx';
+import NutrientSummaryCards from '@/features/fertilizer/components/cards/NutrientSummaryCards.tsx';
 import { extractErrorMessage } from '@/types/api-error.type';
 
 const FertilizerPlanPage: React.FC = () => {
@@ -268,206 +259,21 @@ const FertilizerPlanPage: React.FC = () => {
       </header>
 
       {/* Plan Info Card */}
-      <Card className="border-l-4 border-green-500 shadow-md">
-        <CardHeader>
-          <div className="flex items-start justify-between">
-            <div>
-              <CardTitle className="flex items-center text-green-700 dark:text-green-300 text-2xl">
-                <Info className="h-5 w-5 mr-2" />
-                Інформація про план
-              </CardTitle>
-            </div>
-            {plan.savedPlanId && (
-              <Badge className="bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300 border border-green-300 dark:border-green-700">
-                <CheckCircle2 className="h-3 w-3 mr-1" />
-                ID: {plan.savedPlanId}
-              </Badge>
-            )}
-          </div>
-        </CardHeader>
-        <CardContent className="pt-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div>
-              <p className="text-sm text-muted-foreground">Дата посіву</p>
-              <p className="text-lg font-semibold">
-                {new Date(plan.sowingDate).toLocaleDateString('uk-UA', {
-                  day: 'numeric',
-                  month: 'long',
-                  year: 'numeric',
-                })}
-              </p>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Очікуваний збір</p>
-              <p className="text-lg font-semibold">
-                {new Date(plan.expectedHarvestDate).toLocaleDateString(
-                  'uk-UA',
-                  {
-                    day: 'numeric',
-                    month: 'long',
-                    year: 'numeric',
-                  },
-                )}
-              </p>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">
-                Цільова врожайність
-              </p>
-              <p className="text-lg font-semibold">
-                {plan.expectedYield.toFixed(1)} т/га
-              </p>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Площа поля</p>
-              <p className="text-lg font-semibold">
-                {plan.fieldAreaHa.toFixed(2)} га
-              </p>
-            </div>
-          </div>
-          {plan.notes && (
-            <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-              <p className="text-sm text-muted-foreground mb-1">Примітки:</p>
-              <p className="text-sm">{plan.notes}</p>
-            </div>
-          )}
-        </CardContent>
-      </Card>
+      <PlanInfoCard
+        sowingDate={plan.sowingDate}
+        expectedHarvestDate={plan.expectedHarvestDate}
+        expectedYield={plan.expectedYield}
+        fieldAreaHa={plan.fieldAreaHa}
+        savedPlanId={plan.savedPlanId}
+        notes={plan.notes}
+      />
 
       {/* Nutrient Summary Cards */}
-      <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* Total Requirement Card */}
-        <Card className="border-l-4 border-blue-500 shadow-md hover:shadow-lg transition-shadow">
-          <CardHeader>
-            <CardTitle className="flex items-center text-blue-700 dark:text-blue-300 text-xl">
-              <TrendingUp className="h-5 w-5 mr-2" />
-              Загальна потреба
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="pt-6">
-            <div className="space-y-3">
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">Азот (N)</span>
-                <span className="text-lg font-bold text-blue-600 dark:text-blue-400">
-                  {plan.totalRequirement.nitrogen.toFixed(1)} кг/га
-                </span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">
-                  Фосфор (P)
-                </span>
-                <span className="text-lg font-bold text-blue-600 dark:text-blue-400">
-                  {plan.totalRequirement.phosphorus.toFixed(1)} кг/га
-                </span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">Калій (K)</span>
-                <span className="text-lg font-bold text-blue-600 dark:text-blue-400">
-                  {plan.totalRequirement.potassium.toFixed(1)} кг/га
-                </span>
-              </div>
-              {plan.totalRequirement.sulfur > 0 && (
-                <div className="flex justify-between items-center pt-2 border-t border-gray-200 dark:border-gray-700">
-                  <span className="text-sm text-muted-foreground">
-                    Сірка (S)
-                  </span>
-                  <span className="text-base font-semibold text-blue-600 dark:text-blue-400">
-                    {plan.totalRequirement.sulfur.toFixed(1)} кг/га
-                  </span>
-                </div>
-              )}
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Already Applied Card */}
-        <Card className="border-l-4 border-green-500 shadow-md hover:shadow-lg transition-shadow">
-          <CardHeader>
-            <CardTitle className="flex items-center text-green-700 dark:text-green-300 text-xl">
-              <CheckCircle2 className="h-5 w-5 mr-2" />
-              Вже внесено
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="pt-6">
-            <div className="space-y-3">
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">Азот (N)</span>
-                <span className="text-lg font-bold text-green-600 dark:text-green-400">
-                  {plan.alreadyApplied.nitrogen.toFixed(1)} кг/га
-                </span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">
-                  Фосфор (P)
-                </span>
-                <span className="text-lg font-bold text-green-600 dark:text-green-400">
-                  {plan.alreadyApplied.phosphorus.toFixed(1)} кг/га
-                </span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">Калій (K)</span>
-                <span className="text-lg font-bold text-green-600 dark:text-green-400">
-                  {plan.alreadyApplied.potassium.toFixed(1)} кг/га
-                </span>
-              </div>
-              {plan.alreadyApplied.sulfur > 0 && (
-                <div className="flex justify-between items-center pt-2 border-t border-gray-200 dark:border-gray-700">
-                  <span className="text-sm text-muted-foreground">
-                    Сірка (S)
-                  </span>
-                  <span className="text-base font-semibold text-green-600 dark:text-green-400">
-                    {plan.alreadyApplied.sulfur.toFixed(1)} кг/га
-                  </span>
-                </div>
-              )}
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Remaining to Apply Card */}
-        <Card className="border-l-4 border-orange-500 shadow-md hover:shadow-lg transition-shadow">
-          <CardHeader>
-            <CardTitle className="flex items-center text-orange-700 dark:text-orange-300 text-xl">
-              <Package className="h-5 w-5 mr-2" />
-              Залишилось внести
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="pt-6">
-            <div className="space-y-3">
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">Азот (N)</span>
-                <span className="text-lg font-bold text-orange-600 dark:text-orange-400">
-                  {plan.remainingToApply.nitrogen.toFixed(1)} кг/га
-                </span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">
-                  Фосфор (P)
-                </span>
-                <span className="text-lg font-bold text-orange-600 dark:text-orange-400">
-                  {plan.remainingToApply.phosphorus.toFixed(1)} кг/га
-                </span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">Калій (K)</span>
-                <span className="text-lg font-bold text-orange-600 dark:text-orange-400">
-                  {plan.remainingToApply.potassium.toFixed(1)} кг/га
-                </span>
-              </div>
-              {plan.remainingToApply.sulfur > 0 && (
-                <div className="flex justify-between items-center pt-2 border-t border-gray-200 dark:border-gray-700">
-                  <span className="text-sm text-muted-foreground">
-                    Сірка (S)
-                  </span>
-                  <span className="text-base font-semibold text-orange-600 dark:text-orange-400">
-                    {plan.remainingToApply.sulfur.toFixed(1)} кг/га
-                  </span>
-                </div>
-              )}
-            </div>
-          </CardContent>
-        </Card>
-      </section>
+      <NutrientSummaryCards
+        totalRequirement={plan.totalRequirement}
+        alreadyApplied={plan.alreadyApplied}
+        remainingToApply={plan.remainingToApply}
+      />
 
       {/* Applications List */}
       <section className="space-y-4">

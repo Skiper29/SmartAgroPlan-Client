@@ -17,7 +17,6 @@ import {
   useSaveSeasonPlan,
 } from '@/features/fertilizer/hooks';
 import { useField } from '@/features/fields/hooks/fields.hooks';
-import SeasonPlanCard from '../components/cards/SeasonPlanCard.tsx';
 import NutrientTable from '../components/nutrient/NutrientTable.tsx';
 import ErrorDisplay from '@/components/ErrorDisplay';
 import { extractErrorMessage } from '@/types/api-error.type';
@@ -30,6 +29,8 @@ import { createEmptyNutrientRequirement } from '@/models/fertilizer/nutrient-req
 import { cn } from '@/lib/utils';
 import ApplicationCard from '@/features/fertilizer/components/cards/ApplicationCard.tsx';
 import ProductDetailsModal from '@/features/fertilizer/components/ProductDetailsModal.tsx';
+import PlanInfoCard from '@/features/fertilizer/components/cards/PlanInfoCard.tsx';
+import NutrientSummaryCards from '@/features/fertilizer/components/cards/NutrientSummaryCards.tsx';
 
 const GenerateSeasonPlanPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -295,10 +296,22 @@ const GenerateSeasonPlanPage: React.FC = () => {
       {/* Generated Plan */}
       {hasGenerated && plan && (
         <>
-          {/* Season Plan Overview */}
-          <section>
-            <SeasonPlanCard plan={plan} />
-          </section>
+          {/* Plan Info Card */}
+          <PlanInfoCard
+            sowingDate={plan.sowingDate}
+            expectedHarvestDate={plan.expectedHarvestDate}
+            expectedYield={plan.expectedYield}
+            fieldAreaHa={plan.fieldAreaHa}
+            savedPlanId={plan.savedPlanId}
+            notes={plan.notes}
+          />
+
+          {/* Nutrient Summary Cards */}
+          <NutrientSummaryCards
+            totalRequirement={plan.totalSeasonRequirement}
+            alreadyApplied={plan.alreadyApplied}
+            remainingToApply={plan.remainingToApply}
+          />
 
           {/* Detailed Nutrient Table */}
           <section>
