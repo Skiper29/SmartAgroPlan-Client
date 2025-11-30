@@ -20,7 +20,7 @@ const CropRequirementsCard: React.FC<CropRequirementsCardProps> = ({
 }) => {
   return (
     <Card className="shadow-lg hover:shadow-2xl transition-all duration-300 border-l-4 border-l-cyan-500 hover:scale-[1.02]">
-      <CardHeader className="bg-cyan-50 dark:bg-gray-800 pb-3 text-cyan-700 dark:text-cyan-300">
+      <CardHeader className="pb-3 text-cyan-700 dark:text-cyan-300">
         <CardTitle className="flex items-center gap-2 text-lg">
           <div className="p-1.5 bg-cyan-500 rounded-lg">
             <Droplets className="h-4 w-4 text-white" />

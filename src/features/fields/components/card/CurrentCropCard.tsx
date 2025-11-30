@@ -27,7 +27,7 @@ const CurrentCropCard: React.FC<CurrentCropCardProps> = ({
 }) => {
   return (
     <Card className="shadow-lg hover:shadow-2xl transition-all duration-300 border-l-4 border-l-green-500 hover:scale-[1.02]">
-      <CardHeader className="bg-green-50 dark:bg-gray-800 pb-3 text-green-700 dark:text-green-300">
+      <CardHeader className="pb-3 text-green-700 dark:text-green-300">
         <CardTitle className="flex items-center gap-2 text-lg">
           <div className="p-1.5 bg-green-500 rounded-lg">
             <Wheat className="h-4 w-4 text-white" />

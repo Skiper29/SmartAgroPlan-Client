@@ -28,7 +28,7 @@ const BasicInformationCard: React.FC<BasicInformationCardProps> = ({
 }) => {
   return (
     <Card className="shadow-lg hover:shadow-2xl transition-all duration-300 border-l-4 border-l-blue-500 hover:scale-[1.02]">
-      <CardHeader className="bg-blue-50 dark:bg-gray-800 pb-3 text-blue-700 dark:text-blue-300">
+      <CardHeader className="pb-3 text-blue-700 dark:text-blue-300">
         <CardTitle className="flex items-center gap-2 text-lg">
           <div className="p-1.5 bg-blue-500 rounded-lg">
             <Info className="h-4 w-4 text-white" />

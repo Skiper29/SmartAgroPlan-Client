@@ -28,7 +28,7 @@ const SoilInformationCard: React.FC<SoilInformationCardProps> = ({
 }) => {
   return (
     <Card className="shadow-lg hover:shadow-2xl transition-all duration-300 border-l-4 border-l-amber-500 hover:scale-[1.02]">
-      <CardHeader className="bg-amber-50 dark:bg-gray-800 pb-3 text-amber-700 dark:text-amber-300">
+      <CardHeader className="pb-3 text-amber-700 dark:text-amber-300">
         <CardTitle className="flex items-center gap-2 text-lg">
           <div className="p-1.5 bg-amber-500 rounded-lg">
             <FlaskConical className="h-4 w-4 text-white" />
