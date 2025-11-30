@@ -218,6 +218,7 @@ const FieldMap: React.FC<FieldMapProps> = ({ fields, className }) => {
   const [fitDone, setFitDone] = useState(false);
   const [selectedBasemap, setSelectedBasemap] = useState<BasemapId>('esri_sat');
   const [showLabels, setShowLabels] = useState<boolean>(true);
+  const [colorBy, setColorBy] = useState<'fieldType' | 'cropType'>('cropType');
 
   // Parse GeoJSON strings once - handle both Feature and Polygon geometry
   const features = useMemo<GeoJsonObject[]>(() => {
@@ -353,6 +354,8 @@ const FieldMap: React.FC<FieldMapProps> = ({ fields, className }) => {
               name={field.name}
               fieldType={field.fieldType}
               boundaryGeoJson={geo}
+              cropType={field.currentCrop?.cropType}
+              colorBy={colorBy}
             />
           );
         })}
@@ -368,8 +371,24 @@ const FieldMap: React.FC<FieldMapProps> = ({ fields, className }) => {
         onToggleLabels={setShowLabels}
       />
 
+      {/* Color Mode Toggle Button */}
+      <div className="absolute top-3 left-16 z-[1000]">
+        <button
+          onClick={() =>
+            setColorBy(colorBy === 'fieldType' ? 'cropType' : 'fieldType')
+          }
+          className="bg-white dark:bg-gray-800 rounded-lg shadow-lg px-3 py-1 border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+        >
+          <span className="text-sm font-medium text-gray-900 dark:text-white">
+            {colorBy === 'fieldType'
+              ? '🌾 Показати за культурою'
+              : '🌱 Показати за типом поля'}
+          </span>
+        </button>
+      </div>
+
       {/* Legend overlay */}
-      <FieldLegend />
+      <FieldLegend colorBy={colorBy} />
     </div>
   );
 };
