@@ -16,6 +16,9 @@ import type { ChartDataPoint, MetricVisibility } from './types';
 import ChartLegend from './ChartLegend';
 import ChartTooltip from './ChartTooltip';
 import CategorySelector from './CategorySelector';
+import TimePeriodSelector from './TimePeriodSelector';
+import type { TimePeriod } from './TimePeriodSelector';
+import CustomDateRangeDialog from './CustomDateRangeDialog';
 
 interface FieldConditionChartProps {
   conditions: FieldCondition[];
@@ -39,8 +42,45 @@ const FieldConditionChart: React.FC<FieldConditionChartProps> = ({
     return initial;
   });
 
-  // Prepare chart data
+  // Time period filtering state
+  const [selectedPeriod, setSelectedPeriod] = useState<TimePeriod>('all');
+  const [customDateRange, setCustomDateRange] = useState<{
+    start: Date;
+    end: Date;
+  } | null>(null);
+  const [isDateDialogOpen, setIsDateDialogOpen] = useState(false);
+
+  // Prepare chart data with time filtering
   const chartData: ChartDataPoint[] = useMemo(() => {
+    const now = new Date();
+    let startDate: Date | null = null;
+
+    // Calculate start date based on selected period
+    if (selectedPeriod === 'custom' && customDateRange) {
+      startDate = customDateRange.start;
+    } else if (selectedPeriod !== 'all') {
+      startDate = new Date(now);
+      switch (selectedPeriod) {
+        case '7d':
+          startDate.setDate(now.getDate() - 7);
+          break;
+        case '30d':
+          startDate.setDate(now.getDate() - 30);
+          break;
+        case '90d':
+          startDate.setDate(now.getDate() - 90);
+          break;
+        case '1y':
+          startDate.setFullYear(now.getFullYear() - 1);
+          break;
+      }
+    }
+
+    const endDate =
+      selectedPeriod === 'custom' && customDateRange
+        ? customDateRange.end
+        : now;
+
     return conditions
       .map((condition) => ({
         date: new Date(condition.recordedAt).toISOString(),
@@ -64,8 +104,13 @@ const FieldConditionChart: React.FC<FieldConditionChartProps> = ({
         temperature: condition.temperature,
         rainfall: condition.rainfall,
       }))
+      .filter((item) => {
+        const itemDate = new Date(item.date);
+        if (startDate && itemDate < startDate) return false;
+        return itemDate <= endDate;
+      })
       .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-  }, [conditions]);
+  }, [conditions, selectedPeriod, customDateRange]);
 
   // Check if metric has data
   const hasData = (metricKey: string): boolean => {
@@ -105,6 +150,35 @@ const FieldConditionChart: React.FC<FieldConditionChartProps> = ({
       return updated;
     });
   };
+
+  // Handle time period changes
+  const handlePeriodChange = (period: TimePeriod) => {
+    if (period === 'custom') {
+      setIsDateDialogOpen(true);
+    } else {
+      setSelectedPeriod(period);
+      setCustomDateRange(null);
+    }
+  };
+
+  // Handle custom date range application
+  const handleApplyCustomRange = (start: Date, end: Date) => {
+    setCustomDateRange({ start, end });
+    setSelectedPeriod('custom');
+  };
+
+  // Get min and max dates from conditions
+  const dateRange = useMemo(() => {
+    if (conditions.length === 0) {
+      return { min: new Date(), max: new Date() };
+    }
+
+    const dates = conditions.map((c) => new Date(c.recordedAt));
+    return {
+      min: new Date(Math.min(...dates.map((d) => d.getTime()))),
+      max: new Date(Math.max(...dates.map((d) => d.getTime()))),
+    };
+  }, [conditions]);
 
   // Get visible metrics
   const visibleMetrics = METRIC_CONFIGS.filter(
@@ -154,6 +228,35 @@ const FieldConditionChart: React.FC<FieldConditionChartProps> = ({
 
   return (
     <div className={className}>
+      {/* Time Period Selector */}
+      <div className="mb-4 p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+        <TimePeriodSelector
+          selectedPeriod={selectedPeriod}
+          onPeriodChange={handlePeriodChange}
+          onCustomRangeClick={() => setIsDateDialogOpen(true)}
+          customRangeActive={
+            selectedPeriod === 'custom' && customDateRange !== null
+          }
+        />
+        {selectedPeriod === 'custom' && customDateRange && (
+          <div className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+            Обраний період: {customDateRange.start.toLocaleDateString('uk-UA')}{' '}
+            - {customDateRange.end.toLocaleDateString('uk-UA')}
+          </div>
+        )}
+      </div>
+
+      {/* Custom Date Range Dialog */}
+      <CustomDateRangeDialog
+        open={isDateDialogOpen}
+        onOpenChange={setIsDateDialogOpen}
+        onApply={handleApplyCustomRange}
+        minDate={dateRange.min}
+        maxDate={dateRange.max}
+        currentStartDate={customDateRange?.start}
+        currentEndDate={customDateRange?.end}
+      />
+
       {/* Category Quick Select */}
       <CategorySelector
         visibility={visibility}
