@@ -13,6 +13,7 @@ import FertilizerPlanPage from '@/features/fertilizer/pages/FertilizerPlanPage';
 import GenerateSeasonPlanPage from '@/features/fertilizer/pages/GenerateSeasonPlanPage';
 import FertilizerBalancePage from '@/features/fertilizer/pages/FertilizerBalancePage';
 import FertilizerHistoryPage from '@/features/fertilizer/pages/FertilizerHistoryPage';
+import CropsListPage from '@/features/crops/pages/CropsListPage';
 
 export function AppRoutes() {
   return (
@@ -111,6 +112,14 @@ export function AppRoutes() {
         element={
           <Layout>
             <FertilizerHistoryPage />
+          </Layout>
+        }
+      />
+      <Route
+        path="/crops"
+        element={
+          <Layout>
+            <CropsListPage />
           </Layout>
         }
       />
