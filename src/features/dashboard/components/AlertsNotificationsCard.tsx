@@ -179,7 +179,11 @@ const AlertsNotificationsCard: React.FC = () => {
   };
 
   const dismissAlert = (id: string) => {
-    setDismissedIds((prev) => new Set(prev).add(id));
+    setDismissedIds((prev) => {
+      const newSet = new Set(prev);
+      newSet.add(id);
+      return newSet;
+    });
   };
 
   if (isLoading) {

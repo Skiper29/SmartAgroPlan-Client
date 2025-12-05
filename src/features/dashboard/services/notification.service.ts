@@ -26,7 +26,7 @@ export const generateIrrigationNotifications = (
     // Critical irrigation needed (high requirement)
     if (rec.grossIrrigationRequirement > 30) {
       notifications.push({
-        id: `irrigation-critical-${rec.fieldId}-${now.getTime()}`,
+        id: `irrigation-critical-${rec.fieldId}`,
         type: 'error',
         title: 'Терміново потрібен полив',
         message: `Поле "${rec.fieldName}" потребує негайного поливу: ${Math.round(rec.grossIrrigationRequirement)} мм води`,
@@ -38,7 +38,7 @@ export const generateIrrigationNotifications = (
     // High irrigation needed
     else if (rec.grossIrrigationRequirement > 15) {
       notifications.push({
-        id: `irrigation-high-${rec.fieldId}-${now.getTime()}`,
+        id: `irrigation-high-${rec.fieldId}`,
         type: 'warning',
         title: 'Рекомендовано полив',
         message: `Поле "${rec.fieldName}" потребує поливу: ${Math.round(rec.grossIrrigationRequirement)} мм води`,
@@ -50,7 +50,7 @@ export const generateIrrigationNotifications = (
     // Low soil moisture warning
     else if (rec.currentSoilMoisture < 40) {
       notifications.push({
-        id: `moisture-low-${rec.fieldId}-${now.getTime()}`,
+        id: `moisture-low-${rec.fieldId}`,
         type: 'warning',
         title: 'Низька вологість ґрунту',
         message: `Поле "${rec.fieldName}": вологість ${rec.currentSoilMoisture}%. Слідкуйте за станом`,
@@ -65,7 +65,7 @@ export const generateIrrigationNotifications = (
       rec.grossIrrigationRequirement < 5
     ) {
       notifications.push({
-        id: `conditions-good-${rec.fieldId}-${now.getTime()}`,
+        id: `conditions-good-${rec.fieldId}`,
         type: 'success',
         title: 'Оптимальні умови',
         message: `Поле "${rec.fieldName}": вологість ${rec.currentSoilMoisture}%. Полив не потрібен`,
@@ -82,7 +82,7 @@ export const generateIrrigationNotifications = (
         .some((f) => f.expectedPrecipitation > 10);
       if (upcomingRain && rec.grossIrrigationRequirement > 10) {
         notifications.push({
-          id: `weather-rain-${rec.fieldId}-${now.getTime()}`,
+          id: `weather-rain-${rec.fieldId}`,
           type: 'info',
           title: 'Очікуються опади',
           message: `Поле "${rec.fieldName}": прогнозується дощ найближчим часом. Можна відкласти полив`,
@@ -96,7 +96,7 @@ export const generateIrrigationNotifications = (
     // Temperature extremes
     if (rec.weatherConditions.maxTemperature > 35) {
       notifications.push({
-        id: `weather-heat-${rec.fieldId}-${now.getTime()}`,
+        id: `weather-heat-${rec.fieldId}`,
         type: 'warning',
         title: 'Висока температура',
         message: `Поле "${rec.fieldName}": очікується спека до ${Math.round(rec.weatherConditions.maxTemperature)}°C. Збільште полив`,
@@ -137,7 +137,7 @@ export const generateFertilizerNotifications = (
     // Overdue application
     if (daysUntil < 0) {
       notifications.push({
-        id: `fertilizer-overdue-${app.id}-${now.getTime()}`,
+        id: `fertilizer-overdue-${app.id}`,
         type: 'error',
         title: 'Прострочене внесення добрив',
         message: `Внесення ${productNames} прострочено на ${Math.abs(daysUntil)} днів (${app.cropStage})`,
@@ -148,7 +148,7 @@ export const generateFertilizerNotifications = (
     // Today's application
     else if (daysUntil === 0) {
       notifications.push({
-        id: `fertilizer-today-${app.id}-${now.getTime()}`,
+        id: `fertilizer-today-${app.id}`,
         type: 'warning',
         title: 'Внесення добрив сьогодні',
         message: `Заплановано внесення: ${productNames} (${Math.round(totalQuantity)} кг/га)`,
@@ -159,7 +159,7 @@ export const generateFertilizerNotifications = (
     // Tomorrow's application
     else if (daysUntil === 1) {
       notifications.push({
-        id: `fertilizer-tomorrow-${app.id}-${now.getTime()}`,
+        id: `fertilizer-tomorrow-${app.id}`,
         type: 'warning',
         title: 'Внесення добрив завтра',
         message: `Завтра: ${productNames} (${Math.round(totalQuantity)} кг/га) - ${app.cropStage}`,
@@ -170,7 +170,7 @@ export const generateFertilizerNotifications = (
     // Upcoming in 3 days
     else if (daysUntil <= 3) {
       notifications.push({
-        id: `fertilizer-upcoming-${app.id}-${now.getTime()}`,
+        id: `fertilizer-upcoming-${app.id}`,
         type: 'info',
         title: 'Найближче внесення добрив',
         message: `Через ${daysUntil} днів: ${productNames} (${Math.round(totalQuantity)} кг/га)`,
@@ -181,7 +181,7 @@ export const generateFertilizerNotifications = (
     // Upcoming in a week
     else if (daysUntil <= 7) {
       notifications.push({
-        id: `fertilizer-week-${app.id}-${now.getTime()}`,
+        id: `fertilizer-week-${app.id}`,
         type: 'info',
         title: 'Заплановане внесення',
         message: `Через ${daysUntil} днів: ${productNames} - ${app.cropStage}`,
@@ -211,7 +211,7 @@ export const generateWeatherAlerts = (weatherData?: {
   // Frost warning
   if (weatherData.temperature < 0) {
     notifications.push({
-      id: `weather-frost-${now.getTime()}`,
+      id: 'weather-frost',
       type: 'error',
       title: 'Попередження про заморозки',
       message: `Температура нижче 0°C (${Math.round(weatherData.temperature)}°C). Вживіть заходів захисту посівів`,
@@ -223,7 +223,7 @@ export const generateWeatherAlerts = (weatherData?: {
   // Heavy rain warning
   if (weatherData.precipitation > 20) {
     notifications.push({
-      id: `weather-rain-${now.getTime()}`,
+      id: 'weather-rain-heavy',
       type: 'warning',
       title: 'Сильні опади',
       message: `Очікується ${Math.round(weatherData.precipitation)} мм опадів. Відкладіть польові роботи`,
@@ -235,7 +235,7 @@ export const generateWeatherAlerts = (weatherData?: {
   // Strong wind warning
   if (weatherData.windSpeed > 50) {
     notifications.push({
-      id: `weather-wind-${now.getTime()}`,
+      id: 'weather-wind',
       type: 'warning',
       title: 'Сильний вітер',
       message: `Швидкість вітру ${Math.round(weatherData.windSpeed)} км/год. Обережно з обприскуванням`,
@@ -247,7 +247,7 @@ export const generateWeatherAlerts = (weatherData?: {
   // Thunderstorm warning (weather codes 95-99)
   if (weatherData.weatherCode >= 95) {
     notifications.push({
-      id: `weather-storm-${now.getTime()}`,
+      id: 'weather-storm',
       type: 'error',
       title: 'Попередження про грозу',
       message:
@@ -278,7 +278,7 @@ export const generateCropNotifications = (fields: Field[]): Notification[] => {
     // Early growth stage notifications (first 2 weeks)
     if (daysFromSowing <= 14 && daysFromSowing > 0) {
       notifications.push({
-        id: `crop-early-${field.id}-${now.getTime()}`,
+        id: `crop-early-${field.id}`,
         type: 'info',
         title: 'Рання фаза розвитку',
         message: `Поле "${field.name}" (${field.currentCrop.name}): ${daysFromSowing} днів від сівби. Контролюйте вологість`,
@@ -291,7 +291,7 @@ export const generateCropNotifications = (fields: Field[]): Notification[] => {
     // Critical growth period (3-6 weeks for most crops)
     if (daysFromSowing >= 21 && daysFromSowing <= 42) {
       notifications.push({
-        id: `crop-critical-${field.id}-${now.getTime()}`,
+        id: `crop-critical-${field.id}`,
         type: 'warning',
         title: 'Критична фаза росту',
         message: `Поле "${field.name}" (${field.currentCrop.name}): критичний період розвитку. Забезпечте оптимальні умови`,
@@ -306,7 +306,7 @@ export const generateCropNotifications = (fields: Field[]): Notification[] => {
 
     if (daysToHarvest > 0 && daysToHarvest <= 14) {
       notifications.push({
-        id: `crop-harvest-${field.id}-${now.getTime()}`,
+        id: `crop-harvest-${field.id}`,
         type: 'info',
         title: 'Наближається збір урожаю',
         message: `Поле "${field.name}" (${field.currentCrop.name}): очікуваний збір через ~${daysToHarvest} днів`,
