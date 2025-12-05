@@ -13,6 +13,8 @@ const CropsListPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedType, setSelectedType] = useState<string>('all');
   const [sortBy, setSortBy] = useState<'name' | 'duration' | 'yield'>('name');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 12; // Show 12 crops per page (4x3 grid)
 
   // Filter and sort crops
   const filteredAndSortedCrops = useMemo(() => {
@@ -47,6 +49,17 @@ const CropsListPage: React.FC = () => {
 
     return filtered;
   }, [crops, searchQuery, selectedType, sortBy]);
+
+  // Pagination calculations
+  const totalPages = Math.ceil(filteredAndSortedCrops.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedCrops = filteredAndSortedCrops.slice(startIndex, endIndex);
+
+  // Reset to page 1 when filters change
+  React.useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, selectedType, sortBy]);
 
   // Statistics
   const stats = useMemo(() => {
@@ -129,6 +142,11 @@ const CropsListPage: React.FC = () => {
             <span className="font-semibold text-gray-900 dark:text-white">
               {filteredAndSortedCrops.length}
             </span>
+            {filteredAndSortedCrops.length > itemsPerPage && (
+              <span className="text-sm ml-2">
+                (показано {startIndex + 1}-{Math.min(endIndex, filteredAndSortedCrops.length)})
+              </span>
+            )}
           </p>
         </div>
 
@@ -136,11 +154,72 @@ const CropsListPage: React.FC = () => {
         {filteredAndSortedCrops.length === 0 ? (
           <CropsEmptyState />
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-            {filteredAndSortedCrops.map((crop) => (
-              <CropCard key={crop.id} crop={crop} />
-            ))}
-          </div>
+          <>
+            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+              {paginatedCrops.map((crop) => (
+                <CropCard key={crop.id} crop={crop} />
+              ))}
+            </div>
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="flex items-center justify-center gap-2 mt-8">
+                <button
+                  onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+                  disabled={currentPage === 1}
+                  className="px-4 py-2 rounded-lg border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-medium hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                >
+                  Попередня
+                </button>
+
+                <div className="flex items-center gap-1">
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => {
+                    // Show first page, last page, current page, and pages around current
+                    const showPage =
+                      page === 1 ||
+                      page === totalPages ||
+                      (page >= currentPage - 1 && page <= currentPage + 1);
+
+                    const showEllipsis =
+                      (page === 2 && currentPage > 3) ||
+                      (page === totalPages - 1 && currentPage < totalPages - 2);
+
+                    if (showEllipsis) {
+                      return (
+                        <span key={page} className="px-2 text-gray-500 dark:text-gray-400">
+                          ...
+                        </span>
+                      );
+                    }
+
+                    if (!showPage) return null;
+
+                    return (
+                      <button
+                        key={page}
+                        onClick={() => setCurrentPage(page)}
+                        className={`w-10 h-10 rounded-lg font-medium transition-all ${
+                          currentPage === page
+                            ? 'bg-green-600 text-white shadow-lg scale-110'
+                            : 'border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
+                        }`}
+                      >
+                        {page}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                <button
+                  onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
+                  disabled={currentPage === totalPages}
+                  className="px-4 py-2 rounded-lg border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-medium hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                >
+                  Наступна
+                </button>
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>
