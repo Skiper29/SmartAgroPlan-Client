@@ -1,4 +1,4 @@
-import { useMemo, useEffect } from 'react';
+import { useMemo } from 'react';
 import { useFields } from '@/features/fields/hooks/fields.hooks';
 import { useBatchIrrigationRecommendations } from '@/features/irrigation/hooks/irrigation.hooks';
 import DashboardStats from '../components/DashboardStats';
@@ -14,19 +14,14 @@ import { Tractor } from 'lucide-react';
 export function DashboardPage() {
   const { data: fields = [], isLoading: isLoadingFields, error } = useFields();
 
-  const {
-    mutate: getRecommendations,
-    data: irrigationRecommendations = [],
-    isPending: isLoadingIrrigation,
-  } = useBatchIrrigationRecommendations();
+  // Get field IDs for batch recommendations
+  const fieldIds = useMemo(() => fields.map((f) => f.id), [fields]);
 
-  // Fetch irrigation recommendations when fields are loaded
-  useEffect(() => {
-    if (fields.length > 0) {
-      const fieldIds = fields.map((f) => f.id);
-      getRecommendations({ fieldIds });
-    }
-  }, [fields, getRecommendations]);
+  // Fetch irrigation recommendations - now uses React Query cache automatically
+  const {
+    data: irrigationRecommendations = [],
+    isLoading: isLoadingIrrigation,
+  } = useBatchIrrigationRecommendations(fieldIds, null, fieldIds.length > 0);
 
   const stats = useMemo(() => {
     const totalFields = fields.length;

@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect } from 'react';
+import React, { useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { CheckCircle, Calendar, AlertTriangle, Clock } from 'lucide-react';
@@ -18,41 +18,44 @@ interface Task {
 
 const UpcomingTasksCard: React.FC = () => {
   const { data: fields = [] } = useFields();
-  const { mutate: getRecommendations, data: irrigationRecommendations = [] } =
-    useBatchIrrigationRecommendations();
 
-  useEffect(() => {
-    if (fields.length > 0) {
-      const fieldIds = fields.map((f) => f.id);
-      getRecommendations({ fieldIds });
-    }
-  }, [fields, getRecommendations]);
+  // Get field IDs - memoized to prevent unnecessary recalculations
+  const fieldIds = useMemo(() => fields.map((f) => f.id), [fields]);
+
+  // Use the cached query - this will reuse data from Dashboard if already fetched
+  const { data: irrigationRecommendations } = useBatchIrrigationRecommendations(
+    fieldIds,
+    null,
+    fieldIds.length > 0,
+  );
 
   const tasks: Task[] = useMemo(() => {
     const taskList: Task[] = [];
 
     // Add irrigation tasks from recommendations
-    irrigationRecommendations.forEach((rec) => {
-      if (rec.recommendedAction !== IrrigationAction.None) {
-        const field = fields.find((f) => f.id === rec.fieldId);
-        const daysUntil = rec.date
-          ? differenceInDays(new Date(rec.date), new Date())
-          : 0;
+    if (irrigationRecommendations) {
+      irrigationRecommendations.forEach((rec) => {
+        if (rec.recommendedAction !== IrrigationAction.None) {
+          const field = fields.find((f) => f.id === rec.fieldId);
+          const daysUntil = rec.date
+            ? differenceInDays(new Date(rec.date), new Date())
+            : 0;
 
-        let dueDateText = 'Сьогодні';
-        if (daysUntil === 1) dueDateText = 'Завтра';
-        else if (daysUntil > 1) dueDateText = `Через ${daysUntil} дні`;
+          let dueDateText = 'Сьогодні';
+          if (daysUntil === 1) dueDateText = 'Завтра';
+          else if (daysUntil > 1) dueDateText = `Через ${daysUntil} дні`;
 
-        taskList.push({
-          id: `irrigation-${rec.fieldId}`,
-          title: `Полив поля "${field?.name || 'Невідоме'}"`,
-          dueDate: dueDateText,
-          priority:
-            daysUntil === 0 ? 'high' : daysUntil === 1 ? 'medium' : 'low',
-          type: 'irrigation',
-        });
-      }
-    });
+          taskList.push({
+            id: `irrigation-${rec.fieldId}`,
+            title: `Полив поля "${field?.name || 'Невідоме'}"`,
+            dueDate: dueDateText,
+            priority:
+              daysUntil === 0 ? 'high' : daysUntil === 1 ? 'medium' : 'low',
+            type: 'irrigation',
+          });
+        }
+      });
+    }
 
     return taskList.slice(0, 5); // Show only top 5 tasks
   }, [irrigationRecommendations, fields]);

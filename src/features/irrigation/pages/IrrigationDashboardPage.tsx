@@ -1,7 +1,10 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { useFields } from '@/features/fields/hooks/fields.hooks';
-import { useBatchIrrigationRecommendations } from '../hooks/irrigation.hooks';
+import {
+  useBatchIrrigationRecommendations,
+  useBatchIrrigationRecommendationsMutation,
+} from '../hooks/irrigation.hooks';
 import IrrigationFieldCard from '../components/IrrigationFieldCard';
 import { RefreshCw } from 'lucide-react';
 import { IrrigationAction } from '../utils/irrigationUtils';
@@ -11,24 +14,25 @@ import IrrigationSummaryCards from '@/features/irrigation/components/IrrigationS
 
 const IrrigationDashboardPage: React.FC = () => {
   const { data: fields = [], isLoading: isLoadingFields } = useFields();
-  const {
-    mutate: getRecommendations,
-    data: recommendations = [],
-    isPending: isLoadingRecommendations,
-    error,
-  } = useBatchIrrigationRecommendations();
 
-  useEffect(() => {
-    if (fields.length > 0) {
-      const fieldIds = fields.map((f) => f.id);
-      getRecommendations({ fieldIds });
-    }
-  }, [fields, getRecommendations]);
+  // Get field IDs - memoized to prevent unnecessary recalculations
+  const fieldIds = useMemo(() => fields.map((f) => f.id), [fields]);
+
+  // Use the cached query - this will reuse data from Dashboard if already fetched
+  const {
+    data: recommendations = [],
+    isLoading: isLoadingRecommendations,
+    error,
+  } = useBatchIrrigationRecommendations(fieldIds, null, fieldIds.length > 0);
+
+  // Use mutation for manual refresh (bypasses cache)
+  const { mutate: forceRefresh, isPending: isRefreshing } =
+    useBatchIrrigationRecommendationsMutation();
 
   const handleRefresh = () => {
-    const fieldIds = fields.map((f) => f.id);
     if (fieldIds.length > 0) {
-      getRecommendations({ fieldIds });
+      // Use mutation to force a fresh API call
+      forceRefresh({ fieldIds });
     }
   };
 
@@ -46,7 +50,7 @@ const IrrigationDashboardPage: React.FC = () => {
     };
   }, [recommendations]);
 
-  const isLoading = isLoadingFields || isLoadingRecommendations;
+  const isLoading = isLoadingFields || isLoadingRecommendations || isRefreshing;
 
   if (isLoading) {
     return (

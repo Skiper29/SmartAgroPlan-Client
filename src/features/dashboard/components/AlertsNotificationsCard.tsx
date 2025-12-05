@@ -27,11 +27,13 @@ import type { FertilizerApplication } from '@/models/fertilizer';
 
 const AlertsNotificationsCard: React.FC = () => {
   const { data: fields, isLoading: fieldsLoading } = useFields();
-  const {
-    mutate: fetchIrrigationRecs,
-    data: irrigationData,
-    isPending: irrigationLoading,
-  } = useBatchIrrigationRecommendations();
+
+  // Get field IDs - memoized to prevent unnecessary recalculations
+  const fieldIds = useMemo(() => fields?.map((f) => f.id) || [], [fields]);
+
+  // Use the cached query - this will reuse data from Dashboard if already fetched
+  const { data: irrigationData, isLoading: irrigationLoading } =
+    useBatchIrrigationRecommendations(fieldIds, null, fieldIds.length > 0);
 
   const [dismissedIds, setDismissedIds] = useState<Set<string>>(new Set());
   const [weatherData, setWeatherData] = useState<{
@@ -44,14 +46,6 @@ const AlertsNotificationsCard: React.FC = () => {
     FertilizerApplication[]
   >([]);
   const [fertilizerLoading, setFertilizerLoading] = useState(false);
-
-  // Fetch irrigation recommendations when fields are loaded
-  useEffect(() => {
-    if (fields && fields.length > 0) {
-      const fieldIds = fields.map((f) => f.id);
-      fetchIrrigationRecs({ fieldIds });
-    }
-  }, [fields, fetchIrrigationRecs]);
 
   // Fetch upcoming fertilizer applications for all fields
   useEffect(() => {
