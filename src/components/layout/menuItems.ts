@@ -1,7 +1,6 @@
 import {
   Home,
   Leaf,
-  BarChart3,
   Droplets,
   CloudRain,
   Brain,
@@ -52,12 +51,6 @@ export const menuItems: MenuItem[] = [
         label: 'Огляд ферми',
         to: '/dashboard',
         description: 'Карта + KPI',
-      },
-      {
-        icon: BarChart3,
-        label: 'Ключові показники',
-        to: '/dashboard/kpi',
-        description: 'Урожайність, ресурси, ризики',
       },
     ],
   },
